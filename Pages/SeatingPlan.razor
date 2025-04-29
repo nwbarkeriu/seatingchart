@@ -107,6 +107,7 @@ else
                             style="width:@GetTableWidth()px; height:@GetTableHeight()px;"
                             @ondragover:preventDefault
                             @ondrop="() => DropGuest(tableGroup.Key)">
+                            <div class="table-number">Table @tableGroup.Key</div>
                             @foreach (var guest in tableGroup)
                             {
                             <div class="chair"
@@ -122,7 +123,7 @@ else
                         {
                             guestIndex = 0;
                         <div class="@($"{tableClass} table-rectangle")" style="width:@GetTableWidth()px; height:@GetTableHeight()px;">
-                            <div class="table-number">@tableGroup.Key</div>
+                            <div class="table-number">Table @tableGroup.Key</div>
                             @foreach (var guest in tableGroup)
                             {
                             <div class="chair-rectangle" style="@($"{GetRectangleChairPosition(tableGroup.Count(), guestIndex++)} width:{GetChairSize(tableGroup.Count())}px; height:{GetChairSize(tableGroup.Count())}px; font-size:{GetChairFontSize(tableGroup.Count())}px;")">
@@ -187,6 +188,7 @@ else
     font-size: 11px;
     line-height: 30px;
     box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    z-index: 1;
 }
 .table-rectangle {
     width: 300px;
@@ -207,6 +209,7 @@ else
     font-size: 11px;
     line-height: 30px;
     box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    z-index: 1;
 }
 .table-square {
     width: 300px;
@@ -227,6 +230,7 @@ else
     font-size: 11px;
     line-height: 30px;
     box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    z-index: 1;
 }
 /* Table Base Styles */
 .table-base {
@@ -253,6 +257,7 @@ else
     font-size: 24px;
     color: #343a40;
     pointer-events: none;
+    z-index: 0;
 }
 </style>
 
