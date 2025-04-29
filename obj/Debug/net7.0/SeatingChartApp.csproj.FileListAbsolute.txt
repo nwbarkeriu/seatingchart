@@ -32,3 +32,4 @@ C:\Users\nathan.barker\SeatingChartApp\obj\Debug\net7.0\ref\SeatingChartApp.dll
 C:\Users\nathan.barker\SeatingChartApp\bin\Debug\net7.0\SeatingChartApp.staticwebassets.endpoints.json
 C:\Users\nathan.barker\SeatingChartApp\obj\Debug\net7.0\staticwebassets.build.endpoints.json
 C:\Users\nathan.barker\SeatingChartApp\obj\Debug\net7.0\staticwebassets\msbuild.SeatingChartApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\nathan.barker\SeatingChartApp\obj\Debug\net7.0\SeatingChartApp.sourcelink.json

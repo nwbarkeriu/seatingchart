@@ -1,0 +1,7 @@
+C:\Users\nathan.barker\SeatingChartApp\publish\SeatingChartApp.exe
+C:\Users\nathan.barker\SeatingChartApp\publish\appsettings.Development.json
+C:\Users\nathan.barker\SeatingChartApp\publish\appsettings.json
+C:\Users\nathan.barker\SeatingChartApp\publish\SeatingChartApp.dll
+C:\Users\nathan.barker\SeatingChartApp\publish\SeatingChartApp.deps.json
+C:\Users\nathan.barker\SeatingChartApp\publish\SeatingChartApp.runtimeconfig.json
+C:\Users\nathan.barker\SeatingChartApp\publish\SeatingChartApp.pdb

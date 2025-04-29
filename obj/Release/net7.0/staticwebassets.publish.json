@@ -1,10 +1,10 @@
 {
   "Version": 1,
-  "Hash": "lsVUqez0v8G8u/9dzgwJZv9w2BZdXXvfWQCDgJ6iWAU=",
+  "Hash": "33AFwAORbPdSocWgdHLef2CTA2L7cvd6U+kVmytQMKQ=",
   "Source": "SeatingChartApp",
   "BasePath": "_content/SeatingChartApp",
   "Mode": "Default",
-  "ManifestType": "Build",
+  "ManifestType": "Publish",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [
     {
@@ -17,10 +17,10 @@
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css",
+      "Identity": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css",
       "SourceId": "SeatingChartApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\bundle\\",
       "BasePath": "_content/SeatingChartApp",
       "RelativePath": "SeatingChartApp#[.{fingerprint}]?.styles.css",
       "AssetKind": "All",
@@ -35,13 +35,13 @@
       "Integrity": "+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css"
+      "OriginalItemSpec": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css"
     },
     {
-      "Identity": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css",
+      "Identity": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css",
       "SourceId": "SeatingChartApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/SeatingChartApp",
       "RelativePath": "SeatingChartApp#[.{fingerprint}]!.bundle.scp.css",
       "AssetKind": "All",
@@ -56,7 +56,7 @@
       "Integrity": "+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css"
     },
     {
       "Identity": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
@@ -1401,7 +1401,7 @@
     },
     {
       "Route": "SeatingChartApp.64rnddiehv.bundle.scp.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css",
+      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1422,7 +1422,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 29 Apr 2025 18:07:31 GMT"
+          "Value": "Tue, 29 Apr 2025 17:21:31 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1446,7 +1446,7 @@
     },
     {
       "Route": "SeatingChartApp.64rnddiehv.styles.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css",
+      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1467,7 +1467,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 29 Apr 2025 18:07:31 GMT"
+          "Value": "Tue, 29 Apr 2025 17:21:31 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1491,7 +1491,7 @@
     },
     {
       "Route": "SeatingChartApp.bundle.scp.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css",
+      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1512,7 +1512,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 29 Apr 2025 18:07:31 GMT"
+          "Value": "Tue, 29 Apr 2025 17:21:31 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1528,7 +1528,7 @@
     },
     {
       "Route": "SeatingChartApp.styles.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Debug\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css",
+      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1549,7 +1549,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 29 Apr 2025 18:07:31 GMT"
+          "Value": "Tue, 29 Apr 2025 17:21:31 GMT"
         },
         {
           "Name": "Cache-Control",
