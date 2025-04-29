@@ -1,0 +1,484 @@
+@page "/seatingplan"
+@using SeatingChartApp.Data
+@using SeatingChartApp.Models
+@using System.Text
+
+<h3 class="text-center mt-4">Seating Plan</h3>
+
+@if (guests == null || !guests.Any())
+{
+    <p class="text-center">No guests loaded. Please go to <NavLink href="/guestlist">Guest List</NavLink> first.</p>
+}
+else
+{
+    <div class="text-center mb-4">
+        <div class="mb-3">
+            <label>Seats per Table:</label>
+            <input type="number" @bind="seatsPerTable" min="1" class="form-control-sm" />
+        </div>
+
+        <div class="mb-3">
+            <label>Number of Tables:</label>
+            <input type="number" @bind="numberOfTables" min="1" class="form-control-sm" />
+        </div>
+
+        <div class="mb-3">
+            <label>Number of Days:</label>
+            <input type="number" @bind="numberOfDays" min="1" class="form-control-sm" />
+        </div>
+
+        <div class="mb-4">
+            <label>Table Shape:</label><br />
+            <InputRadioGroup @bind-Value="tableShape" class="form-check">
+                <div class="form-check form-check-inline">
+                    <InputRadio class="form-check-input" Value="@( "Circle" )" id="circleTable" />
+                    <label class="form-check-label" for="circleTable">
+                        🟠 Circle
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <InputRadio class="form-check-input" Value="@( "Rectangle" )" id="rectangleTable" />
+                    <label class="form-check-label" for="rectangleTable">
+                        ▭ Rectangle
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <InputRadio class="form-check-input" Value="@( "Square" )" id="squareTable" />
+                    <label class="form-check-label" for="squareTable">
+                        ◼️ Square
+                    </label>
+                </div>
+            </InputRadioGroup>
+        </div>
+        @if (guests != null && guests.Any())
+        {
+            <p class="text-center text-muted">
+                Total Guests: <strong>@guests.Count</strong>
+            </p>
+        }
+        @if (!isTableCountValid)
+        {
+        <div class="alert alert-danger mt-2">
+            You have @guests.Count guests, but only enough space for @(seatsPerTable * numberOfTables).<br />
+            Increase the number of tables or seats per table.
+        </div>
+        }
+        <button class="btn btn-primary me-2" @onclick="AssignTablesForAllDays">Assign Tables for All Days</button>
+        <button class="btn btn-success" @onclick="ExportSeatingPlan" disabled="@(!assigned)">
+            Export Seating Plan to CSV
+        </button>
+    </div>
+
+    @if (assigned)
+    {
+        @for (int day = 1; day <= numberOfDays; day++)
+        {
+            <h4 class="text-center mt-5">Day @day Seating</h4>
+
+            <div class="container">
+                <div class="row">
+                    @foreach (var tableGroup in guests
+                        .Where(g => g.TableAssignments.ContainsKey(day))
+                        .GroupBy(g => g.TableAssignments[day])
+                        .OrderBy(g => g.Key))
+                    {
+                    <div class="col-md-4 mb-4">
+                        @{
+                            int tableGuestCount = tableGroup.Count();
+                            string tableClass = "table-base ";
+
+                            if (tableGuestCount == 0)
+                            {
+                                tableClass += "table-empty";
+                            }
+                            else if (tableGuestCount < seatsPerTable)
+                            {
+                                tableClass += "table-partial";
+                            }
+                            else
+                            {
+                                tableClass += "table-full";
+                            }
+                        }
+                        @if (tableShape == "Circle")
+                        {
+                            guestIndex = 0;
+                        <div class="@($"{tableClass} table-circle")"
+                            style="width:@GetTableWidth()px; height:@GetTableHeight()px;"
+                            @ondragover:preventDefault
+                            @ondrop="() => DropGuest(tableGroup.Key)">
+                            @foreach (var guest in tableGroup)
+                            {
+                            <div class="chair"
+                                draggable="true"
+                                @ondragstart="() => StartDrag(guest)"
+                                style="@($"{GetChairPosition(tableGroup.Count(), guestIndex++)} width:{GetChairSize(tableGroup.Count())}px; height:{GetChairSize(tableGroup.Count())}px; font-size:{GetChairFontSize(tableGroup.Count())}px;")">
+                                @((MarkupString)guest.Name.Replace(" ", "<br />"))
+                            </div>
+                            }
+                        </div>
+                        }
+                        else if (tableShape == "Rectangle")
+                        {
+                            guestIndex = 0;
+                        <div class="@($"{tableClass} table-rectangle")" style="width:@GetTableWidth()px; height:@GetTableHeight()px;">
+                            <div class="table-number">@tableGroup.Key</div>
+                            @foreach (var guest in tableGroup)
+                            {
+                            <div class="chair-rectangle" style="@($"{GetRectangleChairPosition(tableGroup.Count(), guestIndex++)} width:{GetChairSize(tableGroup.Count())}px; height:{GetChairSize(tableGroup.Count())}px; font-size:{GetChairFontSize(tableGroup.Count())}px;")">
+                                @((MarkupString)guest.Name.Replace(" ", "<br />"))
+                            </div>
+                            }
+                        </div>
+                        }
+                        else if (tableShape == "Square")
+                        {
+                        guestIndex = 0;
+                        <div class="@($"{tableClass} table-square")" style="width:@GetTableWidth()px; height:@GetTableHeight()px;">
+                            <div class="table-number">@tableGroup.Key</div>
+                            @foreach (var guest in tableGroup)
+                            {
+                            <div class="chair-square" style="@($"{GetSquareChairPosition(tableGroup.Count(), guestIndex++)} width:{GetChairSize(tableGroup.Count())}px; height:{GetChairSize(tableGroup.Count())}px; font-size:{GetChairFontSize(tableGroup.Count())}px;")">
+                                @((MarkupString)guest.Name.Replace(" ", "<br />"))
+                            </div>
+                            }
+                        </div>
+                        }
+                        else
+                        {
+                        <div class="card shadow-sm">
+                            <div class="card-header text-center fw-bold">
+                                Table @tableGroup.Key
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                @foreach (var guest in tableGroup)
+                                {
+                                    <li class="list-group-item text-center">@guest.Name</li>
+                                }
+                            </ul>
+                        </div>
+                        }
+                    </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+}
+
+<style>
+.table-circle {
+    width: 300px;
+    height: 300px;
+    border: 4px solid #007bff;
+    border-radius: 50%;
+    margin: 40px auto;
+    position: relative;
+    background-color: #f8f9fa;
+}
+.chair {
+    width: 70px;
+    height: 30px;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    position: absolute;
+    text-align: center;
+    font-size: 11px;
+    line-height: 30px;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+}
+.table-rectangle {
+    width: 300px;
+    height: 150px;
+    border: 4px solid #28a745;
+    margin: 40px auto;
+    position: relative;
+    background-color: #f8f9fa;
+}
+.chair-rectangle {
+    width: 70px;
+    height: 30px;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    position: absolute;
+    text-align: center;
+    font-size: 11px;
+    line-height: 30px;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+}
+.table-square {
+    width: 300px;
+    height: 300px;
+    /* border: 4px solid #ffc107; */
+    margin: 40px auto;
+    position: relative;
+    background-color: #f8f9fa;
+}
+.chair-square {
+    width: 70px;
+    height: 30px;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    position: absolute;
+    text-align: center;
+    font-size: 11px;
+    line-height: 30px;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+}
+/* Table Base Styles */
+.table-base {
+    position: relative;
+    background-color: #f8f9fa;
+}
+/* Table Fill Coloring */
+.table-empty {
+    border: 4px solid #6c757d; /* Gray border */
+}
+.table-partial {
+    border: 4px solid #ffc107; /* Yellow border */
+}
+.table-full {
+    border: 4px solid #28a745; /* Green border */
+}
+/* Center Table Number */
+.table-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 24px;
+    color: #343a40;
+    pointer-events: none;
+}
+</style>
+
+@code {
+    private List<Guest> guests = new List<Guest>();
+    private int seatsPerTable = 8;
+    private int numberOfTables = 20;
+    private int numberOfDays = 2;
+    private bool assigned = false;
+    private string tableShape = "Circle"; // Default to Circle
+    private int guestIndex = 0;
+    private bool isTableCountValid = true;
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+    private Guest? draggedGuest;
+
+    private void AssignTablesForAllDays()
+    {
+        guests = DummyGuestService.Guests;
+        int capacity = seatsPerTable * numberOfTables;
+        if (guests.Count > capacity)
+        {
+            isTableCountValid = false;
+            assigned = false;
+            return;
+        }
+        isTableCountValid = true;
+        for (int day = 1; day <= numberOfDays; day++)
+        {
+            AssignTablesForDay(day);
+        }
+        assigned = true;
+    }
+    private double GetChairWidth(int totalGuests)
+    {
+        if (totalGuests <= 8)
+            return 70;
+        else if (totalGuests <= 12)
+            return 60;
+        else if (totalGuests <= 16)
+            return 50;
+        else
+            return 40; // very crowded
+    }
+    private int GetChairFontSize(int totalGuests)
+    {
+        if (totalGuests <= 8)
+            return 12; // Normal font
+        else if (totalGuests <= 12)
+            return 11; // Slightly smaller
+        else if (totalGuests <= 16)
+            return 10; // Smaller
+        else
+            return 9;  // Minimum readable size
+    }
+    private int GetChairSize(int totalGuests)
+    {
+        if (totalGuests <= 8)
+            return 70; // Normal size
+        else if (totalGuests <= 12)
+            return 60; // Slightly smaller
+        else if (totalGuests <= 16)
+            return 50; // Smaller
+        else
+            return 40; // Packed table
+    }
+    private int GetTableWidth()
+    {
+        if (seatsPerTable <= 8)
+            return 300;
+        else if (seatsPerTable <= 12)
+            return 400;
+        else if (seatsPerTable <= 16)
+            return 500;
+        else
+            return 600;
+    }
+    private int GetTableHeight()
+    {
+        if (tableShape == "Rectangle")
+        {
+            return GetTableWidth() / 2; // Rectangle is half as tall as wide
+        }
+        else
+        {
+            return GetTableWidth(); // Circle and Square stay square
+        }
+    }
+    private string GetSquareChairPosition(int totalGuests, int index)
+    {
+        double tableSize = GetTableWidth();
+        double chairSize = GetChairSize(totalGuests);
+        double padding = 10;
+        double sideLength = tableSize - 2 * padding;
+        double perimeter = sideLength * 4;
+        double gap = perimeter / totalGuests;
+        double distance = gap * index;
+        double x = 0;
+        double y = 0;
+
+        if (distance < sideLength) // Top
+        {
+            x = padding + distance;
+            y = padding;
+        }
+        else if (distance < sideLength * 2) // Right
+        {
+            x = tableSize - padding - chairSize;
+            y = padding + (distance - sideLength);
+        }
+        else if (distance < sideLength * 3) // Bottom
+        {
+            x = tableSize - padding - (distance - sideLength * 2) - chairSize;
+            y = tableSize - padding - chairSize;
+        }
+        else // Left
+        {
+            x = padding;
+            y = tableSize - padding - (distance - sideLength * 3) - chairSize;
+        }
+        return $"left: {x}px; top: {y}px;";
+    }
+    private string GetRectangleChairPosition(int totalGuests, int index)
+    {
+        double tableWidth = GetTableWidth();
+        double tableHeight = GetTableHeight();
+        double chairSize = GetChairSize(totalGuests);
+        double padding = 10;
+        double spacing = (tableWidth - 2 * padding) / (totalGuests / 2);
+        double top, left;
+
+        if (index % 2 == 0) // Top row
+        {
+            left = padding + spacing * (index / 2);
+            top = padding;
+        }
+        else // Bottom row
+        {
+            left = padding + spacing * (index / 2);
+            top = tableHeight - chairSize - padding;
+        }
+        return $"left: {left}px; top: {top}px;";
+    }
+    protected override void OnInitialized()
+    {
+        guests = DummyGuestService.Guests;
+    }
+    private void AssignTablesForDay(int day)
+    {
+        var rng = new Random();
+        var shuffledGuests = guests.OrderBy(_ => rng.Next()).ToList();
+
+        Dictionary<int, List<Guest>> tables = new();
+
+        for (int i = 1; i <= numberOfTables; i++)
+            tables[i] = new List<Guest>();
+
+        int currentTable = 1;
+
+        foreach (var guest in shuffledGuests)
+        {
+            if (guest.IsManuallyAssigned && guest.TableAssignments.ContainsKey(day))
+            continue; //
+            while (tables[currentTable].Count >= seatsPerTable)
+            {
+                currentTable++;
+                if (currentTable > numberOfTables)
+                    currentTable = 1; // Loop around if somehow exceeded (shouldn't normally)
+            }
+
+            tables[currentTable].Add(guest);
+            guest.TableAssignments[day] = currentTable;
+        }
+    }
+    private string GetChairPosition(int totalGuests, int index)
+    {
+        double tableSize = GetTableWidth(); // Dynamic width/height of circle
+        double radius = (tableSize / 2) - 40; // Inner radius to avoid overlap with border
+        double angle = (360.0 / totalGuests) * index;
+        double radians = angle * (Math.PI / 180.0);
+
+        double centerX = tableSize / 2;
+        double centerY = tableSize / 2;
+
+        double left = centerX + radius * Math.Cos(radians) - (GetChairSize(totalGuests) / 2);
+        double top = centerY + radius * Math.Sin(radians) - (GetChairSize(totalGuests) / 2);
+
+        return $"left: {left}px; top: {top}px;";
+    }
+    private async Task ExportSeatingPlan()
+    {
+        var csvContent = new StringBuilder();
+        csvContent.AppendLine("Guest Name,Day,Table Number");
+
+        foreach (var guest in guests)
+        {
+            foreach (var assignment in guest.TableAssignments.OrderBy(a => a.Key))
+            {
+                csvContent.AppendLine($"{guest.Name},Day {assignment.Key},Table {assignment.Value}");
+            }
+        }
+
+        var bytes = Encoding.UTF8.GetBytes(csvContent.ToString());
+        var base64 = Convert.ToBase64String(bytes);
+
+        await JS.InvokeVoidAsync("downloadFileFromBlazor", "SeatingPlan.csv", base64);
+    }
+    private void StartDrag(Guest guest)
+    {
+        draggedGuest = guest;
+    }
+
+    private void AllowDrop(DragEventArgs e)
+    {
+        
+    }
+    private void DropGuest(int? tableNumber)
+    {
+        if (draggedGuest == null || tableNumber == null) return;
+
+        for (int day = 1; day <= numberOfDays; day++)
+        {
+            draggedGuest.TableAssignments[day] = tableNumber.Value;
+        }
+
+        draggedGuest.IsManuallyAssigned = true;
+        draggedGuest = null;
+        StateHasChanged(); // 🔥 Forces UI to refresh
+    }
+}
