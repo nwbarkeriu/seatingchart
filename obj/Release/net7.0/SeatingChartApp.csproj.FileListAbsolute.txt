@@ -33,3 +33,15 @@ C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\refint\SeatingChartApp
 C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\SeatingChartApp.pdb
 C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\SeatingChartApp.genruntimeconfig.cache
 C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\ref\SeatingChartApp.dll
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\web.config
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\appsettings.Development.json
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\appsettings.json
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\SeatingChartApp.deps.json
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\SeatingChartApp.runtimeconfig.json
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\SeatingChartApp.staticwebassets.endpoints.json
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\publish\web.config
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\publish\appsettings.Development.json
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\publish\appsettings.json
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\publish\SeatingChartApp.deps.json
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\publish\SeatingChartApp.runtimeconfig.json
+C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\publish\SeatingChartApp.staticwebassets.endpoints.json
