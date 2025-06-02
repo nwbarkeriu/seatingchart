@@ -300,8 +300,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bkgyvelagh</Fingerprint>
-      <Integrity>W8+GKbhfxVEKZH8aDJkWmqTt3dgLrOtzlgDBD/Pnu+U=</Integrity>
+      <Fingerprint>9yiyb71nvw</Fingerprint>
+      <Integrity>cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lunch\index.php'))</OriginalItemSpec>
