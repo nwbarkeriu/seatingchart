@@ -196,13 +196,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lunch\index.php'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"9yiyb71nvw"},{"Name":"integrity","Value":"sha256-cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk="},{"Name":"label","Value":"_content/SeatingChartApp/lunch/index.php"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"5814"},{"Name":"Content-Type","Value":"application/octet-stream"},{"Name":"ETag","Value":"\u0022cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk=\u0022"},{"Name":"Last-Modified","Value":"Mon, 02 Jun 2025 19:05:00 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"5814"},{"Name":"Content-Type","Value":"application/octet-stream"},{"Name":"ETag","Value":"\u0022cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk=\u0022"},{"Name":"Last-Modified","Value":"Mon, 02 Jun 2025 19:24:14 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/SeatingChartApp/lunch/index.php">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lunch\index.php'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"5814"},{"Name":"Content-Type","Value":"application/octet-stream"},{"Name":"ETag","Value":"\u0022cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk=\u0022"},{"Name":"Last-Modified","Value":"Mon, 02 Jun 2025 19:05:00 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"5814"},{"Name":"Content-Type","Value":"application/octet-stream"},{"Name":"ETag","Value":"\u0022cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk=\u0022"},{"Name":"Last-Modified","Value":"Mon, 02 Jun 2025 19:24:14 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/SeatingChartApp/lunch/lunchmenu.5ipweew5fc.php">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lunch\lunchmenu.php'))</AssetFile>

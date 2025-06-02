@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SeatingChartApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+24a44355b3fce03719726b468e01ce70f3befe65")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de6a269d8330a483355ff261fbb44a780378df98")]
 [assembly: System.Reflection.AssemblyProductAttribute("SeatingChartApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SeatingChartApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
