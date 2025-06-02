@@ -49,6 +49,7 @@ $school_lunches = [
 
 // Events data
 $events = [
+    '2025-06-02' => 'Test Event NB',
     '2025-08-04' => 'Teacher Work Day (No Students)',
     '2025-08-05' => 'Teacher Work Day (No Students)',
     '2025-08-06' => 'First Student Day',

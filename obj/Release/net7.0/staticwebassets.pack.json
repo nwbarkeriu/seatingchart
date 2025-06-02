@@ -57,6 +57,26 @@
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
+      "Id": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lineup\\field_304x263.jpg",
+      "PackagePath": "staticwebassets\\lineup\\field_304x263.jpg"
+    },
+    {
+      "Id": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lineup\\index.html",
+      "PackagePath": "staticwebassets\\lineup\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lineup\\style.css",
+      "PackagePath": "staticwebassets\\lineup\\style.css"
+    },
+    {
+      "Id": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lunch\\index.php",
+      "PackagePath": "staticwebassets\\lunch\\index.php"
+    },
+    {
+      "Id": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lunch\\lunchmenu.php",
+      "PackagePath": "staticwebassets\\lunch\\lunchmenu.php"
+    },
+    {
       "Id": "obj\\Release\\net7.0\\staticwebassets\\msbuild.SeatingChartApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
