@@ -1,0 +1,24 @@
+# Build output
+bin/
+obj/
+publish/
+
+# User files
+*.user
+*.suo
+
+# Runtime files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.json
+*.txt
+
+# VS Code
+.vscode/
+
+# OS-specific
+.DS_Store
+Thumbs.db
