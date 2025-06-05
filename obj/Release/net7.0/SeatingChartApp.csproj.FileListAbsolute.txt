@@ -9,6 +9,8 @@ C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\SeatingChartApp.Assemb
 C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\SeatingChartApp.AssemblyInfo.cs
 C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\SeatingChartApp.csproj.CoreCompileInputs.cache
 C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\SeatingChartApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\SeatingChartApp.RazorAssemblyInfo.cache
+C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\SeatingChartApp.RazorAssemblyInfo.cs
 C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\staticwebassets\msbuild.SeatingChartApp.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\staticwebassets\msbuild.build.SeatingChartApp.props
 C:\Users\nathan.barker\SeatingChartApp\obj\Release\net7.0\staticwebassets\msbuild.buildMultiTargeting.SeatingChartApp.props

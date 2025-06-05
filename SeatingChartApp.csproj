@@ -3,18 +3,24 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <RootNamespace>SeatingChartApp</RootNamespace>
   </PropertyGroup>
 
-<ItemGroup>
-  <Content Include="wwwroot/**">
-    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-  </Content>
-  <Content Include="Shared/**" Exclude="**/*.razor.css">
-    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-  </Content>
-  <Content Include="Pages/_Host.cshtml">
-    <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-  </Content>
-</ItemGroup>
+  <ItemGroup>
+    <Content Include="App.razor" />
+    <Content Include="wwwroot/**">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Shared/**" Exclude="**/*.razor.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Pages/_Host.cshtml">
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 
+  <ItemGroup>
+    <RazorComponent Include="Pages\**\*.razor" />
+    <RazorComponent Include="Shared\**\*.razor" />
+  </ItemGroup>
 </Project>
