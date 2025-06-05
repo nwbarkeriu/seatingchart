@@ -12,6 +12,9 @@
   <Content Include="Shared/**" Exclude="**/*.razor.css">
     <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
   </Content>
+  <Content Include="Pages/_Host.cshtml">
+    <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+  </Content>
 </ItemGroup>
 
 </Project>

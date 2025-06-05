@@ -27,5 +27,6 @@ app.MapControllers();
 app.UseStaticFiles();
 app.UseRouting();
 app.MapBlazorHub();
+app.MapRazorPages();
 app.MapFallbackToPage("/_Host");
 app.Run();
