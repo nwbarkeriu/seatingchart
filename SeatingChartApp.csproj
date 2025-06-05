@@ -6,9 +6,6 @@
   </PropertyGroup>
 
 <ItemGroup>
-  <Content Include="Pages/_Host.cshtml">
-    <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-  </Content>
   <Content Include="css/**">
     <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
   </Content>
