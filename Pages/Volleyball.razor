@@ -1,0 +1,172 @@
+@page "/volleyball"
+@using System.Text.Json
+@inject IJSRuntime JSRuntime
+
+<h1>Volleyball Lineup Generator</h1>
+
+<div class="mb-4">
+    <label>Enter Player Names:</label>
+    @for (int i = 0; i < MaxPlayers; i++)
+    {
+        var index = i;
+        <input type="text"
+               class="border rounded p-1 block mb-1"
+               placeholder="@($"Player {index + 1}")"
+               value="@(Players.Count > index ? Players[index] : string.Empty)"
+               @oninput="e => SetPlayer(index, e.Value?.ToString())" />
+    }
+</div>
+
+<div class="mb-4">
+    <label>Select Set:</label>
+    <select @bind="CurrentSet" class="border rounded p-1">
+        @for (int i = 1; i <= TotalSets; i++)
+        {
+            <option value="@i">Set @i</option>
+        }
+    </select>
+</div>
+
+@if (Lineups.Count >= CurrentSet && Lineups[CurrentSet - 1]?.Length == 6)
+{
+    <div class="grid grid-cols-3 gap-4 border p-4 rounded bg-gray-50">
+        @for (int i = 0; i < 6; i++)
+        {
+            <div>
+                <label>Zone @(i + 1):</label>
+                <select value="@GetLineupValue(CurrentSet - 1, i)"
+                        @onchange="e => SetLineupValue(CurrentSet - 1, i, e.Value?.ToString())"
+                        class="border rounded p-1 w-full">
+                    <option value="">-- Select Player --</option>
+                    @foreach (var player in Players.Where(p => !string.IsNullOrWhiteSpace(p)))
+                    {
+                        <option value="@player">@player</option>
+                    }
+                </select>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="text-red-600">Lineup not initialized yet. Please reload or check initialization.</p>
+}
+
+<div class="mt-4">
+    <button class="bg-blue-500 text-white px-4 py-2 rounded" @onclick="RotateLineup">Rotate</button>
+    <button class="bg-green-500 text-white px-4 py-2 rounded ml-2" @onclick="SaveLineup">Save</button>
+    <button class="bg-yellow-500 text-white px-4 py-2 rounded ml-2" @onclick="LoadLineup">Load</button>
+</div>
+
+@code {
+    private const int MaxPlayers = 12;
+    private const int TotalSets = 3;
+
+    private List<string> Players = new();
+    private List<string[]> Lineups = new();
+    private int CurrentSet = 1;
+
+    protected override void OnInitialized()
+    {
+        EnsurePlayerListSize();
+        EnsureLineupStructure();
+    }
+
+    private void SetPlayer(int index, string? value)
+    {
+        if (index >= 0 && index < MaxPlayers)
+        {
+            if (Players.Count <= index)
+            {
+                EnsurePlayerListSize();
+            }
+            Players[index] = value ?? string.Empty;
+        }
+    }
+
+    private IEnumerable<string> AvailablePlayers(int positionIndex)
+    {
+        var selectedPlayers = Lineups[CurrentSet - 1]
+            .Where((p, idx) => idx != positionIndex && !string.IsNullOrWhiteSpace(p))
+            .ToList();
+
+        return Players.Where(p => !string.IsNullOrWhiteSpace(p) && !selectedPlayers.Contains(p));
+    }
+
+    private string GetLineupValue(int setIndex, int zoneIndex)
+    {
+        if (setIndex < 0 || setIndex >= Lineups.Count) return string.Empty;
+        if (zoneIndex < 0 || zoneIndex >= Lineups[setIndex].Length) return string.Empty;
+        return Lineups[setIndex][zoneIndex] ?? string.Empty;
+    }
+
+    private void SetLineupValue(int setIndex, int zoneIndex, string? value)
+    {
+        if (setIndex < 0 || setIndex >= Lineups.Count) return;
+        if (zoneIndex < 0 || zoneIndex >= Lineups[setIndex].Length) return;
+        Lineups[setIndex][zoneIndex] = value ?? string.Empty;
+    }
+
+    private void RotateLineup()
+    {
+        if (CurrentSet - 1 >= 0 && CurrentSet - 1 < Lineups.Count)
+        {
+            var lineup = Lineups[CurrentSet - 1];
+            if (lineup.All(p => !string.IsNullOrEmpty(p)))
+            {
+                var last = lineup[5];
+                for (int i = 5; i > 0; i--)
+                {
+                    lineup[i] = lineup[i - 1];
+                }
+                lineup[0] = last;
+            }
+        }
+    }
+
+    private void EnsureLineupStructure()
+    {
+        Lineups.Clear();
+        for (int i = 0; i < TotalSets; i++)
+        {
+            Lineups.Add(new string[6]);
+        }
+    }
+
+    private void EnsurePlayerListSize()
+    {
+        while (Players.Count < MaxPlayers)
+        {
+            Players.Add(string.Empty);
+        }
+    }
+
+    private async void SaveLineup()
+    {
+        var json = JsonSerializer.Serialize(Lineups);
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "vb_lineups", json);
+    }
+
+    private async void LoadLineup()
+    {
+        var json = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "vb_lineups");
+        if (!string.IsNullOrEmpty(json))
+        {
+            var loaded = JsonSerializer.Deserialize<List<string[]>>(json);
+            if (loaded?.Count == TotalSets && loaded.All(arr => arr.Length == 6))
+            {
+                Lineups = loaded;
+            }
+            else
+            {
+                EnsureLineupStructure(); // fallback
+            }
+        }
+        else
+        {
+            EnsureLineupStructure(); // first-time
+        }
+
+        EnsurePlayerListSize();
+    }
+}

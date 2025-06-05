@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3l0kNJL+X3NXOEweocBGuGfycLErEBICKgbPawJIyiU=",
+  "Hash": "nPvc3Kd05HOz1zpRppOxRD7Jt383T0vCC0CL1pJXUC0=",
   "Source": "SeatingChartApp",
   "BasePath": "_content/SeatingChartApp",
   "Mode": "Default",
@@ -22,17 +22,13 @@
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\bundle\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "SeatingChartApp#[.{fingerprint}]?.styles.css",
+      "RelativePath": "SeatingChartApp.styles.css",
       "AssetKind": "All",
       "AssetMode": "CurrentProject",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "64rnddiehv",
-      "Integrity": "+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css"
@@ -43,17 +39,13 @@
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "SeatingChartApp#[.{fingerprint}]!.bundle.scp.css",
+      "RelativePath": "SeatingChartApp.bundle.scp.css",
       "AssetKind": "All",
       "AssetMode": "Reference",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "64rnddiehv",
-      "Integrity": "+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css"
@@ -64,17 +56,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/bootstrap/bootstrap.min#[.{fingerprint}]?.css",
+      "RelativePath": "css/bootstrap/bootstrap.min.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "bpk8xqwxhs",
-      "Integrity": "z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css"
@@ -85,17 +73,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/bootstrap/bootstrap.min.css#[.{fingerprint}]?.map",
+      "RelativePath": "css/bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "8inm30yfxf",
-      "Integrity": "gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
@@ -106,17 +90,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/open-iconic/FONT-LICENSE#[.{fingerprint}]?",
+      "RelativePath": "css/open-iconic/FONT-LICENSE",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "48tmkg660f",
-      "Integrity": "jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
@@ -127,17 +107,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min#[.{fingerprint}]?.css",
+      "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "cmapd0fi15",
-      "Integrity": "BJ/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
@@ -148,17 +124,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.eot",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic.eot",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "0uw8dim9nl",
-      "Integrity": "OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh/chSkSvQpc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
@@ -169,17 +141,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.otf",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic.otf",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "wk8x8xm0ah",
-      "Integrity": "sDUtuZAEzWZyv/U1xl/9D3ehyU69JE+FvAcu5HQ+/a0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
@@ -190,17 +158,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.svg",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic.svg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "sjnzgf7e1h",
-      "Integrity": "+P1oQ5jPzOVJGC52E1oxGXIXxxCyMlqy6A9cNxGYzVk=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
@@ -211,17 +175,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.ttf",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic.ttf",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "ll5grcv8wv",
-      "Integrity": "p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
@@ -232,17 +192,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.woff",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic.woff",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "h4d0pazwgy",
-      "Integrity": "cZPqVlRJfSNW0KaQ4+UPOXZ/v/QzXlejRDwUNdZIofI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
@@ -253,17 +209,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/open-iconic/ICON-LICENSE#[.{fingerprint}]?",
+      "RelativePath": "css/open-iconic/ICON-LICENSE",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "4dwjve0o0b",
-      "Integrity": "aF5g/izareSj02F3MPSoTGNbcMBl9nmZKDe04zjU/ss=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\ICON-LICENSE"
@@ -274,17 +226,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/open-iconic/README#[.{fingerprint}]?.md",
+      "RelativePath": "css/open-iconic/README.md",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "5bzwdl5l6x",
-      "Integrity": "waukoLqsiIAw/nXpsKkTHnhImmcPijcBEd2lzqzJNN0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\README.md"
@@ -295,17 +243,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "css/site#[.{fingerprint}]?.css",
+      "RelativePath": "css/site.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "zh9s866nx2",
-      "Integrity": "Fx+c1youNLgejKLBM3S2fD6fcDOSv/D7tNQKm5gws6U=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -316,17 +260,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "favicon#[.{fingerprint}]?.png",
+      "RelativePath": "favicon.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "ifv42okdf2",
-      "Integrity": "4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
@@ -337,17 +277,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "lineup/field_304x263#[.{fingerprint}]?.jpg",
+      "RelativePath": "lineup/field_304x263.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "2w48vmig4d",
-      "Integrity": "woHVvZVp6wtJb7/UgMKz2Zek7LzTOqjFdSXzJAPxJko=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lineup\\field_304x263.jpg"
@@ -358,17 +294,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "lineup/index#[.{fingerprint}]?.html",
+      "RelativePath": "lineup/index.html",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "c3tb5c0o6s",
-      "Integrity": "+MLLT2Za26yGeRTfYSLG7TrpiF1LhQsrQIM8a2P/xtM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lineup\\index.html"
@@ -379,17 +311,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "lineup/style#[.{fingerprint}]?.css",
+      "RelativePath": "lineup/style.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "0ea48j84e0",
-      "Integrity": "mMHpEDp94d4Yc0sY+NpkoOYU3bhmX9bRl09xM512xS0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lineup\\style.css"
@@ -400,17 +328,13 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "lunch/index#[.{fingerprint}]?.php",
+      "RelativePath": "lunch/index.php",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "9yiyb71nvw",
-      "Integrity": "cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lunch\\index.php"
@@ -421,1662 +345,16 @@
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\",
       "BasePath": "_content/SeatingChartApp",
-      "RelativePath": "lunch/lunchmenu#[.{fingerprint}]?.php",
+      "RelativePath": "lunch/lunchmenu.php",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "5ipweew5fc",
-      "Integrity": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lunch\\lunchmenu.php"
-    }
-  ],
-  "Endpoints": [
-    {
-      "Route": "css/bootstrap/bootstrap.min.bpk8xqwxhs.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "162720"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "bpk8xqwxhs"
-        },
-        {
-          "Name": "label",
-          "Value": "css/bootstrap/bootstrap.min.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg="
-        }
-      ]
-    },
-    {
-      "Route": "css/bootstrap/bootstrap.min.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "162720"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg="
-        }
-      ]
-    },
-    {
-      "Route": "css/bootstrap/bootstrap.min.css.8inm30yfxf.map",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "449111"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/plain"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "8inm30yfxf"
-        },
-        {
-          "Name": "label",
-          "Value": "css/bootstrap/bootstrap.min.css.map"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ="
-        }
-      ]
-    },
-    {
-      "Route": "css/bootstrap/bootstrap.min.css.map",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "449111"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/plain"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/FONT-LICENSE",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "4103"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/FONT-LICENSE.48tmkg660f",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "4103"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "48tmkg660f"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/FONT-LICENSE"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/css/open-iconic-bootstrap.min.cmapd0fi15.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "9395"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"BJ/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "cmapd0fi15"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/font/css/open-iconic-bootstrap.min.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-BJ/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "9395"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"BJ/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-BJ/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.0uw8dim9nl.eot",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "28196"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/vnd.ms-fontobject"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh/chSkSvQpc=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "0uw8dim9nl"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/font/fonts/open-iconic.eot"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh/chSkSvQpc="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.eot",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "28196"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/vnd.ms-fontobject"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh/chSkSvQpc=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh/chSkSvQpc="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.h4d0pazwgy.woff",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "14984"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/font-woff"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"cZPqVlRJfSNW0KaQ4+UPOXZ/v/QzXlejRDwUNdZIofI=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "h4d0pazwgy"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/font/fonts/open-iconic.woff"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-cZPqVlRJfSNW0KaQ4+UPOXZ/v/QzXlejRDwUNdZIofI="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.ll5grcv8wv.ttf",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "28028"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/x-font-ttf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "ll5grcv8wv"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/font/fonts/open-iconic.ttf"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.otf",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "20996"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "font/otf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"sDUtuZAEzWZyv/U1xl/9D3ehyU69JE+FvAcu5HQ+/a0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=3600, must-revalidate"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-sDUtuZAEzWZyv/U1xl/9D3ehyU69JE+FvAcu5HQ+/a0="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.sjnzgf7e1h.svg",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "55332"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "image/svg+xml"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+P1oQ5jPzOVJGC52E1oxGXIXxxCyMlqy6A9cNxGYzVk=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "sjnzgf7e1h"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/font/fonts/open-iconic.svg"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-+P1oQ5jPzOVJGC52E1oxGXIXxxCyMlqy6A9cNxGYzVk="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.svg",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "55332"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "image/svg+xml"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+P1oQ5jPzOVJGC52E1oxGXIXxxCyMlqy6A9cNxGYzVk=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=3600, must-revalidate"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-+P1oQ5jPzOVJGC52E1oxGXIXxxCyMlqy6A9cNxGYzVk="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.ttf",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "28028"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/x-font-ttf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.wk8x8xm0ah.otf",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "20996"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "font/otf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"sDUtuZAEzWZyv/U1xl/9D3ehyU69JE+FvAcu5HQ+/a0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "wk8x8xm0ah"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/font/fonts/open-iconic.otf"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-sDUtuZAEzWZyv/U1xl/9D3ehyU69JE+FvAcu5HQ+/a0="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/font/fonts/open-iconic.woff",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "14984"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/font-woff"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"cZPqVlRJfSNW0KaQ4+UPOXZ/v/QzXlejRDwUNdZIofI=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-cZPqVlRJfSNW0KaQ4+UPOXZ/v/QzXlejRDwUNdZIofI="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/ICON-LICENSE",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1093"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"aF5g/izareSj02F3MPSoTGNbcMBl9nmZKDe04zjU/ss=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-aF5g/izareSj02F3MPSoTGNbcMBl9nmZKDe04zjU/ss="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/ICON-LICENSE.4dwjve0o0b",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1093"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"aF5g/izareSj02F3MPSoTGNbcMBl9nmZKDe04zjU/ss=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "4dwjve0o0b"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/ICON-LICENSE"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-aF5g/izareSj02F3MPSoTGNbcMBl9nmZKDe04zjU/ss="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/README.5bzwdl5l6x.md",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\README.md",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3655"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/markdown"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"waukoLqsiIAw/nXpsKkTHnhImmcPijcBEd2lzqzJNN0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "5bzwdl5l6x"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/README.md"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-waukoLqsiIAw/nXpsKkTHnhImmcPijcBEd2lzqzJNN0="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/README.md",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\open-iconic\\README.md",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3655"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/markdown"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"waukoLqsiIAw/nXpsKkTHnhImmcPijcBEd2lzqzJNN0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-waukoLqsiIAw/nXpsKkTHnhImmcPijcBEd2lzqzJNN0="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\site.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "2978"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Fx+c1youNLgejKLBM3S2fD6fcDOSv/D7tNQKm5gws6U=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-Fx+c1youNLgejKLBM3S2fD6fcDOSv/D7tNQKm5gws6U="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.zh9s866nx2.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\site.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "2978"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Fx+c1youNLgejKLBM3S2fD6fcDOSv/D7tNQKm5gws6U=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "zh9s866nx2"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-Fx+c1youNLgejKLBM3S2fD6fcDOSv/D7tNQKm5gws6U="
-        }
-      ]
-    },
-    {
-      "Route": "favicon.ifv42okdf2.png",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\favicon.png",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1148"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "image/png"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "ifv42okdf2"
-        },
-        {
-          "Name": "label",
-          "Value": "favicon.png"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg="
-        }
-      ]
-    },
-    {
-      "Route": "favicon.png",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\favicon.png",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1148"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "image/png"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 28 Apr 2025 17:01:43 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=3600, must-revalidate"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg="
-        }
-      ]
-    },
-    {
-      "Route": "lineup/field_304x263.2w48vmig4d.jpg",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lineup\\field_304x263.jpg",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "7656"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "image/jpeg"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"woHVvZVp6wtJb7/UgMKz2Zek7LzTOqjFdSXzJAPxJko=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 03 Jun 2024 13:12:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "2w48vmig4d"
-        },
-        {
-          "Name": "label",
-          "Value": "lineup/field_304x263.jpg"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-woHVvZVp6wtJb7/UgMKz2Zek7LzTOqjFdSXzJAPxJko="
-        }
-      ]
-    },
-    {
-      "Route": "lineup/field_304x263.jpg",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lineup\\field_304x263.jpg",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "7656"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "image/jpeg"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"woHVvZVp6wtJb7/UgMKz2Zek7LzTOqjFdSXzJAPxJko=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 03 Jun 2024 13:12:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=3600, must-revalidate"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-woHVvZVp6wtJb7/UgMKz2Zek7LzTOqjFdSXzJAPxJko="
-        }
-      ]
-    },
-    {
-      "Route": "lineup/index.c3tb5c0o6s.html",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lineup\\index.html",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "9986"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/html"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+MLLT2Za26yGeRTfYSLG7TrpiF1LhQsrQIM8a2P/xtM=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 12:13:44 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "c3tb5c0o6s"
-        },
-        {
-          "Name": "label",
-          "Value": "lineup/index.html"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-+MLLT2Za26yGeRTfYSLG7TrpiF1LhQsrQIM8a2P/xtM="
-        }
-      ]
-    },
-    {
-      "Route": "lineup/index.html",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lineup\\index.html",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "9986"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/html"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+MLLT2Za26yGeRTfYSLG7TrpiF1LhQsrQIM8a2P/xtM=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 12:13:44 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-+MLLT2Za26yGeRTfYSLG7TrpiF1LhQsrQIM8a2P/xtM="
-        }
-      ]
-    },
-    {
-      "Route": "lineup/style.0ea48j84e0.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lineup\\style.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "2746"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"mMHpEDp94d4Yc0sY+NpkoOYU3bhmX9bRl09xM512xS0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 12:14:09 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "0ea48j84e0"
-        },
-        {
-          "Name": "label",
-          "Value": "lineup/style.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-mMHpEDp94d4Yc0sY+NpkoOYU3bhmX9bRl09xM512xS0="
-        }
-      ]
-    },
-    {
-      "Route": "lineup/style.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lineup\\style.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "2746"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"mMHpEDp94d4Yc0sY+NpkoOYU3bhmX9bRl09xM512xS0=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 30 Apr 2025 12:14:09 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-mMHpEDp94d4Yc0sY+NpkoOYU3bhmX9bRl09xM512xS0="
-        }
-      ]
-    },
-    {
-      "Route": "lunch/index.9yiyb71nvw.php",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lunch\\index.php",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "5814"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 19:24:14 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "9yiyb71nvw"
-        },
-        {
-          "Name": "label",
-          "Value": "lunch/index.php"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk="
-        }
-      ]
-    },
-    {
-      "Route": "lunch/index.php",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lunch\\index.php",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "5814"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 19:24:14 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-cctyWGh2WUp1okSyynLkt6DMbAF3vpDQnvqzL1q2udk="
-        }
-      ]
-    },
-    {
-      "Route": "lunch/lunchmenu.5ipweew5fc.php",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lunch\\lunchmenu.php",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "0"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 17:02:15 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "5ipweew5fc"
-        },
-        {
-          "Name": "label",
-          "Value": "lunch/lunchmenu.php"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
-        }
-      ]
-    },
-    {
-      "Route": "lunch/lunchmenu.php",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lunch\\lunchmenu.php",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "0"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 17:02:15 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
-        }
-      ]
-    },
-    {
-      "Route": "SeatingChartApp.64rnddiehv.bundle.scp.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3021"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 29 Apr 2025 17:21:31 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "64rnddiehv"
-        },
-        {
-          "Name": "label",
-          "Value": "SeatingChartApp.bundle.scp.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc="
-        }
-      ]
-    },
-    {
-      "Route": "SeatingChartApp.64rnddiehv.styles.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3021"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 29 Apr 2025 17:21:31 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "64rnddiehv"
-        },
-        {
-          "Name": "label",
-          "Value": "SeatingChartApp.styles.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc="
-        }
-      ]
-    },
-    {
-      "Route": "SeatingChartApp.bundle.scp.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3021"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 29 Apr 2025 17:21:31 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc="
-        }
-      ]
-    },
-    {
-      "Route": "SeatingChartApp.styles.css",
-      "AssetFile": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\bundle\\SeatingChartApp.styles.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3021"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 29 Apr 2025 17:21:31 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-+vWjVuYLaYrnmnb8CKP7vEEfAMLchWF2eUdzJacE8qc="
-        }
-      ]
     }
   ]
 }

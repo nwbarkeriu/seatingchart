@@ -3,15 +3,16 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-  <Content Update="Pages/_Host.cshtml">
+<ItemGroup>
+  <Content Include="Pages/_Host.cshtml">
     <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+  <Content Include="css/**">
+    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
   </Content>
 </ItemGroup>
 
-
 </Project>
+

@@ -1,58 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Baseball/Softball Game Sheet</title>
-    <link rel="stylesheet" href="style.css" type="text/css" media="all" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Baseball/Softball Game Sheet</title>
+  <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <h1>Baseball Game Sheet</h1>
-    <div id="main">
-
-        <div id="fieldSetup">
-          <h3>Choose a field setup:</h3>
-          <input type="radio" id="setup9" name="fieldSetup" value="9"> 9 players<br>
-          <input type="radio" id="setup10" name="fieldSetup" value="10"> 10 players<br>
-          <input type="radio" id="setup11" name="fieldSetup" value="11"> 11 players<br>
-          <input type="radio" id="setup12" name="fieldSetup" value="12" checked> 12 players<br>
-        </div>
-        <form id="lineupForm" style="display: none;">
-          <ol id="d"></ol>
-        </form>
-        <div id="positionsContainer"></div>
-        <div id="inningsContainer">
-          <div id="inning1" class="inning">
-            <h4>Inning 1</h4>
-            <div class="positionsContainer"></div>
-          </div>
-          <div id="inning2" class="inning">
-            <h4>Inning 2</h4>
-            <div class="positionsContainer"></div>
-          </div>
-          <div id="inning3" class="inning">
-            <h4>Inning 3</h4>
-            <div class="positionsContainer"></div>
-          </div>
-          <div id="inning4" class="inning">
-            <h4>Inning 4</h4>
-            <div class="positionsContainer"></div>
-          </div>
-          <div id="inning5" class="inning">
-            <h4>Inning 5</h4>
-            <div class="positionsContainer"></div>
-          </div>
-          <div id="inning6" class="inning">
-            <h4>Inning 6</h4>
-            <div class="positionsContainer"></div>
-          </div>
-        </div>
-        <p><a id="clear">Clear Everything</a></p>
-    </div>
+<h1>Baseball Game Sheet</h1>
+<div id="main">
+  <div id="topRow" style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between;">
+    <div id="teamManager">
+      <h3>Team Management</h3>
+      <select id="teamSelector" onchange="loadSelectedTeam()">
+        <option value="">-- Select Team --</option>
+      </select>
+      <div id="teamMetadata" style="margin-top: 1rem; display: none;">
+        <label>Coach:</label>
+        <input type="text" id="coachName" placeholder="Coach Name">
       
+        <label>Age Group:</label>
+        <input type="text" id="ageGroup" placeholder="Age Group">
+      
+        <label>Home Field:</label>
+        <input type="text" id="homeField" placeholder="Home Field">
+      
+        <!-- <a href="#" onclick="saveTeam(); return false;" style="color: #007bff; text-decoration: none;">💾 Save</a> -->
+      </div>
+      <div class="team-actions">
+        <button onclick="showNewTeamForm()">+ New Team</button>
+        <a href="#" onclick="saveTeam(); return false;" class="save-link" id="saveTeamLink" style="display: none;">💾 Save</a>
+      </div>      
+      <div id="newTeamForm" style="margin-top: 1rem; display: none;">
+        <input type="text" id="teamName" placeholder="Team Name" />
+        <input type="text" id="coachName" placeholder="Coach Name">
+        <input type="text" id="ageGroup" placeholder="Age Group">
+        <input type="text" id="homeField" placeholder="Home Field">
+        <button onclick="saveTeam()">Save Team</button>
+      </div>
+    </div>
 
+    <div id="gameInfo">
+      <h3>Game Information</h3>
+      <label for="gameDate">Date:</label>
+      <input type="date" id="gameDate" value="">
+      <br>
+      <label for="gameTime">Time:</label>
+      <input type="time" id="gameTime" value="">
+      <br>
+      <label for="gameLocation">Location:</label>
+      <input type="text" id="gameLocation" placeholder="Game Location">
+      <br>
+      <label for="gameOpponent">Opponent:</label>
+      <input type="text" id="gameOpponent" placeholder="Opponent Team">
+    </div>
+
+    <div id="fieldSetup">
+      <h3>Choose a field setup:</h3>
+      <input type="radio" id="setup9" name="fieldSetup" value="9" checked> 9 players<br>
+      <input type="radio" id="setup10" name="fieldSetup" value="10"> 10 players<br>
+      <input type="radio" id="setup11" name="fieldSetup" value="11"> 11 players<br>
+      <input type="radio" id="setup12" name="fieldSetup" value="12"> 12 players<br>
+    </div>
+
+    <form id="lineupForm">
+      <h3>Game Lineup</h3>
+      <ol id="d"></ol>
+      <button type="button" onclick="addPlayer()">+ Add Player</button>
+    </form>
+  </div>
+
+  <div id="playerRoster">
+    <h3 style="display: flex; justify-content: space-between; align-items: center;">
+      <span>Player Roster <span id="activeTeamName" style="font-weight: normal; font-style: italic; color: #666;"></span></span>
+      <span id="toggleRoster" style="cursor: pointer; font-size: 1.2em;">▾</span>
+    </h3>
+    <table id="playerTable">
+      <thead>
+        <tr>
+          <th>First</th><th>Last</th><th>Home #</th><th>Away #</th>
+          <th>Bats</th><th>Fields</th><th>Primary</th><th>Secondary</th><th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button onclick="addPlayerRow()">Add Player</button>
+  </div>
+
+  <div id="positionsContainer"></div>
+  <div id="inningsContainer">
+    <div class="print-page">
+        <div id="inning1" class="inning"><h4>Inning 1</h4><div class="positionsContainer"></div></div>
+        <div id="inning2" class="inning"><h4>Inning 2</h4><div class="positionsContainer"></div></div>
+        <div id="inning3" class="inning"><h4>Inning 3</h4><div class="positionsContainer"></div></div>
+    </div>
+    <div class="print-page">
+        <div id="inning4" class="inning"><h4>Inning 4</h4><div class="positionsContainer"></div></div>
+        <div id="inning5" class="inning"><h4>Inning 5</h4><div class="positionsContainer"></div></div>
+        <div id="inning6" class="inning"><h4>Inning 6</h4><div class="positionsContainer"></div></div>
+    </div>
+  </div>
+</div>
+  <!-- Buttons are now outside #main -->
+  <div id="buttonContainer" style="text-align: center; margin-top: 1rem;">
+    <button onclick="saveLineupToLocalStorage()">Save Lineup</button>
+    <button onclick="loadLineupFromLocalStorage()">Load Lineup</button>
+    <button onclick="localStorage.clear(); location.reload();">Clear Saved</button>
+  </div>
+  
+
+<!-- SCRIPT SECTION -->
 <script>
-    let selectedPlayers = {};
+let teams = JSON.parse(localStorage.getItem('teams') || '{}');
+let selectedPlayers = {};
+
+    function saveTeam() {
+        // Try to get from input first (new team), otherwise use selected team
+        const inputTeamName = $('#teamName').val().trim();
+        const selectedTeamName = $('#teamSelector').val();
+        const teamName = inputTeamName || selectedTeamName;
+
+        if (!teamName) {
+            alert('Enter a team name or select a team to update.');
+            return;
+        }
+
+        const players = [];
+        $('#playerTable tbody tr').each(function () {
+            const player = {};
+            $(this).find('input, select').each(function () {
+            const key = $(this).attr('name');
+            player[key] = $(this).val();
+            });
+            players.push(player);
+        });
+
+        // Collect metadata fields
+        const coach = $('#coachName').val();
+        const ageGroup = $('#ageGroup').val();
+        const homeField = $('#homeField').val();
+
+        teams[teamName] = {
+            players,
+            coach,
+            ageGroup,
+            homeField
+        };
+
+        localStorage.setItem('teams', JSON.stringify(teams));
+        $('#activeTeamName').text(`– ${teamName}`);
+        loadTeams();
+        alert(`Saved team: ${teamName}`);
+    }
+
+    function loadTeams() {
+        $('#teamSelector').html('<option value="">-- Select Team --</option>');
+        Object.keys(teams).forEach(team => {
+            $('#teamSelector').append(`<option value="${team}">${team}</option>`);
+        });
+    }
+    function loadSelectedTeam() {
+        const team = $('#teamSelector').val();
+        if (!team) return;
+
+        const teamData = teams[team];
+        const players = teamData?.players || [];
+
+        $('#playerTable tbody').empty();
+
+        players.forEach(p => {
+            const row = createPlayerRow(p);
+            $('#playerTable tbody').append(row);
+        });
+
+        // ✅ Populate editable inputs
+        $('#coachName').val(teamData.coach || '');
+        $('#ageGroup').val(teamData.ageGroup || '');
+        $('#homeField').val(teamData.homeField || '');
+        $('#teamMetadata').show();
+
+        $('#activeTeamName').text(`– ${team}`);
+        $('#newTeamForm').hide();
+        $('#saveTeamLink').show();
+
+        // ✅ Ensure there are exactly 9 lineup boxes
+        const currentCount = $('#d li').length;
+        // console.log(currentCount);
+        const requiredCount = 10;
+            for (let i = currentCount; i < requiredCount; i++) {
+                addPlayer();
+                
+            }
+
+        // ✅ Reuse existing lineup inputs, don’t change how many boxes there are
+        const names = players.map(p => `${p.first || ''} ${p.last || ''}`.trim()).filter(n => n);
+        $('#d li input').each(function (i) {
+            $(this).val(names[i] || '');
+            // console.log(`Setting input ${i} to: ${names[i] || ''}`);
+        });
+
+        updateDropdowns();
+    }
+    function addPlayerRow(player = {}) {
+        const row = createPlayerRow(player);
+        $('#playerTable tbody').append(row);
+    }
+
+    function createPlayerRow(player = {}) {
+        return `
+        <tr>
+            <td><input name="first" value="${player.first || ''}"/></td>
+            <td><input name="last" value="${player.last || ''}"/></td>
+            <td><input name="home" value="${player.home || ''}"/></td>
+            <td><input name="away" value="${player.away || ''}"/></td>
+            <td>
+                <select name="bats">
+                    <option value="R" ${player.bats === 'R' ? 'selected' : ''}>R</option>
+                    <option value="L" ${player.bats === 'L' ? 'selected' : ''}>L</option>
+                </select>
+            </td>
+            <td>
+                <select name="fields">
+                    <option value="R" ${player.fields === 'R' ? 'selected' : ''}>R</option>
+                    <option value="L" ${player.fields === 'L' ? 'selected' : ''}>L</option>
+                </select>
+            </td>
+            <td><input name="primary" value="${player.primary || ''}"/></td>
+            <td><input name="secondary" value="${player.secondary || ''}"/></td>
+            <td><button type="button" onclick="$(this).closest('tr').remove();">✖</button></td>
+        </tr>`;
+    }
 
     function addPlayer(name = '') {
         var playersDiv = document.getElementById('d');
@@ -62,72 +239,13 @@
         playersDiv.appendChild(newPlayerDiv);
     }
 
-    function updateDropdowns() {
-        var opt = '\n<option> </option>';
-        let playerNames = [];
-
-        $('#d li input').each(function() {
-            if ($(this).val() != '') {
-                opt += '\n<option>' + $(this).val() + '</option>';
-                playerNames.push($(this).val());
-            }
-        });
-
-        $('.inning').each(function() {
-            let inningId = $(this).attr('id');
-            if (!selectedPlayers[inningId]) {
-                selectedPlayers[inningId] = {};
-            }
-
-            $(this).find('.positions select').each(function() {
-                let currentSelection = $(this).val();
-                let dropdownOpt = opt;
-                for (let player of Object.values(selectedPlayers[inningId])) {
-                    if (player !== currentSelection) {
-                        dropdownOpt = dropdownOpt.replace('\n<option>' + player + '</option>', '');
-                    }
-                }
-                $(this).html(dropdownOpt);
-                $(this).val(currentSelection);
-            });
-        });
-
-        updateSitting();
+    function initializeLineup(count = 9) {
+        $('#d').empty();
+        for (let i = 0; i < count; i++) {
+            addPlayer();
+        }
     }
-
-
-        function updateSitting() {
-        $('.inning').each(function() {
-            let inningId = $(this).attr('id');
-            if (!selectedPlayers[inningId]) {
-                selectedPlayers[inningId] = {};
-            }
-
-            $(this).find('.positions').each(function() {
-                var sitting = [];
-                $('#d li input').each(function() {
-                    if ($(this).val() != '') {
-                        sitting.push($(this).val());
-                    }
-                });
-
-                $(this).find('select').each(function() {
-                    var selectedValue = $(this).val();
-                    if (selectedValue) {
-                        var index = sitting.indexOf(selectedValue);
-                        if (index !== -1) {
-                            sitting.splice(index, 1);
-                        }
-                    }
-                });
-                $(this).find('.sitting').html(sitting.join('<br />'));
-            });
-        });
-    }
-
-
-
-        function updateFieldSetup(setup) {
+    function updateFieldSetup(setup) {
         var players = [];
         $('#d li input').each(function() {
             players.push($(this).val());
@@ -139,12 +257,6 @@
             currentSelections[position] = $(this).val();
         });
 
-        var playersDiv = document.getElementById('d');
-        playersDiv.innerHTML = '';
-
-        for (let i = 1; i <= 12; i++) {
-            addPlayer(players[i - 1] || '');
-        }
 
         for (let inning = 1; inning <= 6; inning++) {
             var positionsHTML = `
@@ -161,8 +273,7 @@
                     ${setup >= 10 ? '<select class="position leftcenter"><option> </option></select>' : ''}
                     ${setup >= 10 ? '<select class="position rightcenter"><option> </option></select>' : ''}
                     ${setup >= 12 ? '<select class="position over"><option> </option></select>' : ''}
-                    <p>sitting:<br />
-                    <span class="sitting"></span></p>
+                    <p>sitting:<br /><span class="sitting"></span></p>
                 </div>
             `;
             document.querySelector(`#inning${inning} .positionsContainer`).innerHTML = positionsHTML;
@@ -185,14 +296,79 @@
         updateDropdowns();
     }
 
-    function saveLineupToLocalStorage() {
+    function updateDropdowns() {
+        const playerNames = [];
+        $('#d li input').each(function () {
+            const name = $(this).val().trim();
+            if (name) playerNames.push(name);
+        });
+
+        $('.inning').each(function () {
+            $(this).find('.positions select').each(function () {
+                const currentSelect = $(this);
+                const currentPosition = currentSelect.attr('class').split(' ')[1];
+                const currentSelection = currentSelect.val();
+                
+                // Gather all current selections in this .positions container
+                const taken = [];
+                currentSelect.closest('.positions').find('select').each(function () {
+                    const val = $(this).val();
+                    if (val && val !== currentSelection) {
+                        taken.push(val);
+                    }
+                });
+
+                const availableOptions = ['<option> </option>'];
+                for (const name of playerNames) {
+                    if (!taken.includes(name) || name === currentSelection) {
+                        availableOptions.push(`<option${name === currentSelection ? ' selected' : ''}>${name}</option>`);
+                    }
+                }
+
+                currentSelect.html(availableOptions.join('\n'));
+            });
+        });
+
+        updateSitting();
+    }
+
+
+function showNewTeamForm() {
+    document.getElementById('newTeamForm').style.display = 'block';
+    document.getElementById('teamMetadata').style.display = 'none';
+    document.getElementById('teamSelector').value = '';
+    $('#saveTeamLink').hide(); // <-- hide save link for new team
+}
+
+
+function updateSitting() {
+    $('.inning').each(function () {
+        let inningId = $(this).attr('id');
+        if (!selectedPlayers[inningId]) selectedPlayers[inningId] = {};
+
+        $(this).find('.positions').each(function () {
+            var sitting = [];
+            $('#d li input').each(function () {
+                if ($(this).val() != '') sitting.push($(this).val());
+            });
+
+            $(this).find('select').each(function () {
+                var sel = $(this).val();
+                if (sel) sitting = sitting.filter(p => p !== sel);
+            });
+
+            $(this).find('.sitting').html(sitting.join('<br />'));
+        });
+    });
+}
+
+function saveLineupToLocalStorage() {
     const players = [];
     $('#d li input').each(function () {
         players.push($(this).val());
     });
 
     const layout = {};
-
     $('.inning').each(function () {
         const inningId = $(this).attr('id');
         layout[inningId] = {};
@@ -206,51 +382,67 @@
     localStorage.setItem('lineup_positions', JSON.stringify(layout));
 }
 
-    function loadLineupFromLocalStorage() {
-        const savedPlayers = JSON.parse(localStorage.getItem('lineup_players') || '[]');
-        const savedPositions = JSON.parse(localStorage.getItem('lineup_positions') || '{}');
+function loadLineupFromLocalStorage() {
+    const savedPlayers = JSON.parse(localStorage.getItem('lineup_players') || '[]');
+    const savedPositions = JSON.parse(localStorage.getItem('lineup_positions') || '{}');
 
-        if (savedPlayers.length > 0) {
-            updateFieldSetup(savedPlayers.length); // sets up form fields
-            $('#d li input').each(function (index) {
-                $(this).val(savedPlayers[index] || '');
-            });
-        }
-
-        // Delay position setting until the layout has rendered
-        setTimeout(() => {
-            for (let inning in savedPositions) {
-                for (let pos in savedPositions[inning]) {
-                    $(`#${inning} .positions select.${pos}`).val(savedPositions[inning][pos]);
-                    if (!selectedPlayers[inning]) selectedPlayers[inning] = {};
-                    selectedPlayers[inning][pos] = savedPositions[inning][pos];
-                }
-            }
-            updateDropdowns(); // Refresh dropdowns to reflect updates
-        }, 100);
+    if (savedPlayers.length > 0) {
+        updateFieldSetup(savedPlayers.length);
+        $('#d li input').each(function (index) {
+            $(this).val(savedPlayers[index] || '');
+        });
     }
 
-    $(document).ready(function() {
-        $('#clear').click(function() {
-            $('#d li input').val('');
-            $('.positions select').html('<option> </option>');
-            $('.positions select').addClass('empty');
-            $('.sitting').html('');
-            selectedPlayers = {};
-        });
-        $('input[name="fieldSetup"]').change(function() {
-            updateFieldSetup(this.value);
-            updateDropdowns(); // Call updateDropdowns when the field layout changes
-        });
-        // Initialize the field setup based on the default value
-        updateFieldSetup($('input[name="fieldSetup"]:checked').val());
-        loadLineupFromLocalStorage();
+    setTimeout(() => {
+        for (let inning in savedPositions) {
+            for (let pos in savedPositions[inning]) {
+                $(`#${inning} .positions select.${pos}`).val(savedPositions[inning][pos]);
+                if (!selectedPlayers[inning]) selectedPlayers[inning] = {};
+                selectedPlayers[inning][pos] = savedPositions[inning][pos];
+            }
+        }
+        updateDropdowns();
+    }, 100);
+}
+
+    function showNewTeamForm() {
+    document.getElementById('newTeamForm').style.display = 'block';
+    document.getElementById('teamMetadata').style.display = 'none';
+    document.getElementById('teamSelector').value = '';
+    }
+
+// INIT
+$(document).ready(function () {
+    $('#clear').click(function () {
+        $('#d li input').val('');
+        $('.positions select').html('<option> </option>');
+        $('.positions select').addClass('empty');
+        $('.sitting').html('');
+        selectedPlayers = {};
     });
+
+    $('input[name="fieldSetup"]').change(function () {
+        updateFieldSetup(this.value);
+    });
+
+    $('#toggleRoster').click(function () {
+        $('#playerTable, #playerRoster button').toggle();
+        const isVisible = $('#playerTable').is(':visible');
+        $(this).text(isVisible ? '▾' : '▴');
+    });
+
+    $('#teamName').on('input', function () {
+        const name = $(this).val();
+        if ($('#teamSelector').val() === '') {
+            $('#activeTeamName').text(name ? `– ${name}` : '');
+        }
+    });
+
+    loadTeams();
+    updateFieldSetup($('input[name="fieldSetup"]:checked').val());
+    loadLineupFromLocalStorage();
+    initializeLineup();
+});
 </script>
-<button onclick="saveLineupToLocalStorage()">Save Lineup</button>
-<button onclick="loadLineupFromLocalStorage()">Load Lineup</button>
-<button onclick="localStorage.clear(); location.reload();">Clear Saved</button>
-
-
 </body>
 </html>

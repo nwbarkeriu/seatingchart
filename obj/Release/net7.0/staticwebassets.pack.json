@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "C:\\Users\\nathan.barker\\SeatingChartApp\\obj\\Release\\net7.0\\scopedcss\\projectbundle\\SeatingChartApp.bundle.scp.css",
-      "PackagePath": "staticwebassets\\SeatingChartApp.64rnddiehv.bundle.scp.css"
+      "PackagePath": "staticwebassets\\SeatingChartApp.bundle.scp.css"
     },
     {
       "Id": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
@@ -75,10 +75,6 @@
     {
       "Id": "C:\\Users\\nathan.barker\\SeatingChartApp\\wwwroot\\lunch\\lunchmenu.php",
       "PackagePath": "staticwebassets\\lunch\\lunchmenu.php"
-    },
-    {
-      "Id": "obj\\Release\\net7.0\\staticwebassets\\msbuild.SeatingChartApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
-      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj\\Release\\net7.0\\staticwebassets\\msbuild.SeatingChartApp.Microsoft.AspNetCore.StaticWebAssets.props",
