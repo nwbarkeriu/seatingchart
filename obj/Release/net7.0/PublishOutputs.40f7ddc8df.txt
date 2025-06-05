@@ -1,7 +1,0 @@
-C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\SeatingChartApp.exe
-C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\appsettings.Development.json
-C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\appsettings.json
-C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\SeatingChartApp.dll
-C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\SeatingChartApp.deps.json
-C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\SeatingChartApp.runtimeconfig.json
-C:\Users\nathan.barker\SeatingChartApp\bin\Release\net7.0\publish\SeatingChartApp.pdb
