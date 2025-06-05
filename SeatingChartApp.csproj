@@ -6,4 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+  <Content Update="Pages/_Host.cshtml">
+    <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+
+
 </Project>
