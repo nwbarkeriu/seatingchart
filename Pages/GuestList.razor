@@ -2,9 +2,8 @@
 @using SeatingChartApp.Data
 @using SeatingChartApp.Models
 
-
-
-<h3>Guest List</h3>
+<h3>Guest List (DEBUG: v2)</h3>
+<p style="color: red">If you see “DEBUG: v2” above, you’re running the new file.</p>
 
 <div>
     @if (!string.IsNullOrEmpty(errorMessage))
@@ -15,8 +14,13 @@
     }
     <label>Paste Guest Names (one per line):</label><br />
     <textarea @bind="guestInput" rows="10" cols="50"></textarea><br /><br />
-    <button class="btn btn-secondary" @onclick="LoadSampleGuests">Load Sample Guests</button>
-    <button class="btn btn-primary" @onclick="ProcessGuestList">Import Guests</button>
+
+    <button class="btn btn-secondary" @onclick="LoadSampleGuests">
+        Load Sample Guests
+    </button>
+    <button class="btn btn-primary" @onclick="ProcessGuestList">
+        Import Guests
+    </button>
 </div>
 
 @if (guests.Any())
@@ -35,7 +39,7 @@
 
 @code {
     private string? guestInput;
-    private List<Guest> guests = new List<Guest>();
+    private List<Guest> guests = new();
     private string? errorMessage = null;
 
     private void ProcessGuestList()
@@ -46,19 +50,30 @@
             guests.Clear();
             return;
         }
+
         errorMessage = null; // Clear any previous errors
-        var lines = guestInput.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        var lines = guestInput
+            .Split('\n', StringSplitOptions.RemoveEmptyEntries)
+            .Select(line => line.Trim())
+            .ToList();
+
         guests = lines
-            .Select((line, index) => new Guest
+            .Select((name, index) => new Guest
             {
                 Id = index,
-                Name = line.Trim()
+                Name = name
             })
             .ToList();
+
         DummyGuestService.Guests = guests;
     }
+
     private void LoadSampleGuests()
     {
+
+        // DEBUG: immediately show a message
+        errorMessage = "LoadSampleGuests() was invoked!";
+        // 172 sample names (you can add or remove as needed)
         var sampleGuests = new List<string>
         {
             "Alice Johnson", "Bob Smith", "Charlie Brown", "David Lee", "Evelyn Clark",
@@ -66,22 +81,33 @@
             "Kevin Ford", "Laura Green", "Michael Hall", "Nina Irving", "Oscar Jenkins",
             "Paula King", "Quincy Lewis", "Rachel Martinez", "Steve Nelson", "Tina Owens",
             "Uma Patel", "Victor Quinn", "Wendy Roberts", "Xavier Scott", "Yvonne Turner",
-            "Zachary Underwood",
-            // keep adding until you reach 172 names...
-            "Aaron Wallace", "Bella Young", "Caleb Zimmerman", "Diana Abbott", "Eli Barnes",
-            "Faith Brooks", "Gavin Campbell", "Hailey Diaz", "Isaac Edwards", "Jocelyn Foster",
-            "Kyle Garcia", "Lila Harris", "Mason Ingram", "Nora Jacobs", "Owen Kim",
-            "Penelope Long", "Quentin Moore", "Ruby Novak", "Sean Ortega", "Taylor Price",
-            "Ulysses Reed", "Vanessa Shaw", "Wyatt Thomas", "Xena Vaughn", "Yosef Wilson",
-            "Zoey Alexander",
-            "Aiden Bennett", "Brooke Collins", "Connor Dawson", "Delilah Ellis", "Evan Flores",
-            "Gabriella Gomez", "Hunter Hamilton", "Isla Johnson", "James Knight", "Kinsley Lopez",
-            "Liam Mitchell", "Madeline Nichols", "Nathan Ortiz", "Olivia Parker", "Peyton Reed",
-            "Quinn Sanchez", "Ryan Taylor", "Sophia Vasquez", "Thomas West", "Uriah Young",
-            "Victoria Zane", "William Allen", "Ximena Brooks", "Yahir Carter", "Zara Diaz",
-            // + about 100 more names to reach 172 total
+            "Zachary Underwood", "Aaron Wallace", "Bella Young", "Caleb Zimmerman", 
+            "Diana Abbott", "Eli Barnes", "Faith Brooks", "Gavin Campbell", "Hailey Diaz", 
+            "Isaac Edwards", "Jocelyn Foster", "Kyle Garcia", "Lila Harris", "Mason Ingram", 
+            "Nora Jacobs", "Owen Kim", "Penelope Long", "Quentin Moore", "Ruby Novak", 
+            "Sean Ortega", "Taylor Price", "Ulysses Reed", "Vanessa Shaw", "Wyatt Thomas", 
+            "Xena Vaughn", "Yosef Wilson", "Zoey Alexander", "Aiden Bennett", "Brooke Collins", 
+            "Connor Dawson", "Delilah Ellis", "Evan Flores", "Gabriella Gomez", "Hunter Hamilton", 
+            "Isla Johnson", "James Knight", "Kinsley Lopez", "Liam Mitchell", "Madeline Nichols", 
+            "Nathan Ortiz", "Olivia Parker", "Peyton Reed", "Quinn Sanchez", "Ryan Taylor", 
+            "Sophia Vasquez", "Thomas West", "Uriah Young", "Victoria Zane", "William Allen", 
+            "Ximena Brooks", "Yahir Carter", "Zara Diaz",
+            // …add roughly 100 more names until you reach 172 total…
         };
+
+        // 1) Fill the textarea
         guestInput = string.Join("\n", sampleGuests);
-        errorMessage = null; // Clear any previous error
+        <!-- errorMessage = null; -->
+
+        // 2) Immediately populate the 'guests' list (so the UI shows them right away)
+        guests = sampleGuests
+            .Select((name, index) => new Guest
+            {
+                Id = index,
+                Name = name
+            })
+            .ToList();
+
+        DummyGuestService.Guests = guests;
     }
 }
