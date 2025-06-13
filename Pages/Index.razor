@@ -1,19 +1,159 @@
 ﻿@page "/"
 
-<h1 class="text-center mt-5">Welcome to SeatingChartApp!</h1>
+<div class="container py-5">
+    <!-- 1. Header + Intro -->
+    <div class="text-center mb-5">
+        <h1 class="display-4">Welcome to the Barker Family Hub!</h1>
+        <p class="lead">
+            Your one-stop place for Family Events, Photos, Meals, and more.
+        </p>
+    </div>
 
-<p class="lead text-center">Plan your event seating quickly and easily.</p>
+    <!-- 2. Main “Family Modules” Grid -->
+    <div class="row g-4">
+        <!-- Family Events Calendar -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/calendar">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-calendar-event fs-1 mb-3"></i>
+                    <h5 class="card-title">Family Events</h5>
+                    <p class="card-text">Birthdays, Anniversaries, & Public Events</p>
+                </div>
+            </NavLink>
+        </div>
 
-<div class="d-flex justify-content-center mt-4 gap-3">
-    <NavLink class="btn btn-primary btn-lg" href="/guestlist">
-        Get Started - Add Guest List
-    </NavLink>
+        <!-- Photo Gallery -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/gallery">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-image fs-1 mb-3"></i>
+                    <h5 class="card-title">Photo Gallery</h5>
+                    <p class="card-text">Recent Family Moments</p>
+                </div>
+            </NavLink>
+        </div>
 
-    <NavLink class="btn btn-success btn-lg" href="/seatingplan">
-        View Seating Plan
-    </NavLink>
+        <!-- Family Blog / News -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/blog">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-journal-text fs-1 mb-3"></i>
+                    <h5 class="card-title">Family Blog</h5>
+                    <p class="card-text">Stories & Announcements</p>
+                </div>
+            </NavLink>
+        </div>
 
-    <NavLink class="btn btn-primary btn-lg" href="/lunch">
-        Lunch Menu
-    </NavLink>
+        <!-- Chore Chart / To-Do -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/chores">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-list-check fs-1 mb-3"></i>
+                    <h5 class="card-title">Chore Chart</h5>
+                    <p class="card-text">Assign & Track Tasks</p>
+                </div>
+            </NavLink>
+        </div>
+
+        <!-- Meal Planner / Recipes -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/meals">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-egg-fried fs-1 mb-3"></i>
+                    <h5 class="card-title">Meal Planner</h5>
+                    <p class="card-text">Plan Meals & Shopping List</p>
+                </div>
+            </NavLink>
+        </div>
+
+        <!-- Birthday / Anniversary Countdown -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/countdown">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-clock-history fs-1 mb-3"></i>
+                    <h5 class="card-title">Countdown</h5>
+                    <p class="card-text">Birthdays & Anniversaries</p>
+                </div>
+            </NavLink>
+        </div>
+
+        <!-- Quick Links / Resources -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/links">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-link-45deg fs-1 mb-3"></i>
+                    <h5 class="card-title">Quick Links</h5>
+                    <p class="card-text">School, Work, Doctor & More</p>
+                </div>
+            </NavLink>
+        </div>
+
+        <!-- Emergency Contacts -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/contacts">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-telephone-inbound fs-1 mb-3"></i>
+                    <h5 class="card-title">Emergency Contacts</h5>
+                    <p class="card-text">Doctors, Sitters, Family</p>
+                </div>
+            </NavLink>
+        </div>
+
+        <!-- Weather & School Closures -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/weather">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-cloud-sun-rain fs-1 mb-3"></i>
+                    <h5 class="card-title">Weather</h5>
+                    <p class="card-text">Forecast & Closures</p>
+                </div>
+            </NavLink>
+        </div>
+
+        <!-- Bucket List / Goals -->
+        <div class="col-12 col-md-4">
+            <NavLink class="card h-100 text-center text-decoration-none" href="/bucket">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <i class="bi bi-stars fs-1 mb-3"></i>
+                    <h5 class="card-title">Bucket List</h5>
+                    <p class="card-text">Family Goals & Adventures</p>
+                </div>
+            </NavLink>
+        </div>
+    </div>
+
+    <!-- 3. Secondary Section: Existing Event Tools (optional) -->
+    <hr class="my-5" />
+    <div class="text-center mb-4">
+        <h3>Sports & Event Tools</h3>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        <NavLink class="btn btn-outline-primary btn-lg" href="/guestlist">
+            Import Guest List
+        </NavLink>
+
+        <NavLink class="btn btn-outline-success btn-lg" href="/seatingplan">
+            View Seating Plan
+        </NavLink>
+
+        <NavLink class="btn btn-outline-secondary btn-lg" href="/lunch">
+            Lunch Menu
+        </NavLink>
+
+        <NavLink class="btn btn-outline-info btn-lg" href="/lineup/index.html">
+            Baseball Lineup
+        </NavLink>
+
+        <NavLink class="btn btn-outline-warning btn-lg" href="/volleyball">
+            Volleyball Lineup
+        </NavLink>
+    </div>
+
+    <!-- 4. Footer -->
+    <footer class="text-center mt-5">
+        <small class="text-muted">
+            &copy; 2025 The Barker Family
+        </small>
+    </footer>
 </div>

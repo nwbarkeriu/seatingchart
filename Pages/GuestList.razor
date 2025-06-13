@@ -2,8 +2,7 @@
 @using SeatingChartApp.Data
 @using SeatingChartApp.Models
 
-<h3>Guest List (DEBUG: v2)</h3>
-<p style="color: red">If you see “DEBUG: v2” above, you’re running the new file.</p>
+<h3>Guest List</h3>
 
 <div>
     @if (!string.IsNullOrEmpty(errorMessage))
@@ -72,7 +71,7 @@
     {
 
         // DEBUG: immediately show a message
-        errorMessage = "LoadSampleGuests() was invoked!";
+        //errorMessage = "LoadSampleGuests() was invoked!";
         // 172 sample names (you can add or remove as needed)
         var sampleGuests = new List<string>
         {

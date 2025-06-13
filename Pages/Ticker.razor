@@ -1,0 +1,46 @@
+@page "/ticker"
+@inject TickerService TickerService
+
+<h3 class="ticker-title" style="width: 75%">Live Ticker</h3>
+
+<div class="ticker-wrap" style="width: 75%">
+    <div class="ticker" style="@TickerStyle">
+        @for (int i = 0; i < TickerItems.Count; i++)
+        {
+            <span class="ticker-item" @key="@i">
+                @((MarkupString)TickerItems[i])
+            </span>
+        }
+    </div>
+</div>
+
+@code {
+    private List<string> TickerItems = new();
+    private string TickerStyle = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    var sports = await TickerService.GetTeamEventsAsync();
+            if (sports == null || !sports.Any())
+            {
+                sports = new List<string> { "No sports data available." };
+            }
+            // Fetch local events
+    var events = await TickerService.GetLocalEventsAsync();
+            if (events == null || !events.Any())
+            {
+                events = new List<string> { "No local events available." };
+            }
+    var stocks = await TickerService.GetStockPricesAsync();
+            if (stocks == null || !stocks.Any())
+            {
+                stocks = new List<string> { "No local events available." };
+            }        
+            TickerItems = sports.Concat(events).Concat(stocks).ToList();
+
+        // Duplicate for scrolling effect
+        TickerItems.AddRange(TickerItems);
+        TickerStyle = $"animation: scroll {TickerItems.Count * 5}s ease infinite; max-width: 100%; overflow: hidden;";
+    }
+}
