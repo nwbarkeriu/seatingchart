@@ -9,23 +9,10 @@
   align-items: center;
   height: 900px; 
 }
-
-.ticker, #ticker {
-  display: flex;
-  flex-direction: column;
-
-}
-  /* animation: roll-up 30s linear infinite; Dynamic duration based on frames */
 .ticker-item {
-  display: block;
-  text-align: left;
-  padding: 10px 0;
-  max-height: 100px;
-  opacity: 1; /* Always visible */
-}
-
-
-@keyframes roll-up {
-  /* 0% { transform: translateY(0); } Start at the first item */
-  /* 100% { transform: translateY(-100%); } Scroll through all items */
+  height: 120px !important;
+  margin: 0 !important;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }

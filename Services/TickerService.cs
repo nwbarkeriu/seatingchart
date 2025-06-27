@@ -35,42 +35,40 @@ public class TickerService
             new("IU Basketball", "basketball", "mens-college-basketball", "84"),
             new("Indianapolis Colts", "football", "nfl", "11")
         };
-
         var results = new List<string>();
-
         foreach (var team in teams)
         {
-            try
-            {
+        try
+        {
                 var teamData = await _http.GetFromJsonAsync<JsonElement>(team.TeamUrl);
-                if (!teamData.TryGetProperty("team", out var teamNode))
-                {
-                    results.Add($"{team.DisplayName}: No team data found.");
-                    continue;
-                }
-                if (!teamNode.TryGetProperty("nextEvent", out var eventArray) || eventArray.GetArrayLength() == 0)
-                {
-                    results.Add($"{team.DisplayName}: No upcoming events found.");
-                    continue;
-                }
+            if (!teamData.TryGetProperty("team", out var teamNode))
+            {
+                //results.Add($"{team.DisplayName}: No team data found.");
+                continue;
+            }
+            if (!teamNode.TryGetProperty("nextEvent", out var eventArray) || eventArray.GetArrayLength() == 0)
+            {
+                //results.Add($"{team.DisplayName}: No upcoming events found.");
+                continue;
+            }
                 var eventObj = eventArray[0];
                 var gameId = eventObj.GetProperty("id").GetString() ?? "unknown";
                 var eventSummaryUrl = team.GetEventUrl(gameId);
                 var eventSummary = await _http.GetFromJsonAsync<JsonElement>(eventSummaryUrl);
 
-                if (!eventSummary.TryGetProperty("competitions", out var competitions) || competitions.GetArrayLength() == 0)
-                {
-                    results.Add($"{team.DisplayName}: No event data found.");
-                    continue;
-                }
-                var comp = competitions[0];
-                var competitors = comp.GetProperty("competitors");
+            if (!eventSummary.TryGetProperty("competitions", out var competitions) || competitions.GetArrayLength() == 0)
+            {
+                //results.Add($"{team.DisplayName}: No event data found.");
+                continue;
+            }
+            var comp = competitions[0];
+            var competitors = comp.GetProperty("competitors");
 
-                if (competitors.GetArrayLength() < 2)
-                {
-                    results.Add($"{team.DisplayName}: Not enough competitors.");
-                    continue;
-                }
+            if (competitors.GetArrayLength() < 2)
+            {
+                results.Add($"{team.DisplayName}: Not enough competitors.");
+                continue;
+            }
                 // Determine which team is HOME and which is AWAY
                 var competitor1 = competitors[0];
                 var competitor2 = competitors[1];
@@ -93,22 +91,30 @@ public class TickerService
                 // Defensive: handle both "logo" (string) and "logos" (array)
                 string logoAway = "logoAway";
                 var awayTeamObj = awayTeam.GetProperty("team");
-                if (awayTeamObj.TryGetProperty("logos", out var logosAway) && logosAway.ValueKind == JsonValueKind.Array && logosAway.GetArrayLength() > 0)
-                    logoAway = logosAway[0].GetProperty("href").GetString() ?? "logoAway";
-                else if (awayTeamObj.TryGetProperty("logo", out var logoPropAway) && logoPropAway.ValueKind == JsonValueKind.String)
-                    logoAway = logoPropAway.GetString() ?? "logoAway";
+            if (awayTeamObj.TryGetProperty("logos", out var logosAway) && logosAway.ValueKind == JsonValueKind.Array && logosAway.GetArrayLength() > 0)
+                logoAway = logosAway[0].GetProperty("href").GetString() ?? "logoAway";
+            else if (awayTeamObj.TryGetProperty("logo", out var logoPropAway) && logoPropAway.ValueKind == JsonValueKind.String)
+                logoAway = logoPropAway.GetString() ?? "logoAway";
                 string logoHome = "logoHome";
                 var homeTeamObj = homeTeam.GetProperty("team");
-                if (homeTeamObj.TryGetProperty("logos", out var logosHome) && logosHome.ValueKind == JsonValueKind.Array && logosHome.GetArrayLength() > 0)
-                    logoHome = logosHome[0].GetProperty("href").GetString() ?? "logoHome";
-                else if (homeTeamObj.TryGetProperty("logo", out var logoPropHome) && logoPropHome.ValueKind == JsonValueKind.String)
-                    logoHome = logoPropHome.GetString() ?? "logoHome";
+            if (homeTeamObj.TryGetProperty("logos", out var logosHome) && logosHome.ValueKind == JsonValueKind.Array && logosHome.GetArrayLength() > 0)
+                logoHome = logosHome[0].GetProperty("href").GetString() ?? "logoHome";
+            else if (homeTeamObj.TryGetProperty("logo", out var logoPropHome) && logoPropHome.ValueKind == JsonValueKind.String)
+                logoHome = logoPropHome.GetString() ?? "logoHome";
                 string date = comp.GetProperty("date").GetString() ?? "";
                 string dateStr = "";
-                if (DateTime.TryParse(date, out var gameTime))
+            if (DateTime.TryParse(date, out var gameTime))
+            {
+                // Filter: Only include games within the last 5 days
+                var now = DateTime.UtcNow;
+                var fiveDaysAgo = now.AddDays(-2);
+                if (gameTime.ToUniversalTime() < fiveDaysAgo)
                 {
-                    dateStr = gameTime.ToLocalTime().ToString("h:mm tt");
+                    // Skip this event if it's older than 5 days
+                    continue;
                 }
+                dateStr = gameTime.ToLocalTime().ToString("h:mm tt");
+            }
                 string eventType = "";
                 var leagueCode = "";
             if (team.TeamUrl.Contains("mlb")) 
@@ -473,13 +479,13 @@ public class TickerService
                     // Default case for unknown status
                     results.Add($"{team.DisplayName}: Status unknown.");
                 }
-            }
-            catch (Exception ex)
-            {
-                results.Add($"{team.DisplayName}: Error - {ex.Message}");
-            }
         }
-        return results;
+        catch (Exception ex)
+        {
+                results.Add($"{team.DisplayName}: Error - {ex.Message}");
+        }
+    }
+    return results;
     }
     public async Task<List<string>> GetSchoolEventsAsync()
     {
