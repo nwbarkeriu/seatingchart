@@ -1,0 +1,336 @@
+
+@font-face {
+    font-family: 'BentonSansBlack';
+    src: url('/fonts/Benton Sans Black.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansBold';
+    src: url('/fonts/Benton Sans Bold.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansBook';
+    src: url('/fonts/Benton Sans Book.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCompBlack';
+    src: url('/fonts/Benton Sans Comp Black.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCompBold';
+    src: url('/fonts/Benton Sans Comp Bold.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCompBook';
+    src: url('/fonts/Benton Sans Comp Book.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCompLight';
+    src: url('/fonts/Benton Sans Comp Light.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCompMedium';
+    src: url('/fonts/Benton Sans Comp Medium.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCompRegular';
+    src: url('/fonts/Benton Sans Comp Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCondBlack';
+    src: url('/fonts/Benton Sans Cond Black.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCondBold';
+    src: url('/fonts/Benton Sans Cond Bold.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCondBook';
+    src: url('/fonts/Benton Sans Cond Book.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCondLight';
+    src: url('/fonts/Benton Sans Cond Light.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCondMedium';
+    src: url('/fonts/Benton Sans Cond Medium.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansCondRegular';
+    src: url('/fonts/Benton Sans Cond Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansExtraCompBlack';
+    src: url('/fonts/Benton Sans Extra Comp Black.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansExtraCompBold';
+    src: url('/fonts/Benton Sans Extra Comp Bold.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansExtraCompBook';
+    src: url('/fonts/Benton Sans Extra Comp Book.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansExtraCompLight';
+    src: url('/fonts/Benton Sans Extra Comp Light.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansExtraCompMedium';
+    src: url('/fonts/Benton Sans Extra Comp Medium.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansExtraCompRegular';
+    src: url('/fonts/Benton Sans Extra Comp Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansExtraLight';
+    src: url('/fonts/Benton Sans Extra Light.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansLight';
+    src: url('/fonts/Benton Sans Light.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansMedium';
+    src: url('/fonts/Benton Sans Medium.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansRegular';
+    src: url('/fonts/Benton Sans Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BentonSansThin';
+    src: url('/fonts/Benton Sans Thin.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSansBold';
+    src: url('/fonts/NotoSans-Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSansBoldItalic';
+    src: url('/fonts/NotoSans-BoldItalic.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSansItalic';
+    src: url('/fonts/NotoSans-Italic.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSansRegular';
+    src: url('/fonts/NotoSans-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSansJPRegular';
+    src: url('/fonts/NotoSansJP-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSerifBold';
+    src: url('/fonts/NotoSerif-Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSerifBoldItalic';
+    src: url('/fonts/NotoSerif-BoldItalic.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSerifItalic';
+    src: url('/fonts/NotoSerif-Italic.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSerifRegular';
+    src: url('/fonts/NotoSerif-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSerifJPRegular';
+    src: url('/fonts/NotoSerifJP-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansBold';
+    src: url('/fonts/OpenSans-Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansBoldItalic';
+    src: url('/fonts/OpenSans-BoldItalic.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansExtraBold';
+    src: url('/fonts/OpenSans-ExtraBold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansExtraBoldItalic';
+    src: url('/fonts/OpenSans-ExtraBoldItalic.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansItalic';
+    src: url('/fonts/OpenSans-Italic.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansLight';
+    src: url('/fonts/OpenSans-Light.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansLightItalic';
+    src: url('/fonts/OpenSans-LightItalic.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansRegular';
+    src: url('/fonts/OpenSans-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansSemibold';
+    src: url('/fonts/OpenSans-Semibold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansSemiboldItalic';
+    src: url('/fonts/OpenSans-SemiboldItalic.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OrbitronLight';
+    src: url('/fonts/Orbitron-Light.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OswaldExtraLight';
+    src: url('/fonts/Oswald-ExtraLight.ttf');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -17,12 +17,14 @@ public class TickerController : ControllerBase
         var sportsTicker = await _tickerService.GetTeamEventsAsync();
         var stockTicker = await _tickerService.GetStockPricesAsync();
         var localEvents = await _tickerService.GetLocalEventsAsync();
+        var schoolEvents = await _tickerService.GetSchoolEventsAsync();
 
         var combinedTickerData = new
         {
             Sports = sportsTicker,
             Stocks = stockTicker,
-            LocalEvents = localEvents
+            LocalEvents = localEvents,
+            SchoolEvents = schoolEvents
         };
 
         return Ok(combinedTickerData);

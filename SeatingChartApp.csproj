@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+    <PackageReference Include="Ical.Net" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.0" />
     <Content Include="App.razor" />
@@ -20,6 +22,7 @@
     <Content Include="Pages/_Host.cshtml">
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </Content>
+    <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>

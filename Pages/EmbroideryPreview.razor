@@ -1,0 +1,144 @@
+@page "/embroidery-preview"
+
+@using System.Text.Json
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IHttpContextAccessor HttpContextAccessor
+
+<h3>Embroidery Preview</h3>
+
+<div class="embroidery-form">
+    <label>
+        Style:
+        <select @bind="SelectedStyle">
+            <option value="Cap">Cap</option>
+            <option value="Flat">Flat</option>
+        </select>
+    </label>
+    <label>
+        Color:
+        <input type="color" @bind="SelectedColor" />
+    </label>
+    <label>
+        Font:
+        <select @bind="SelectedFont">
+            @foreach (var font in Fonts)
+            {
+                <option value="@font.Name">@font.Name</option>
+            }
+        </select>
+    </label>
+    <label>
+        Text:
+        <InputText @bind-Value="EmbroideryText" />
+    </label>
+    <label>
+        Size:
+        <input type="range" min="20" max="100" @bind="FontSize" />
+        <span>@FontSize px</span>
+    </label>
+    <label>
+        Slant:
+        <input type="range" min="-30" max="30" @bind="Slant" />
+        <span>@Slant°</span>
+    </label>
+    <label>
+        Curve:
+        <input type="checkbox" @bind="Curve" />
+        <span>Curve Text</span>
+    </label>
+</div>
+
+<div class="embroidery-preview">
+    @if (Curve)
+    {
+        <!-- SVG curved text preview -->
+        <svg width="400" height="120">
+            <defs>
+                <path id="curve" d="M 40 80 Q 200 10 360 80" />
+            </defs>
+            <text font-family="@SelectedFont" font-size="@FontSize" fill="@SelectedColor" font-style="normal">
+                <textPath href="#curve">@EmbroideryText</textPath>
+            </text>
+        </svg>
+    }
+    else
+    {
+        <span style="
+            display:inline-block;
+            font-family:@SelectedFont;
+            font-size:@($"{FontSize}px");
+            color:@SelectedColor;
+            transform:skew(@($"{Slant}deg"),0deg);
+            ">
+            @EmbroideryText
+        </span>
+    }
+</div>
+
+<button @onclick="ExportDesign">Export/Send Design</button>
+
+@if (!string.IsNullOrEmpty(ExportedJson))
+{
+    <div class="exported-json">
+        <h4>Exported Data:</h4>
+        <pre>@ExportedJson</pre>
+    </div>
+}
+
+@code {
+    public class FontInfo
+    {
+        public string Name { get; set; } = string.Empty;
+        public string File { get; set; } = string.Empty;
+    }
+
+    private List<FontInfo> Fonts = new();
+    private string SelectedStyle { get; set; } = "Cap";
+    private string SelectedColor { get; set; } = "#000000";
+    private string SelectedFont { get; set; } = "Arial";
+    private string EmbroideryText { get; set; } = "Sample";
+    private int FontSize { get; set; } = 40;
+    private int Slant { get; set; } = 0;
+    private bool Curve { get; set; } = false;
+    private string ExportedJson { get; set; } = "";
+    private bool _fontsLoaded = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_fontsLoaded)
+        {
+            try
+            {   
+                var baseUri = Navigation.BaseUri.TrimEnd('/');
+                var apiUri = $"{baseUri}/api/fonts";
+                Console.WriteLine("About to fetch /api/fonts");
+                Fonts = await Http.GetFromJsonAsync<List<FontInfo>>(apiUri) ?? new();
+                Console.WriteLine($"Loaded {Fonts.Count} fonts.");
+                if (Fonts.Count > 0)
+                    SelectedFont = Fonts[0].Name;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Font load error: " + ex.Message);
+            }
+            _fontsLoaded = true;
+            StateHasChanged();
+        }
+    }
+
+    private void ExportDesign()
+    {
+        var exportObj = new
+        {
+            Style = SelectedStyle,
+            Color = SelectedColor,
+            Font = SelectedFont,
+            Text = EmbroideryText,
+            FontSize,
+            Slant,
+            Curve
+        };
+        ExportedJson = JsonSerializer.Serialize(exportObj, new JsonSerializerOptions { WriteIndented = true });
+    }
+}

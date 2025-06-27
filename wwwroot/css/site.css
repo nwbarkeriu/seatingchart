@@ -63,6 +63,11 @@ a, .btn-link {
     color: white;
 }
 
-    .blazor-error-boundary::after {
+.blazor-error-boundary::after {
         content: "An error has occurred."
-    }
+}
+
+/* Example: apply to preview area */
+.embroidery-preview span, .embroidery-preview text {
+    font-family: 'MyCustomFont', Arial, sans-serif;
+}

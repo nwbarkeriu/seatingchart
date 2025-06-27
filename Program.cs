@@ -12,10 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TickerService>();
 builder.Services.AddControllers();
-
-
+// Uncomment the following line if you have a WeatherForecastService
 // builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
