@@ -1,9 +1,11 @@
 @page "/embroidery-preview"
 
 @using System.Text.Json
+@using Microsoft.JSInterop
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject IHttpContextAccessor HttpContextAccessor
+@inject IJSRuntime JS
 
 <h3>Embroidery Preview</h3>
 
@@ -21,10 +23,12 @@
     </label>
     <label>
         Font:
-        <select @bind="SelectedFont">
+        <select @onchange="OnFontChanged">
             @foreach (var font in Fonts)
             {
-                <option value="@font.Name">@font.Name</option>
+                <option value="@font.Name" selected="@(font.Name == SelectedFont)">
+                    @font.Name
+                </option>
             }
         </select>
     </label>
@@ -66,7 +70,7 @@
     {
         <span style="
             display:inline-block;
-            font-family:@SelectedFont;
+            font-family:@CssFontName(SelectedFont);
             font-size:@($"{FontSize}px");
             color:@SelectedColor;
             transform:skew(@($"{Slant}deg"),0deg);
@@ -124,6 +128,20 @@
             }
             _fontsLoaded = true;
             StateHasChanged();
+        }
+    }
+
+    private string CssFontName(string name) => name.Replace(" ", "").Replace("-", "").Replace("_", "");
+
+    private async Task OnFontChanged(ChangeEventArgs e)
+    {
+        SelectedFont = e.Value?.ToString() ?? SelectedFont;
+        var fontInfo = Fonts.FirstOrDefault(f => f.Name == SelectedFont);
+        if (fontInfo != null)
+        {
+            var fontUrl = $"/fonts/{fontInfo.File}";
+            var cssFontName = CssFontName(fontInfo.Name);
+            await JS.InvokeVoidAsync("ensureFontLoaded", fontInfo.Name, fontUrl);
         }
     }
 
