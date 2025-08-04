@@ -32,21 +32,26 @@ public class LunchController : ControllerBase
 
     private static readonly List<List<string>> SchoolLunches = new()
     {
-        new() { "Chicken Patty Sandwich, Popcorn Chicken Salad, Honey Glazed Carrots" },
-        new() { "Nacho Supreme, Taco Salad, Refried Beans" },
-        new() { "Bosco Sticks, Yogurt Parfait with Homemade Granola, Steamed Broccoli" },
-        new() { "Pasta with Assorted Sauces & Garlic Breadstick, Taco Salad, Green Beans" },
-        new() { "Chicken Nuggets with Blueberry Muffin, Popcorn Chicken Salad, Baked Apples" },
-        new() { "Soft Pretzel with Cheese, Popcorn Chicken Salad, Green Beans" },
-        new() { "Hot Dog, Taco Salad, Baked Beans" },
-        new() { "Personal Pan Pizza, Yogurt Parfait with Homemade Granola, Steamed Broccoli" },
-        new() { "French Toast Sticks with Sausage Links, Taco Salad, Baked Blueberry Cobbler" },
-        new() { "Chicken Smackers with Dinner Roll, Popcorn Chicken Salad, Mashed Potatoes with Gravy" },
-        new() { "Orange Chicken Rice Bowl, Popcorn Chicken Salad, Steamed Broccoli" },
-        new() { "Mini Corn Dogs, Taco Salad, Smiley Potatoes" },
-        new() { "Cheeseburger, Yogurt Parfait with Homemade Granola, Baked Beans" },
-        new() { "Pizza Crunchers with Dip, Taco Salad, Green Beans" },
-        new() { "Chicken Tenders with Biscuit, Popcorn Chicken Salad, Buttered Corn" }
+        // WEEK 1
+        new() { "Chicken Nuggets w/ Blueberry Muffin", "Popcorn Chicken Salad", "Buttered Corn" }, // Monday
+        new() { "Soft Beef Tacos", "Taco Salad", "Refried Beans" }, // Tuesday
+        new() { "Bosco Sticks", "Yogurt Parfait w/ Homemade Granola", "Steamed Broccoli" }, // Wednesday
+        new() { "Pasta w/ Assorted Sauces & Garlic Toast", "Taco Salad", "Green Beans" }, // Thursday
+        new() { "Chicken Patty Sandwich", "Popcorn Chicken Salad", "Honey Glazed Carrots" }, // Friday
+
+        // WEEK 2
+        new() { "Mini Corn Dogs", "Popcorn Chicken Salad", "Smiley Potatoes" }, // Monday
+        new() { "Chicken Teriyaki Dumplings", "Taco Salad", "Steamed Broccoli" }, // Tuesday
+        new() { "Personal Pan Pizza", "Yogurt Parfait w/ Homemade Granola", "Green Beans" }, // Wednesday
+        new() { "Chicken Smackers w/ Dinner Roll", "Taco Salad", "Mashed Potatoes w/ Gravy" }, // Thursday
+        new() { "Soft Pretzel w/ Cheese", "Popcorn Chicken Salad", "Baked Beans" }, // Friday
+
+        // WEEK 3
+        new() { "Belgium Waffle w/ Sausage Patties", "Popcorn Chicken Salad", "Baked Apples" }, // Monday
+        new() { "French Bread Pizza", "Taco Salad", "Buttered Corn" }, // Tuesday
+        new() { "Cheeseburger", "Yogurt Parfait w/ Homemade Granola", "Baked Beans" }, // Wednesday
+        new() { "Chicken Tenders w/ Corn Muffin", "Taco Salad", "Steamed Broccoli" }, // Thursday
+        new() { "Pizza Crunchers w/ Dip", "Popcorn Chicken Salad", "Green Beans" } // Friday
     };
 
     private static readonly Dictionary<string, string> Events = new()
