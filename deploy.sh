@@ -5,7 +5,7 @@
 # Options:
 #   --backup    Create database backup before deploying
 #   --fresh     Delete and recreate databases (CAUTION: deletes all data!)
-#   --publish   Use dotnet publish instead of dotnet build
+#   --skip-services  Don't restart services (for testing)
 
 set -e  # Exit on any error
 
@@ -16,13 +16,10 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Configuration - UPDATE THESE FOR YOUR DROPLET
-APP_DIR="/var/www/seatingchartapp"
-SERVICE_NAME="seatingchartapp"
-APP_USER="www-data"
-USE_PUBLISH=false
+# Configuration
 CREATE_BACKUP=false
 FRESH_START=false
+SKIP_SERVICES=false
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -35,13 +32,13 @@ while [[ $# -gt 0 ]]; do
             FRESH_START=true
             shift
             ;;
-        --publish)
-            USE_PUBLISH=true
+        --skip-services)
+            SKIP_SERVICES=true
             shift
             ;;
         *)
             echo -e "${RED}Unknown option: $1${NC}"
-            echo "Usage: ./deploy.sh [--backup] [--fresh] [--publish]"
+            echo "Usage: ./deploy.sh [--backup] [--fresh] [--skip-services]"
             exit 1
             ;;
     esac
@@ -49,23 +46,13 @@ done
 
 # Print header
 echo -e "${BLUE}================================================${NC}"
-echo -e "${BLUE}  SeatingChartApp Deployment Script${NC}"
+echo -e "${BLUE}  SeatingChartApp Deployment${NC}"
 echo -e "${BLUE}================================================${NC}"
 echo ""
 
-# Step 1: Check if we're in the right directory
-if [ ! -f "SeatingChartApp.csproj" ]; then
-    echo -e "${RED}Error: SeatingChartApp.csproj not found!${NC}"
-    echo -e "${YELLOW}Please run this script from the app directory${NC}"
-    exit 1
-fi
-
-echo -e "${GREEN}✓${NC} Found SeatingChartApp.csproj"
-
-# Step 2: Create backup if requested
+# Step 1: Create backup if requested
 if [ "$CREATE_BACKUP" = true ]; then
-    echo ""
-    echo -e "${YELLOW}Creating database backups...${NC}"
+    echo -e "${YELLOW}📦 Creating database backups...${NC}"
     BACKUP_DATE=$(date +%Y%m%d_%H%M%S)
     
     if [ -f "lineup.db" ]; then
@@ -77,21 +64,15 @@ if [ "$CREATE_BACKUP" = true ]; then
         cp mealplanner.db "mealplanner.db.backup.$BACKUP_DATE"
         echo -e "${GREEN}✓${NC} Backed up mealplanner.db"
     fi
-fi
-
-# Step 3: Stop the service
-echo ""
-echo -e "${YELLOW}Stopping $SERVICE_NAME service...${NC}"
-if sudo systemctl is-active --quiet $SERVICE_NAME; then
-    sudo systemctl stop $SERVICE_NAME
-    echo -e "${GREEN}✓${NC} Service stopped"
-else
-    echo -e "${YELLOW}⚠${NC} Service was not running"
-fi
-
-# Step 4: Fresh start if requested (DANGER ZONE)
-if [ "$FRESH_START" = true ]; then
+    
+    # Cleanup old backups (keep last 5)
+    ls -t lineup.db.backup.* 2>/dev/null | tail -n +6 | xargs -r rm
+    ls -t mealplanner.db.backup.* 2>/dev/null | tail -n +6 | xargs -r rm
     echo ""
+fi
+
+# Step 2: Fresh start if requested (DANGER ZONE)
+if [ "$FRESH_START" = true ]; then
     echo -e "${RED}⚠️  WARNING: Deleting all databases!${NC}"
     read -p "Are you sure? This will delete ALL data! (yes/no): " -r
     if [[ $REPLY == "yes" ]]; then
@@ -101,89 +82,67 @@ if [ "$FRESH_START" = true ]; then
     else
         echo -e "${YELLOW}Cancelled fresh start${NC}"
     fi
-fi
-
-# Step 5: Pull latest code
-echo ""
-echo -e "${YELLOW}Pulling latest code from GitHub...${NC}"
-git fetch origin
-LOCAL=$(git rev-parse @)
-REMOTE=$(git rev-parse @{u})
-
-if [ $LOCAL = $REMOTE ]; then
-    echo -e "${YELLOW}⚠${NC} Already up to date"
-else
-    git pull origin main
-    echo -e "${GREEN}✓${NC} Code updated"
-fi
-
-# Step 6: Build or Publish
-echo ""
-if [ "$USE_PUBLISH" = true ]; then
-    echo -e "${YELLOW}Publishing application...${NC}"
-    dotnet publish --configuration Release --output ./publish
-    echo -e "${GREEN}✓${NC} Application published to ./publish"
-else
-    echo -e "${YELLOW}Building application...${NC}"
-    dotnet build --configuration Release
-    echo -e "${GREEN}✓${NC} Application built"
-fi
-
-# Step 7: Fix database permissions
-echo ""
-echo -e "${YELLOW}Setting database permissions...${NC}"
-if [ -f "lineup.db" ]; then
-    sudo chown $APP_USER:$APP_USER lineup.db
-    sudo chmod 644 lineup.db
-fi
-if [ -f "mealplanner.db" ]; then
-    sudo chown $APP_USER:$APP_USER mealplanner.db
-    sudo chmod 644 mealplanner.db
-fi
-echo -e "${GREEN}✓${NC} Permissions set"
-
-# Step 8: Start the service
-echo ""
-echo -e "${YELLOW}Starting $SERVICE_NAME service...${NC}"
-sudo systemctl start $SERVICE_NAME
-
-# Wait a moment for startup
-sleep 2
-
-# Step 9: Check service status
-if sudo systemctl is-active --quiet $SERVICE_NAME; then
-    echo -e "${GREEN}✓${NC} Service started successfully"
     echo ""
-    echo -e "${GREEN}================================================${NC}"
-    echo -e "${GREEN}  Deployment Complete!${NC}"
-    echo -e "${GREEN}================================================${NC}"
-    echo ""
-    echo -e "Service status:"
-    sudo systemctl status $SERVICE_NAME --no-pager | head -n 10
-    echo ""
-    echo -e "${BLUE}Tip: View logs with:${NC}"
-    echo -e "  sudo journalctl -u $SERVICE_NAME -f"
-else
-    echo -e "${RED}✗${NC} Service failed to start"
-    echo ""
-    echo -e "${RED}Error details:${NC}"
-    sudo journalctl -u $SERVICE_NAME -n 50 --no-pager
-    exit 1
 fi
 
-# Step 10: Show database migration info
+# Step 3: Pull latest code
+echo "🔁 Pulling latest code from Git..."
+git pull origin main || { echo -e "${RED}❌ Git pull failed${NC}"; exit 1; }
 echo ""
-echo -e "${BLUE}Database migrations will run automatically on startup${NC}"
-echo -e "${BLUE}Check the logs above for any migration messages${NC}"
 
-# Step 11: Cleanup old backups (keep last 5)
+# Step 4: Publish application
+echo "🛠 Publishing app to /var/www/seatingchart/publish..."
+dotnet publish -c Release -o /var/www/seatingchart/publish || { echo -e "${RED}❌ Publish failed${NC}"; exit 1; }
+echo ""
+
+# Step 5: Fix database permissions
+if [ -f "lineup.db" ] || [ -f "mealplanner.db" ]; then
+    echo -e "${YELLOW}🔐 Setting database permissions...${NC}"
+    if [ -f "lineup.db" ]; then
+        sudo chown www-data:www-data lineup.db
+        sudo chmod 644 lineup.db
+    fi
+    if [ -f "mealplanner.db" ]; then
+        sudo chown www-data:www-data mealplanner.db
+        sudo chmod 644 mealplanner.db
+    fi
+    echo -e "${GREEN}✓${NC} Permissions set"
+    echo ""
+fi
+
+# Step 6: Restart services
+if [ "$SKIP_SERVICES" = false ]; then
+    echo "🚀 Restarting services..."
+    sudo systemctl restart seatingchart.service
+    sudo systemctl restart voice_webhook.service
+    sudo systemctl restart forward_sms.service
+    echo ""
+
+    echo "🔄 Reloading Nginx..."
+    sudo systemctl reload nginx
+    echo ""
+    
+    # Check if main service started successfully
+    sleep 2
+    if sudo systemctl is-active --quiet seatingchart.service; then
+        echo -e "${GREEN}✓${NC} seatingchart.service is running"
+    else
+        echo -e "${RED}✗${NC} seatingchart.service failed to start"
+        echo -e "${YELLOW}Checking logs:${NC}"
+        sudo journalctl -u seatingchart.service -n 20 --no-pager
+        exit 1
+    fi
+fi
+
+# Success!
+echo ""
+echo -e "${GREEN}================================================${NC}"
+echo -e "${GREEN}  ✅ Deployment complete!${NC}"
+echo -e "${GREEN}================================================${NC}"
+echo ""
+echo -e "${BLUE}💡 Database migrations will run automatically on startup${NC}"
+echo -e "${BLUE}💡 View logs: sudo journalctl -u seatingchart.service -f${NC}"
+
 if [ "$CREATE_BACKUP" = true ]; then
-    echo ""
-    echo -e "${YELLOW}Cleaning up old backups (keeping last 5)...${NC}"
-    ls -t lineup.db.backup.* 2>/dev/null | tail -n +6 | xargs -r rm
-    ls -t mealplanner.db.backup.* 2>/dev/null | tail -n +6 | xargs -r rm
-    echo -e "${GREEN}✓${NC} Old backups cleaned"
+    echo -e "${BLUE}💡 Backups saved with timestamp: $BACKUP_DATE${NC}"
 fi
-
-echo ""
-echo -e "${GREEN}🚀 Deployment finished successfully!${NC}"
