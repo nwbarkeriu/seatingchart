@@ -98,7 +98,8 @@ public class LunchController : ControllerBase
     [HttpGet]
     public IActionResult GetLunch()
     {
-        DateTime today = DateTime.Now;
+            var easternTime = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
+            var today = TimeZoneInfo.ConvertTime(DateTime.UtcNow, easternTime);
 
         if (today.Hour >= 14)
             today = today.AddDays(1);
