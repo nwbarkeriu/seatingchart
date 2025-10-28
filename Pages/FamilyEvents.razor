@@ -1,0 +1,340 @@
+@page "/family-events"
+@using Microsoft.JSInterop
+@using SeatingChartApp.Services
+@inject IJSRuntime JSRuntime
+@inject SchoolEventsService SchoolEvents
+
+<PageTitle>Family Events</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center mb-4">
+                <i class="fas fa-calendar-check"></i> Family Events & Celebrations
+            </h1>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-birthday-cake"></i> Upcoming Birthdays</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var birthday in GetUpcomingBirthdays())
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 @(birthday.IsToday ? "bg-warning" : "bg-light") rounded">
+                            <div>
+                                <strong>@birthday.Name</strong>
+                                <small class="text-muted d-block">@birthday.Date.ToString("MMMM dd")</small>
+                            </div>
+                            <div class="text-end">
+                                @if (birthday.IsToday)
+                                {
+                                    <span class="badge bg-success">Today! 🎉</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-info">@birthday.DaysAway days</span>
+                                }
+                                <small class="text-muted d-block">Age @birthday.Age</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-heart"></i> Anniversaries</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var anniversary in GetUpcomingAnniversaries())
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 @(anniversary.IsToday ? "bg-warning" : "bg-light") rounded">
+                            <div>
+                                <strong>@anniversary.Title</strong>
+                                <small class="text-muted d-block">@anniversary.Date.ToString("MMMM dd, yyyy")</small>
+                            </div>
+                            <div class="text-end">
+                                @if (anniversary.IsToday)
+                                {
+                                    <span class="badge bg-success">Today! 💕</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-info">@anniversary.DaysAway days</span>
+                                }
+                                <small class="text-muted d-block">@anniversary.YearsMarried years</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-star"></i> Special Family Events</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach (var familyEvent in GetFamilyEvents())
+                        {
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 @(familyEvent.IsUpcoming ? "border-primary" : "border-secondary")">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title">@familyEvent.Title</h6>
+                                        <p class="card-text">
+                                            <i class="fas fa-calendar"></i> @familyEvent.Date.ToString("MMM dd, yyyy")<br/>
+                                            @if (familyEvent.IsUpcoming)
+                                            {
+                                                <span class="badge bg-primary">@familyEvent.DaysAway days away</span>
+                                            }
+                                            else if (familyEvent.IsToday)
+                                            {
+                                                <span class="badge bg-success">Today!</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Past</span>
+                                            }
+                                        </p>
+                                        @if (!string.IsNullOrEmpty(familyEvent.Description))
+                                        {
+                                            <small class="text-muted">@familyEvent.Description</small>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- School Events Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-school"></i> Upcoming School Events</h5>
+                </div>
+                <div class="card-body">
+                    @if (schoolEvents != null && schoolEvents.Any())
+                    {
+                        <div class="row">
+                            @foreach (var schoolEvent in schoolEvents.Take(6))
+                            {
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 @(schoolEvent.IsToday ? "border-warning" : schoolEvent.IsUpcoming ? "border-primary" : "border-secondary")">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-title">@schoolEvent.Title</h6>
+                                            <p class="card-text">
+                                                <i class="fas fa-calendar"></i> 
+                                                @if (schoolEvent.IsMultiDay)
+                                                {
+                                                    <span>@schoolEvent.StartDate.ToString("MMM dd") - @schoolEvent.EndDate.ToString("MMM dd")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@schoolEvent.StartDate.ToString("MMM dd, yyyy")</span>
+                                                }
+                                                <br/>
+                                                @if (schoolEvent.IsToday)
+                                                {
+                                                    <span class="badge bg-warning">Today!</span>
+                                                }
+                                                else if (schoolEvent.IsUpcoming)
+                                                {
+                                                    <span class="badge bg-primary">@schoolEvent.DaysAway days away</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Past</span>
+                                                }
+                                            </p>
+                                            @if (!string.IsNullOrEmpty(schoolEvent.Location))
+                                            {
+                                                <small class="text-muted"><i class="fas fa-map-marker-alt"></i> @schoolEvent.Location</small>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted">
+                            <i class="fas fa-spinner fa-spin"></i> Loading school events...
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-clock"></i> Family Countdowns</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        @foreach (var countdown in GetCountdowns())
+                        {
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <h6>@countdown.Title</h6>
+                                    <div class="h4 text-primary">@countdown.DaysLeft</div>
+                                    <small>days left</small>
+                                    <div class="small text-muted mt-1">@countdown.Date.ToString("MMM dd")</div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<SchoolEvent> schoolEvents = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load school events
+        try
+        {
+            schoolEvents = await SchoolEvents.GetUpcomingEventsAsync(20);
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            // Log error but don't break the page
+            Console.WriteLine($"Failed to load school events: {ex.Message}");
+        }
+    }
+
+    private List<BirthdayEvent> GetUpcomingBirthdays()
+    {
+        var today = DateTime.Today;
+        var birthdays = new List<BirthdayEvent>
+        {
+            new BirthdayEvent { Name = "Nate", Date = new DateTime(today.Year, 4, 23), BirthYear = 1986 },
+            new BirthdayEvent { Name = "Ashley", Date = new DateTime(today.Year, 1, 31), BirthYear = 1986 },
+            new BirthdayEvent { Name = "Leighton", Date = new DateTime(today.Year, 7, 8), BirthYear = 2015 },
+            new BirthdayEvent { Name = "Owen", Date = new DateTime(today.Year, 9, 6), BirthYear = 2017 },
+            new BirthdayEvent { Name = "Peyton", Date = new DateTime(today.Year, 10, 1), BirthYear = 2020 },
+            new BirthdayEvent { Name = "Graham", Date = new DateTime(today.Year, 4, 21), BirthYear = 2023 }
+        };
+
+        // Adjust for next year if birthday has passed
+        foreach (var birthday in birthdays)
+        {
+            if (birthday.Date < today)
+            {
+                birthday.Date = birthday.Date.AddYears(1);
+            }
+        }
+
+        return birthdays.OrderBy(b => b.Date).Take(5).ToList();
+    }
+
+    private List<AnniversaryEvent> GetUpcomingAnniversaries()
+    {
+        var today = DateTime.Today;
+        var anniversaries = new List<AnniversaryEvent>
+        {
+            new AnniversaryEvent 
+            { 
+                Title = "Nate & Ashley's Wedding Anniversary", 
+                Date = new DateTime(today.Year, 9, 22), 
+                WeddingYear = 2012 
+            }
+        };
+
+        // Adjust for next year if anniversary has passed
+        foreach (var anniversary in anniversaries)
+        {
+            if (anniversary.Date < today)
+            {
+                anniversary.Date = anniversary.Date.AddYears(1);
+            }
+        }
+
+        return anniversaries.OrderBy(a => a.Date).ToList();
+    }
+
+    private List<FamilyEvent> GetFamilyEvents()
+    {
+        return new List<FamilyEvent>
+        {
+            new FamilyEvent { Title = "Christmas", Date = new DateTime(2025, 12, 25), Description = "Family Christmas celebration" },
+            new FamilyEvent { Title = "Thanksgiving", Date = new DateTime(2025, 11, 28), Description = "Thanksgiving dinner with family" },
+            new FamilyEvent { Title = "Halloween", Date = new DateTime(2025, 10, 31), Description = "Trick-or-treating with the kids" },
+            new FamilyEvent { Title = "Fourth of July", Date = new DateTime(2025, 7, 4), Description = "Independence Day celebration" },
+            new FamilyEvent { Title = "Easter", Date = new DateTime(2025, 4, 20), Description = "Easter egg hunt and family dinner" },
+            new FamilyEvent { Title = "New Year's Day", Date = new DateTime(2026, 1, 1), Description = "New Year family traditions" },
+            new FamilyEvent { Title = "First Date Anniversary", Date = new DateTime(2025, 9, 22), Description = "Dinghus day at Yogi's pub in Bloomington - where it all began!" }
+        }.OrderBy(e => e.Date).ToList();
+    }
+
+    private List<CountdownEvent> GetCountdowns()
+    {
+        return new List<CountdownEvent>
+        {
+            new CountdownEvent { Title = "Christmas", Date = new DateTime(2025, 12, 25) },
+            new CountdownEvent { Title = "School Break", Date = new DateTime(2025, 12, 20) },
+            new CountdownEvent { Title = "Summer Vacation", Date = new DateTime(2026, 6, 15) },
+            new CountdownEvent { Title = "Halloween", Date = new DateTime(2025, 10, 31) }
+        }.Where(c => c.Date > DateTime.Today).OrderBy(c => c.Date).ToList();
+    }
+
+    public class BirthdayEvent
+    {
+        public string Name { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+        public int BirthYear { get; set; }
+        public int Age => DateTime.Today.Year - BirthYear + (Date.Year > DateTime.Today.Year ? 1 : 0);
+        public int DaysAway => (Date - DateTime.Today).Days;
+        public bool IsToday => Date.Date == DateTime.Today;
+    }
+
+    public class AnniversaryEvent
+    {
+        public string Title { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+        public int WeddingYear { get; set; }
+        public int YearsMarried => Date.Year - WeddingYear;
+        public int DaysAway => (Date - DateTime.Today).Days;
+        public bool IsToday => Date.Date == DateTime.Today;
+    }
+
+    public class FamilyEvent
+    {
+        public string Title { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public int DaysAway => (Date - DateTime.Today).Days;
+        public bool IsToday => Date.Date == DateTime.Today;
+        public bool IsUpcoming => Date > DateTime.Today;
+    }
+
+    public class CountdownEvent
+    {
+        public string Title { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+        public int DaysLeft => Math.Max(0, (Date - DateTime.Today).Days);
+    }
+}

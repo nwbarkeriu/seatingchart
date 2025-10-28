@@ -1,0 +1,307 @@
+@page "/family-blog"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Family Blog</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center mb-4">
+                <i class="fas fa-newspaper"></i> The Barker Family Blog
+            </h1>
+            <div class="text-center mb-4">
+                <button class="btn btn-primary" @onclick="ShowAddPostModal">
+                    <i class="fas fa-plus"></i> Add New Post
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            @foreach (var post in GetBlogPosts())
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">@post.Title</h5>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar"></i> @post.Date.ToString("MMM dd, yyyy")
+                                <i class="fas fa-user ms-2"></i> @post.Author
+                            </small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(post.ImageUrl))
+                        {
+                            <img src="@post.ImageUrl" class="img-fluid rounded mb-3" alt="@post.Title" />
+                        }
+                        <p class="card-text">@post.Content</p>
+                        @if (post.Tags.Any())
+                        {
+                            <div class="mt-3">
+                                @foreach (var tag in post.Tags)
+                                {
+                                    <span class="badge bg-secondary me-1">#@tag</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary me-2">
+                                    <i class="fas fa-thumbs-up"></i> Like (@post.Likes)
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-comment"></i> Comment (@post.Comments)
+                                </button>
+                            </div>
+                            <div>
+                                @if (post.Category == "Milestone")
+                                {
+                                    <span class="badge bg-warning"><i class="fas fa-star"></i> Milestone</span>
+                                }
+                                else if (post.Category == "Adventure")
+                                {
+                                    <span class="badge bg-success"><i class="fas fa-compass"></i> Adventure</span>
+                                }
+                                else if (post.Category == "Memory")
+                                {
+                                    <span class="badge bg-info"><i class="fas fa-heart"></i> Memory</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 20px;">
+                <!-- Recent Posts -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-clock"></i> Recent Posts</h6>
+                    </div>
+                    <div class="card-body p-2">
+                        @foreach (var post in GetBlogPosts().Take(3))
+                        {
+                            <div class="d-flex align-items-center mb-2 p-2 bg-light rounded">
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold small">@post.Title</div>
+                                    <small class="text-muted">@post.Date.ToString("MMM dd")</small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-tags"></i> Categories</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-warning fs-6">Milestone (3)</span>
+                            <span class="badge bg-success fs-6">Adventure (5)</span>
+                            <span class="badge bg-info fs-6">Memory (8)</span>
+                            <span class="badge bg-primary fs-6">Daily Life (12)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Family Stats -->
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-chart-line"></i> Family Stats</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6 mb-2">
+                                <div class="h5 text-primary">@GetBlogPosts().Count</div>
+                                <small>Posts</small>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <div class="h5 text-success">@GetBlogPosts().Sum(p => p.Likes)</div>
+                                <small>Total Likes</small>
+                            </div>
+                            <div class="col-6">
+                                <div class="h5 text-warning">@DateTime.Today.DayOfYear</div>
+                                <small>Days This Year</small>
+                            </div>
+                            <div class="col-6">
+                                <div class="h5 text-info">@GetBlogPosts().Count(p => p.Date.Month == DateTime.Today.Month)</div>
+                                <small>This Month</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Post Modal -->
+@if (showAddPost)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Blog Post</h5>
+                    <button type="button" class="btn-close" @onclick="CloseAddPost"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" @bind="newPostTitle" placeholder="What's happening in our family?" />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Content</label>
+                        <textarea class="form-control" @bind="newPostContent" rows="6" placeholder="Share your family story..."></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" @bind="newPostCategory">
+                                <option value="Daily Life">Daily Life</option>
+                                <option value="Milestone">Milestone</option>
+                                <option value="Adventure">Adventure</option>
+                                <option value="Memory">Memory</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Author</label>
+                            <select class="form-select" @bind="newPostAuthor">
+                                <option value="Nathan">Nathan</option>
+                                <option value="Sarah">Sarah</option>
+                                <option value="Family">Family</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Tags (comma-separated)</label>
+                        <input type="text" class="form-control" @bind="newPostTags" placeholder="kids, fun, school, vacation" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseAddPost">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="SavePost">Save Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool showAddPost = false;
+    private string newPostTitle = "";
+    private string newPostContent = "";
+    private string newPostCategory = "Daily Life";
+    private string newPostAuthor = "Nathan";
+    private string newPostTags = "";
+
+    private List<BlogPost> GetBlogPosts()
+    {
+        return new List<BlogPost>
+        {
+            new BlogPost
+            {
+                Title = "Emma's First Day of 4th Grade!",
+                Content = "Emma was so excited for her first day of 4th grade today! She picked out her outfit last night and couldn't sleep. Mrs. Johnson is her new teacher and Emma already loves her. She came home with so many stories about her new classmates and all the fun activities they're going to do this year.",
+                Author = "Sarah",
+                Date = DateTime.Today.AddDays(-2),
+                Category = "Milestone",
+                Tags = new List<string> { "school", "emma", "milestone" },
+                Likes = 8,
+                Comments = 3,
+                ImageUrl = "/thebarkers.JPG"
+            },
+            new BlogPost
+            {
+                Title = "Jack's Baseball Season Begins",
+                Content = "Jack's little league season started this weekend with his first game! He played third base and got two hits. The team won 12-8 and Jack was beaming with pride. Coach Martinez said he's really improved his batting stance over the winter. Can't wait for the rest of the season!",
+                Author = "Nathan",
+                Date = DateTime.Today.AddDays(-5),
+                Category = "Adventure",
+                Tags = new List<string> { "baseball", "jack", "sports" },
+                Likes = 12,
+                Comments = 5
+            },
+            new BlogPost
+            {
+                Title = "Lily's Funny Sayings",
+                Content = "Lily (age 6) has been saying the most hilarious things lately! Yesterday she told me that vegetables are 'just salad that hasn't grown up yet.' And this morning she asked if clouds are 'the sky's cotton candy.' Her imagination never stops amazing me!",
+                Author = "Sarah",
+                Date = DateTime.Today.AddDays(-7),
+                Category = "Memory",
+                Tags = new List<string> { "lily", "funny", "kids" },
+                Likes = 15,
+                Comments = 8
+            },
+            new BlogPost
+            {
+                Title = "Family Game Night Victory!",
+                Content = "We had an epic family game night last Friday! We played Monopoly (which took FOREVER), Uno, and ended with charades. Emma won Monopoly by buying all the railroads, Jack dominated at Uno, and Lily's charades were... creative. Sarah and I just enjoyed watching the kids have so much fun together.",
+                Author = "Nathan",
+                Date = DateTime.Today.AddDays(-10),
+                Category = "Daily Life",
+                Tags = new List<string> { "family", "games", "fun" },
+                Likes = 6,
+                Comments = 2
+            },
+            new BlogPost
+            {
+                Title = "Weekend at Grandma's House",
+                Content = "The kids spent the weekend at Grandma's house and came back with so many stories! They helped in the garden, learned how to make chocolate chip cookies from scratch, and Grandma taught them how to play bridge. Emma says she wants to have a garden when she grows up, just like Grandma.",
+                Author = "Family",
+                Date = DateTime.Today.AddDays(-14),
+                Category = "Memory",
+                Tags = new List<string> { "grandma", "weekend", "family" },
+                Likes = 10,
+                Comments = 4
+            }
+        }.OrderByDescending(p => p.Date).ToList();
+    }
+
+    private void ShowAddPostModal()
+    {
+        showAddPost = true;
+    }
+
+    private void CloseAddPost()
+    {
+        showAddPost = false;
+        newPostTitle = "";
+        newPostContent = "";
+        newPostCategory = "Daily Life";
+        newPostAuthor = "Nathan";
+        newPostTags = "";
+    }
+
+    private async Task SavePost()
+    {
+        // In a real app, this would save to database
+        await JSRuntime.InvokeVoidAsync("alert", $"Post '{newPostTitle}' saved successfully! (This would save to database in production)");
+        CloseAddPost();
+    }
+
+    public class BlogPost
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public string Author { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+        public string Category { get; set; } = string.Empty;
+        public List<string> Tags { get; set; } = new();
+        public int Likes { get; set; }
+        public int Comments { get; set; }
+        public string? ImageUrl { get; set; }
+    }
+}

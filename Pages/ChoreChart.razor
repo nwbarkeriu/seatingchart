@@ -1,0 +1,413 @@
+@page "/chore-chart"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Family Chore Chart</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center mb-4">
+                <i class="fas fa-tasks"></i> Family Chore Chart
+            </h1>
+            <div class="text-center mb-4">
+                <div class="alert alert-info">
+                    <i class="fas fa-microphone"></i> 
+                    <strong>Alexa Integration:</strong> Say "Alexa, ask Family Chores to mark Leighton's dishwasher loading as complete" or "Alexa, what chores does Owen have today?"
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white text-center">
+                    <h5 class="mb-0"><i class="fas fa-child"></i> Leighton (Age 10)</h5>
+                </div>
+                <div class="card-body p-2">
+                    @foreach (var chore in GetChoresForChild("Leighton"))
+                    {
+                        <div class="chore-item mb-2 p-2 @(chore.IsCompleted ? "bg-success text-white" : "bg-light") rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold">@chore.Name</div>
+                                    <small>@chore.Points pts • @chore.Frequency</small>
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-sm @(chore.IsCompleted ? "btn-light" : "btn-success")" 
+                                            @onclick="() => ToggleChore(chore)">
+                                        <i class="fas @(chore.IsCompleted ? "fa-undo" : "fa-check")"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @if (chore.IsCompleted)
+                            {
+                                <div class="small mt-1">
+                                    <i class="fas fa-clock"></i> Completed @chore.CompletedTime?.ToString("h:mm tt")
+                                </div>
+                            }
+                        </div>
+                    }
+                    <div class="text-center mt-3">
+                        <div class="h5 text-primary">@GetTotalPoints("Leighton") Points Today</div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: @(GetCompletionPercentage("Leighton"))%"></div>
+                        </div>
+                        <small>@GetCompletedChores("Leighton")/@GetTotalChores("Leighton") chores done</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white text-center">
+                    <h5 class="mb-0"><i class="fas fa-child"></i> Owen (Age 8)</h5>
+                </div>
+                <div class="card-body p-2">
+                    @foreach (var chore in GetChoresForChild("Owen"))
+                    {
+                        <div class="chore-item mb-2 p-2 @(chore.IsCompleted ? "bg-success text-white" : "bg-light") rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold">@chore.Name</div>
+                                    <small>@chore.Points pts • @chore.Frequency</small>
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-sm @(chore.IsCompleted ? "btn-light" : "btn-success")" 
+                                            @onclick="() => ToggleChore(chore)">
+                                        <i class="fas @(chore.IsCompleted ? "fa-undo" : "fa-check")"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @if (chore.IsCompleted)
+                            {
+                                <div class="small mt-1">
+                                    <i class="fas fa-clock"></i> Completed @chore.CompletedTime?.ToString("h:mm tt")
+                                </div>
+                            }
+                        </div>
+                    }
+                    <div class="text-center mt-3">
+                        <div class="h5 text-success">@GetTotalPoints("Owen") Points Today</div>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" style="width: @(GetCompletionPercentage("Owen"))%"></div>
+                        </div>
+                        <small>@GetCompletedChores("Owen")/@GetTotalChores("Owen") chores done</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h5 class="mb-0"><i class="fas fa-child"></i> Peyton (Age 5)</h5>
+                </div>
+                <div class="card-body p-2">
+                    @foreach (var chore in GetChoresForChild("Peyton"))
+                    {
+                        <div class="chore-item mb-2 p-2 @(chore.IsCompleted ? "bg-success text-white" : "bg-light") rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold">@chore.Name</div>
+                                    <small>@chore.Points pts • @chore.Frequency</small>
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-sm @(chore.IsCompleted ? "btn-light" : "btn-success")" 
+                                            @onclick="() => ToggleChore(chore)">
+                                        <i class="fas @(chore.IsCompleted ? "fa-undo" : "fa-check")"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @if (chore.IsCompleted)
+                            {
+                                <div class="small mt-1">
+                                    <i class="fas fa-clock"></i> Completed @chore.CompletedTime?.ToString("h:mm tt")
+                                </div>
+                            }
+                        </div>
+                    }
+                    <div class="text-center mt-3">
+                        <div class="h5 text-warning">@GetTotalPoints("Peyton") Points Today</div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" style="width: @(GetCompletionPercentage("Peyton"))%"></div>
+                        </div>
+                        <small>@GetCompletedChores("Peyton")/@GetTotalChores("Peyton") chores done</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white text-center">
+                    <h5 class="mb-0"><i class="fas fa-baby"></i> Graham (Age 2)</h5>
+                </div>
+                <div class="card-body p-2">
+                    @foreach (var chore in GetChoresForChild("Graham"))
+                    {
+                        <div class="chore-item mb-2 p-2 @(chore.IsCompleted ? "bg-success text-white" : "bg-light") rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold">@chore.Name</div>
+                                    <small>@chore.Points pts • @chore.Frequency</small>
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-sm @(chore.IsCompleted ? "btn-light" : "btn-success")" 
+                                            @onclick="() => ToggleChore(chore)">
+                                        <i class="fas @(chore.IsCompleted ? "fa-undo" : "fa-check")"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @if (chore.IsCompleted)
+                            {
+                                <div class="small mt-1">
+                                    <i class="fas fa-clock"></i> Completed @chore.CompletedTime?.ToString("h:mm tt")
+                                </div>
+                            }
+                        </div>
+                    }
+                    <div class="text-center mt-3">
+                        <div class="h5 text-info">@GetTotalPoints("Graham") Points Today</div>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" style="width: @(GetCompletionPercentage("Graham"))%"></div>
+                        </div>
+                        <small>@GetCompletedChores("Graham")/@GetTotalChores("Graham") chores done</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rewards and Leaderboard Row -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white text-center">
+                    <h5 class="mb-0"><i class="fas fa-trophy"></i> Available Rewards</h5>
+                </div>
+                <div class="card-body p-2">
+                    @foreach (var reward in GetAvailableRewards())
+                    {
+                        <div class="reward-item mb-2 p-2 bg-light rounded">
+                            <div class="fw-bold">@reward.Name</div>
+                            <small>@reward.PointsCost points</small>
+                            <div class="mt-1">
+                                @if (GetTotalPointsWeek(reward.Child) >= reward.PointsCost)
+                                {
+                                    var buttonClass = reward.Child switch {
+                                        "Leighton" => "btn-primary",
+                                        "Owen" => "btn-success", 
+                                        "Peyton" => "btn-warning",
+                                        "Graham" => "btn-info",
+                                        _ => "btn-secondary"
+                                    };
+                                    <button class="btn btn-sm @buttonClass w-100">Claim Reward!</button>
+                                }
+                                else
+                                {
+                                    <div class="small text-muted">Need @(reward.PointsCost - GetTotalPointsWeek(reward.Child)) more points</div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Weekly Progress</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-3">
+                            <div class="h4 text-primary">@GetTotalPointsWeek("Leighton")</div>
+                            <small>Leighton's Points</small>
+                        </div>
+                        <div class="col-3">
+                            <div class="h4 text-success">@GetTotalPointsWeek("Owen")</div>
+                            <small>Owen's Points</small>
+                        </div>
+                        <div class="col-3">
+                            <div class="h4 text-warning">@GetTotalPointsWeek("Peyton")</div>
+                            <small>Peyton's Points</small>
+                        </div>
+                        <div class="col-3">
+                            <div class="h4 text-info">@GetTotalPointsWeek("Graham")</div>
+                            <small>Graham's Points</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-microphone"></i> Alexa Commands</h5>
+                </div>
+                <div class="card-body">
+                    <div class="small">
+                        <strong>Available Commands:</strong><br/>
+                        • "Mark Leighton's dishwasher loading as complete"<br/>
+                        • "What chores does Owen have today?"<br/>
+                        • "How many points does Peyton have?"<br/>
+                        • "Add 5 points to Graham for helping"<br/>
+                        • "What rewards can Leighton get?"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Chore> allChores = new();
+
+    protected override void OnInitialized()
+    {
+        InitializeChores();
+    }
+
+    private void InitializeChores()
+    {
+        allChores = new List<Chore>
+        {
+            // Leighton's chores (age 10) - More responsibility, can handle complex tasks
+            new Chore { Id = 1, Name = "Make Bed", Child = "Leighton", Points = 5, Frequency = "Daily", IsCompleted = false },
+            new Chore { Id = 2, Name = "Keep Room Organized", Child = "Leighton", Points = 10, Frequency = "Daily", IsCompleted = true, CompletedTime = DateTime.Now.AddHours(-2) },
+            new Chore { Id = 3, Name = "Load/Unload Dishwasher", Child = "Leighton", Points = 8, Frequency = "Daily", IsCompleted = false },
+            new Chore { Id = 4, Name = "Homework & Reading", Child = "Leighton", Points = 15, Frequency = "Weekdays", IsCompleted = true, CompletedTime = DateTime.Now.AddHours(-4) },
+            new Chore { Id = 5, Name = "Take Out Trash", Child = "Leighton", Points = 10, Frequency = "Weekly", IsCompleted = false },
+            new Chore { Id = 6, Name = "Vacuum Living Room", Child = "Leighton", Points = 12, Frequency = "Weekly", IsCompleted = false },
+            new Chore { Id = 7, Name = "Help with Laundry", Child = "Leighton", Points = 10, Frequency = "Weekly", IsCompleted = false },
+
+            // Owen's chores (age 8) - Building independence, can follow multi-step instructions
+            new Chore { Id = 8, Name = "Make Bed", Child = "Owen", Points = 5, Frequency = "Daily", IsCompleted = true, CompletedTime = DateTime.Now.AddHours(-1) },
+            new Chore { Id = 9, Name = "Put Away Toys", Child = "Owen", Points = 5, Frequency = "Daily", IsCompleted = false },
+            new Chore { Id = 10, Name = "Set/Clear Table", Child = "Owen", Points = 7, Frequency = "Daily", IsCompleted = false },
+            new Chore { Id = 11, Name = "Homework Time", Child = "Owen", Points = 10, Frequency = "Weekdays", IsCompleted = false },
+            new Chore { Id = 12, Name = "Feed Pet/Water Plants", Child = "Owen", Points = 5, Frequency = "Daily", IsCompleted = true, CompletedTime = DateTime.Now.AddHours(-3) },
+            new Chore { Id = 13, Name = "Organize Backpack", Child = "Owen", Points = 5, Frequency = "Weekdays", IsCompleted = false },
+            new Chore { Id = 14, Name = "Match & Put Away Socks", Child = "Owen", Points = 8, Frequency = "Weekly", IsCompleted = false },
+
+            // Peyton's chores (age 5) - Simple, clear tasks with visual cues
+            new Chore { Id = 15, Name = "Put Away Toys", Child = "Peyton", Points = 3, Frequency = "Daily", IsCompleted = true, CompletedTime = DateTime.Now.AddMinutes(-30) },
+            new Chore { Id = 16, Name = "Make Bed (with help)", Child = "Peyton", Points = 3, Frequency = "Daily", IsCompleted = false },
+            new Chore { Id = 17, Name = "Put Clothes in Hamper", Child = "Peyton", Points = 3, Frequency = "Daily", IsCompleted = false },
+            new Chore { Id = 18, Name = "Help Set Table (napkins/utensils)", Child = "Peyton", Points = 4, Frequency = "Daily", IsCompleted = false },
+            new Chore { Id = 19, Name = "Feed Goldfish", Child = "Peyton", Points = 4, Frequency = "Daily", IsCompleted = true, CompletedTime = DateTime.Now.AddHours(-2) },
+            new Chore { Id = 20, Name = "Put Away Shoes", Child = "Peyton", Points = 3, Frequency = "Daily", IsCompleted = false },
+
+            // Graham's chores (age 2) - Very simple, fun tasks that build habits
+            new Chore { Id = 21, Name = "Put Toys in Bin", Child = "Graham", Points = 2, Frequency = "Daily", IsCompleted = false },
+            new Chore { Id = 22, Name = "Throw Away Diaper", Child = "Graham", Points = 2, Frequency = "Daily", IsCompleted = true, CompletedTime = DateTime.Now.AddMinutes(-45) },
+            new Chore { Id = 23, Name = "Put Shoes by Door", Child = "Graham", Points = 2, Frequency = "Daily", IsCompleted = false },
+            new Chore { Id = 24, Name = "Help Mommy/Daddy", Child = "Graham", Points = 3, Frequency = "Daily", IsCompleted = true, CompletedTime = DateTime.Now.AddHours(-1) }
+        };
+    }
+
+    private List<Chore> GetChoresForChild(string child)
+    {
+        return allChores.Where(c => c.Child == child).ToList();
+    }
+
+    private int GetTotalPoints(string child)
+    {
+        return allChores.Where(c => c.Child == child && c.IsCompleted).Sum(c => c.Points);
+    }
+
+    private int GetTotalPointsWeek(string child)
+    {
+        // Simulate weekly points (would be from database in real app)
+        return child switch
+        {
+            "Leighton" => 95,  // Oldest, most chores
+            "Owen" => 78,      // Good consistency
+            "Peyton" => 45,    // Age-appropriate expectations
+            "Graham" => 20,    // Just building habits
+            _ => 0
+        };
+    }
+
+    private double GetCompletionPercentage(string child)
+    {
+        var childChores = GetChoresForChild(child);
+        if (!childChores.Any()) return 0;
+        return (double)childChores.Count(c => c.IsCompleted) / childChores.Count * 100;
+    }
+
+    private int GetCompletedChores(string child)
+    {
+        return GetChoresForChild(child).Count(c => c.IsCompleted);
+    }
+
+    private int GetTotalChores(string child)
+    {
+        return GetChoresForChild(child).Count;
+    }
+
+    private List<Reward> GetAvailableRewards()
+    {
+        return new List<Reward>
+        {
+            // Leighton (10) - More mature rewards, values independence
+            new Reward { Name = "Extra Hour Screen Time", PointsCost = 60, Child = "Leighton" },
+            new Reward { Name = "Choose Family Movie Night", PointsCost = 80, Child = "Leighton" },
+            new Reward { Name = "Stay Up 30min Past Bedtime", PointsCost = 90, Child = "Leighton" },
+            new Reward { Name = "Friend Playdate/Sleepover", PointsCost = 120, Child = "Leighton" },
+            new Reward { Name = "$5 Allowance Bonus", PointsCost = 100, Child = "Leighton" },
+            
+            // Owen (8) - Fun activities and special privileges  
+            new Reward { Name = "Extra 30min Screen Time", PointsCost = 50, Child = "Owen" },
+            new Reward { Name = "Choose Weekend Activity", PointsCost = 70, Child = "Owen" },
+            new Reward { Name = "Special One-on-One Time with Parent", PointsCost = 60, Child = "Owen" },
+            new Reward { Name = "Pick Restaurant for Family Dinner", PointsCost = 85, Child = "Owen" },
+            new Reward { Name = "$3 Allowance Bonus", PointsCost = 75, Child = "Owen" },
+            
+            // Peyton (5) - Simple, immediate rewards
+            new Reward { Name = "Choose Special Snack", PointsCost = 25, Child = "Peyton" },
+            new Reward { Name = "Extra Bedtime Story", PointsCost = 30, Child = "Peyton" },
+            new Reward { Name = "Pick Family Game to Play", PointsCost = 35, Child = "Peyton" },
+            new Reward { Name = "Special Art/Craft Time", PointsCost = 40, Child = "Peyton" },
+            new Reward { Name = "Small Toy/Sticker Prize", PointsCost = 50, Child = "Peyton" },
+            
+            // Graham (2) - Fun, interactive rewards
+            new Reward { Name = "Special Stickers", PointsCost = 15, Child = "Graham" },
+            new Reward { Name = "Extra Playground Time", PointsCost = 20, Child = "Graham" },
+            new Reward { Name = "Choose Favorite Song to Dance To", PointsCost = 18, Child = "Graham" },
+            new Reward { Name = "Special Bubble Bath", PointsCost = 25, Child = "Graham" }
+        };
+    }
+
+    private void ToggleChore(Chore chore)
+    {
+        chore.IsCompleted = !chore.IsCompleted;
+        chore.CompletedTime = chore.IsCompleted ? DateTime.Now : null;
+        StateHasChanged();
+    }
+
+    public class Chore
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Child { get; set; } = string.Empty;
+        public int Points { get; set; }
+        public string Frequency { get; set; } = string.Empty;
+        public bool IsCompleted { get; set; }
+        public DateTime? CompletedTime { get; set; }
+    }
+
+    public class Reward
+    {
+        public string Name { get; set; } = string.Empty;
+        public int PointsCost { get; set; }
+        public string Child { get; set; } = string.Empty;
+    }
+}

@@ -1,0 +1,97 @@
+@page "/meal-planner"
+@using System.Text.Json
+@inject HttpClient Http
+
+<PageTitle>Dinner Menu</PageTitle>
+
+<h3>Dinner for @DisplayDate</h3>
+
+@if (IsLoading)
+{
+    <p>Loading tonight's dinner...</p>
+}
+else if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <p class="text-danger">Error: @ErrorMessage</p>
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">@DinnerName</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Prep Type:</strong> @PrepType</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Cook Time:</strong> @CookTimeDisplay</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <small class="text-muted">
+            Menu updates at 10 PM ET for the next day
+        </small>
+    </div>
+}
+
+@code {
+    private bool IsLoading = true;
+    private string ErrorMessage = "";
+    private string DinnerName = "";
+    private string PrepType = "";
+    private int CookTime = 0;
+    private DateTime TargetDate = DateTime.Today;
+
+    private string DisplayDate => TargetDate.ToString("MMMM dd, yyyy");
+    private string CookTimeDisplay => CookTime switch
+    {
+        0 => "No cooking required",
+        < 30 => $"{CookTime} minutes (Quick)",
+        < 60 => $"{CookTime} minutes",
+        >= 480 => "All day (Crockpot)",
+        _ => $"{CookTime / 60} hours {CookTime % 60} minutes"
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDinner();
+    }
+
+    private async Task LoadDinner()
+    {
+        try
+        {
+            IsLoading = true;
+            ErrorMessage = "";
+
+            var response = await Http.GetFromJsonAsync<DinnerResponse>("/api/dinner");
+            
+            if (response != null)
+            {
+                DinnerName = response.Dinner;
+                PrepType = response.PrepType;
+                CookTime = response.CookTime;
+                TargetDate = DateTime.Parse(response.Date);
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to load dinner menu: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public class DinnerResponse
+    {
+        public string Date { get; set; } = "";
+        public string Dinner { get; set; } = "";
+        public string PrepType { get; set; } = "";
+        public int CookTime { get; set; }
+    }
+}

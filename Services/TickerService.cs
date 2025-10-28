@@ -14,13 +14,16 @@ using System.Xml;
 using System.IO;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
+using SeatingChartApp.Services;
 
 public class TickerService
 {
     private readonly HttpClient _http;
-    public TickerService(HttpClient http)
+    private readonly SchoolEventsService _schoolEventsService;
+    public TickerService(HttpClient http, SchoolEventsService schoolEventsService)
     {
         _http = http;
+        _schoolEventsService = schoolEventsService;
     }
     public async Task<List<string>> GetTeamEventsAsync()
     {
@@ -85,8 +88,23 @@ public class TickerService
                 string abbrevHome = homeTeam.GetProperty("team").GetProperty("shortDisplayName").GetString() ?? "shortDisplayNameHome";
                 string scoreAway = awayTeam.GetProperty("score").GetString() ?? "0";
                 string scoreHome = homeTeam.GetProperty("score").GetString() ?? "0";
-                string recordAway = awayTeam.GetProperty("records")[0].GetProperty("summary").GetString() ?? "0-0";
-                string recordHome = homeTeam.GetProperty("records")[0].GetProperty("summary").GetString() ?? "0-0";
+                // Safely get records with null check for off-season periods
+                string recordAway = "0-0";
+                string recordHome = "0-0";
+                
+                if (awayTeam.TryGetProperty("records", out var awayRecordsProp) && 
+                    awayRecordsProp.ValueKind == JsonValueKind.Array && 
+                    awayRecordsProp.GetArrayLength() > 0)
+                {
+                    recordAway = awayRecordsProp[0].GetProperty("summary").GetString() ?? "0-0";
+                }
+                
+                if (homeTeam.TryGetProperty("records", out var homeRecordsProp) && 
+                    homeRecordsProp.ValueKind == JsonValueKind.Array && 
+                    homeRecordsProp.GetArrayLength() > 0)
+                {
+                    recordHome = homeRecordsProp[0].GetProperty("summary").GetString() ?? "0-0";
+                }
                 Console.WriteLine($"Away Team: {nameAway}, Home Team: {nameHome}, Away Record: {recordAway}, Home Record: {recordHome}");
                 // Defensive: handle both "logo" (string) and "logos" (array)
                 string logoAway = "logoAway";
@@ -113,7 +131,31 @@ public class TickerService
                     // Skip this event if it's older than 5 days
                     continue;
                 }
-                dateStr = gameTime.ToLocalTime().ToString("h:mm tt");
+                
+                // Check if the event is more than 24 hours away
+                var localGameTime = gameTime.ToLocalTime();
+                var localNow = DateTime.Now;
+                var hoursUntilGame = (localGameTime - localNow).TotalHours;
+                var daysUntilGame = (localGameTime.Date - localNow.Date).Days;
+                
+                if (hoursUntilGame > 24)
+                {
+                    if (daysUntilGame > 5)
+                    {
+                        // Show day of week, date and time for events more than 5 days away
+                        dateStr = localGameTime.ToString("ddd M/d h:mm tt");
+                    }
+                    else
+                    {
+                        // Show date and time for events 1-5 days away
+                        dateStr = localGameTime.ToString("M/d h:mm tt");
+                    }
+                }
+                else
+                {
+                    // Show only time for events within 24 hours
+                    dateStr = localGameTime.ToString("h:mm tt");
+                }
             }
                 string eventType = "";
                 var leagueCode = "";
@@ -225,15 +267,41 @@ public class TickerService
                         } else {
                             leagueCode = "college-football";
                         }
+                        
+                        // Get pre-game information for football
+                        string headline = "";
+                        try {
+                            headline = eventObj.GetProperty("competitions")[0].GetProperty("notes")[0].GetProperty("headline").GetString() ?? "Game Preview";
+                        } catch {
+                            headline = "Game Preview";
+                        }
+                        
+                        // Fetch football-specific data
+                        string seriesSummary = await GetScoreboardPropertyAsync("football", leagueCode, "series.summary", gameId);
+                        string oddsDetails = await GetScoreboardPropertyAsync("football", leagueCode, "competitions.odds", gameId);
+                        string gameNotes = await GetScoreboardPropertyAsync("football", leagueCode, "competitions.description", gameId);
+                        string overUnder = await GetScoreboardPropertyAsync("football", leagueCode, "competitions.overunder", gameId);
+                        
                         // Show pre-game information for football
                         results.Add($@"
-                        <div style='display: grid; grid-template-columns: auto auto auto auto; align-items: center; gap: 10px; max-width: 100%; overflow: hidden; text-overflow: ellipsis;'>
+                        <div style='display: grid; grid-template-columns: auto auto auto auto auto auto auto auto auto; align-items: center; gap: 10px; max-width: 100%; overflow: hidden; text-overflow: ellipsis;'>
+                            <!-- Row 1 -->
                             <img src='{logoAway}' alt='{nameAway}' height='40' style='vertical-align:middle;' />
-                            <span style='font-size: 24px; font-weight:bold;'> {abbrevAway} </span>
+                            <span style='font-size: 24px; font-weight:bold;'> {abbrevAway}  <span style='font-size: 12px; opacity:0.6; vertical-align:middle;'> {recordAway} </span></span>
                             <span style='width: 20px;'></span> <!-- Empty cell -->
+                            <div style='border-left: 1px solid #ccc; height: 40px;'></div>
                             <img src='{logoHome}' alt='{nameHome}' height='40' style='vertical-align:middle;' />
-                            <span style='font-size: 24px; font-weight:bold;'> {abbrevHome} </span>
-                            <span style='opacity:0.6;'> {dateStr} </span>
+                            <span style='font-size: 24px; font-weight:bold;'> {abbrevHome}  <span style='font-size: 12px; opacity:0.6; vertical-align:middle;'> {recordHome} </span></span>
+                            <span style='width: 20px;'></span> <!-- Empty cell -->
+                            <div style='border-left: 1px solid #ccc; height: 40px;'></div>
+                            <span style='opacity:0.6; display: flex; flex-direction: column; align-items: center;'> 
+                                <span>{dateStr}</span>
+                                <span style='font-size: 12px; margin-top: 2px;'>{overUnder}</span>
+                            </span>
+                            <!-- Row 2 -->
+                            <span style='grid-column: span 3; text-align: left; font-size: 14px; opacity:0.8;'> {headline} </span>
+                            <span style='grid-column: span 3; text-align: left; font-size: 14px; opacity:0.8;'> {seriesSummary} </span>
+                            <span style='grid-column: span 3; text-align: center; font-size: 14px; opacity:0.8;'> {oddsDetails} </span>
                         </div>
                         ");
                     }
@@ -241,7 +309,7 @@ public class TickerService
                 else if (statusState == "in")
                 {
                     if (eventType == "MLB" || eventType == "College_Baseball")
-                        {
+                    {
                         if (eventType == "MLB") {
                             leagueCode = "mlb";
                         } else {
@@ -362,11 +430,11 @@ public class TickerService
                 else if (statusState == "post")
                 {
                     // Determine the winner
-                    string winner = int.TryParse(scoreAway, out var awayScore) && int.TryParse(scoreHome, out var homeScore)
-                        ? (awayScore > homeScore ? abbrevAway : abbrevHome) : "unknown";
+                string winner = int.TryParse(scoreAway, out var awayScore) && int.TryParse(scoreHome, out var homeScore)
+                    ? (awayScore > homeScore ? abbrevAway : abbrevHome) : "unknown";
                     if (eventType == "MLB" || eventType == "College_Baseball") //Post-game for baseball is COMPLETE
                     {
-                        if (eventType == "MLB") {
+                    if (eventType == "MLB") {
                             leagueCode = "mlb";
                         } else {
                             leagueCode = "college-baseball";
@@ -489,43 +557,14 @@ public class TickerService
     }
     public async Task<List<string>> GetSchoolEventsAsync()
     {
-        var icsUrl = "https://www.CCS.k12.in.us/fs/calendar-manager/events.ics?calendar_ids[]=171&calendar_ids[]=3";
-        var results = new List<string>();
-
         try
         {
-            // Fetch the ICS file
-            var icsData = await _http.GetStringAsync(icsUrl);
-
-            // Parse the ICS file
-            var calendar = Calendar.Load(icsData);
-
-            // Extract and filter events
-            var upcomingEvents = calendar.Events
-                .Where(e => e.Start.AsSystemLocal > DateTime.Now) // Only future events
-                .OrderBy(e => e.Start.AsSystemLocal)             // Sort by start date
-                .Take(3);                                        // Take the next 3 events
-
-            foreach (var calendarEvent in upcomingEvents)
-            {
-                var eventTitle = calendarEvent.Summary ?? "No Title";
-                var eventStart = calendarEvent.Start.AsSystemLocal.ToString("MMM dd");
-                var eventEnd = calendarEvent.End.AsSystemLocal.ToString("MMM dd");
-                // Only include eventEnd if it is different from eventStart
-                var eventDateDisplay = eventStart;
-                if (eventEnd != eventStart)
-                {
-                    eventDateDisplay += $" - {eventEnd}";
-                }
-                results.Add($"<div style='display: flex; align-items: center; height: 100%; max-height: 80px; width: auto;'> {eventTitle} <br>{eventDateDisplay}</div>");
-            }
+            return await _schoolEventsService.GetFormattedUpcomingEventsAsync(3);
         }
         catch (Exception ex)
         {
-            results.Add($"Error fetching school events: {ex.Message}");
+            return new List<string> { $"Error fetching school events: {ex.Message}" };
         }
-
-        return results;
     }
     public async Task<List<string>> GetLocalEventsAsync()
     {
@@ -646,13 +685,22 @@ public class TickerService
                 {
                     if (propertyPath == "series.summary")
                     {
-                        var seriesSummary = competitionsSB[0].GetProperty("series").GetProperty("summary").GetString() ?? "No series summary available";
-                        return seriesSummary;
+                        try {
+                            var seriesSummary = competitionsSB[0].GetProperty("series").GetProperty("summary").GetString() ?? "No series info";
+                            return seriesSummary;
+                        } catch {
+                            // For football, series might not exist, so return something more generic
+                            return "Matchup Preview";
+                        }
                     }
                     else if (propertyPath == "competitions.odds")
                     {
-                        var eventOdds = competitionsSB[0].GetProperty("odds")[0].GetProperty("details").GetString() ?? "No event odds available";
-                        return eventOdds;
+                        try {
+                            var eventOdds = competitionsSB[0].GetProperty("odds")[0].GetProperty("details").GetString() ?? "No odds available";
+                            return eventOdds;
+                        } catch {
+                            return "Even odds";
+                        }
                     } else if (propertyPath == "event.ShortDetailstatus")
                     {
                         var status = scoreboardData.GetProperty("status").GetProperty("type").GetProperty("shortDetail").GetString() ?? "No status available";
@@ -848,9 +896,13 @@ public class TickerService
                     }
                     else if (propertyPath == "competitions.description")
                     {
-                        // Get the description of the game
-                        var description = competitionsSB[0].GetProperty("description").GetString() ?? "No description available";
-                        return description;
+                        try {
+                            // Get the description of the game
+                            var description = competitionsSB[0].GetProperty("description").GetString() ?? "Game preview";
+                            return description;
+                        } catch {
+                            return "Game details unavailable";
+                        }
                     }
                     else if (propertyPath == "competitions.postGamePitcher")
                     {
@@ -905,6 +957,16 @@ public class TickerService
                         // Get the headlines for the game
                         var postGameStatus = competitionsSB[0].GetProperty("status").GetProperty("type").GetProperty("shortDetail").GetString() ?? "No post game status available";
                         return postGameStatus;
+                    }
+                    else if (propertyPath == "competitions.overunder")
+                    {
+                        try {
+                            // Navigate to total > over > close > line for over/under
+                            var overUnder = competitionsSB[0].GetProperty("odds")[0].GetProperty("total").GetProperty("over").GetProperty("close").GetProperty("line").GetDouble();
+                            return $"O/U {overUnder}";
+                        } catch {
+                            return "O/U N/A";
+                        }
                     }
                     else
                     {

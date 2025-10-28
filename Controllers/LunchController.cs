@@ -58,9 +58,8 @@ public class LunchController : ControllerBase
     {
         ["2025-06-03"] = "Test Event NB",
         ["2025-06-04"] = "Test Event NB",
-        ["2025-08-04"] = "Teacher Work Day (No Students)",
+        ["2025-08-04"] = "First Student Day",
         ["2025-08-05"] = "Teacher Work Day (No Students)",
-        ["2025-08-06"] = "First Student Day",
         ["2025-09-01"] = "Labor Day Holiday",
         ["2025-10-06"] = "Fall Break",
         ["2025-10-07"] = "Fall Break",
@@ -104,8 +103,8 @@ public class LunchController : ControllerBase
         if (today.Hour >= 14)
             today = today.AddDays(1);
 
-        var isSchool = today >= new DateTime(2025, 8, 6) && today <= new DateTime(2026, 5, 22);
-        var start = isSchool ? new DateTime(2025, 8, 6) : new DateTime(2025, 5, 23);
+        var isSchool = today >= new DateTime(2025, 8, 4) && today <= new DateTime(2026, 5, 22);
+        var start = isSchool ? new DateTime(2025, 8, 4) : new DateTime(2025, 5, 23);
 
         int weekdaysPassed = Enumerable.Range(0, (today - start).Days + 1)
             .Select(i => start.AddDays(i))

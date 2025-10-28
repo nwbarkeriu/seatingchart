@@ -22,6 +22,11 @@
     <Content Include="Pages/_Host.cshtml">
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </Content>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.6" />
   </ItemGroup>
 

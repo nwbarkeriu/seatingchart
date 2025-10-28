@@ -15,28 +15,23 @@
       <select id="teamSelector" onchange="loadSelectedTeam()">
         <option value="">-- Select Team --</option>
       </select>
-      <div id="teamMetadata" style="margin-top: 1rem; display: none;">
+      <div id="teamMetadata" style="margin-top: 1rem;">
         <label>Coach:</label>
         <input type="text" id="coachName" placeholder="Coach Name">
-      
+        <br>
         <label>Age Group:</label>
         <input type="text" id="ageGroup" placeholder="Age Group">
-      
+        <br>
         <label>Home Field:</label>
         <input type="text" id="homeField" placeholder="Home Field">
-      
-        <!-- <a href="#" onclick="saveTeam(); return false;" style="color: #007bff; text-decoration: none;">💾 Save</a> -->
       </div>
       <div class="team-actions">
         <button onclick="showNewTeamForm()">+ New Team</button>
-        <a href="#" onclick="saveTeam(); return false;" class="save-link" id="saveTeamLink" style="display: none;">💾 Save</a>
+        <button onclick="saveTeam()" id="saveTeamBtn">💾 Save Team</button>
       </div>      
       <div id="newTeamForm" style="margin-top: 1rem; display: none;">
+        <label>Team Name:</label>
         <input type="text" id="teamName" placeholder="Team Name" />
-        <input type="text" id="coachName" placeholder="Coach Name">
-        <input type="text" id="ageGroup" placeholder="Age Group">
-        <input type="text" id="homeField" placeholder="Home Field">
-        <button onclick="saveTeam()">Save Team</button>
       </div>
     </div>
 
@@ -101,11 +96,12 @@
     </div>
   </div>
 </div>
-  <!-- Buttons are now outside #main -->
-  <div id="buttonContainer" style="text-align: center; margin-top: 1rem;">
-    <button onclick="saveLineupToLocalStorage()">Save Lineup</button>
-    <button onclick="loadLineupFromLocalStorage()">Load Lineup</button>
-    <button onclick="localStorage.clear(); location.reload();">Clear Saved</button>
+  <!-- Action Buttons -->
+  <div id="buttonContainer" style="text-align: center; margin-top: 1rem; padding: 1rem; border-top: 2px solid #ddd;">
+    <h4>Game Actions</h4>
+    <button onclick="saveLineupToLocalStorage()" style="background: #28a745; color: white; padding: 10px 20px; margin: 5px;">💾 Save Lineup & Game</button>
+    <button onclick="loadLineupFromLocalStorage()" style="background: #007bff; color: white; padding: 10px 20px; margin: 5px;">📂 Load Saved Lineup</button>
+    <button onclick="localStorage.clear(); location.reload();" style="background: #dc3545; color: white; padding: 10px 20px; margin: 5px;">🗑️ Clear All Data</button>
   </div>
   
 
@@ -114,7 +110,7 @@
 let teams = JSON.parse(localStorage.getItem('teams') || '{}');
 let selectedPlayers = {};
 
-    function saveTeam() {
+    async function saveTeam() {
         // Try to get from input first (new team), otherwise use selected team
         const inputTeamName = $('#teamName').val().trim();
         const selectedTeamName = $('#teamSelector').val();
@@ -124,6 +120,8 @@ let selectedPlayers = {};
             alert('Enter a team name or select a team to update.');
             return;
         }
+        
+        console.log('Saving team:', teamName);
 
         const players = [];
         $('#playerTable tbody tr').each(function () {
@@ -140,30 +138,226 @@ let selectedPlayers = {};
         const ageGroup = $('#ageGroup').val();
         const homeField = $('#homeField').val();
 
-        teams[teamName] = {
-            players,
+        // Convert players to match API model
+        const apiPlayers = players.map(p => ({
+            name: `${p.first || ''} ${p.last || ''}`.trim() || 'Unknown Player',
+            jerseyNumber: parseInt(p.home || p.away || '0') || 0,
+            preferredPosition: p.primary || '',
+            isActive: true
+        }));
+
+        const teamData = {
+            name: teamName,
             coach,
-            ageGroup,
-            homeField
+            league: ageGroup // Map ageGroup to league field
+            // Don't include players in team creation, add them separately
         };
 
-        localStorage.setItem('teams', JSON.stringify(teams));
-        $('#activeTeamName').text(`– ${teamName}`);
-        loadTeams();
-        alert(`Saved team: ${teamName}`);
+        try {
+            console.log('Attempting to save team:', teamData);
+            
+            // Check if this is an update (team exists) or create new
+            const isUpdate = teams[teamName] && teams[teamName].id;
+            const url = isUpdate ? `/api/lineup/teams/${teams[teamName].id}` : '/api/lineup/teams';
+            const method = isUpdate ? 'PUT' : 'POST';
+
+            console.log(`Making ${method} request to ${url}`);
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(teamData)
+            });
+
+            console.log('Response status:', response.status);
+
+            if (response.ok) {
+                const savedTeam = await response.json();
+                console.log('Team saved successfully:', savedTeam);
+                
+                // Now save players individually
+                const savedPlayers = [];
+                for (const apiPlayer of apiPlayers) {
+                    try {
+                        const playerResponse = await fetch(`/api/lineup/teams/${savedTeam.id}/players`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(apiPlayer)
+                        });
+                        
+                        if (playerResponse.ok) {
+                            const savedPlayer = await playerResponse.json();
+                            console.log('Player saved:', savedPlayer);
+                            
+                            // Convert to HTML format
+                            const nameParts = savedPlayer.name.split(' ');
+                            savedPlayers.push({
+                                first: nameParts[0] || '',
+                                last: nameParts.slice(1).join(' ') || '',
+                                home: savedPlayer.jerseyNumber?.toString() || '',
+                                away: '',
+                                bats: 'R',
+                                fields: 'R',
+                                primary: savedPlayer.preferredPosition || '',
+                                secondary: '',
+                                id: savedPlayer.id
+                            });
+                        } else {
+                            const playerErrorText = await playerResponse.text();
+                            console.error('Failed to save player:', apiPlayer, 'Error:', playerResponse.status, playerErrorText);
+                        }
+                    } catch (playerError) {
+                        console.error('Error saving player:', apiPlayer, playerError);
+                    }
+                }
+                
+                // Update local teams object
+                teams[teamName] = {
+                    id: savedTeam.id,
+                    players: savedPlayers,
+                    coach: savedTeam.coach,
+                    ageGroup: savedTeam.league || '',
+                    homeField: savedTeam.homeField || ''
+                };
+
+                // Also save to localStorage as backup
+                localStorage.setItem('teams', JSON.stringify(teams));
+                
+                $('#activeTeamName').text(`– ${teamName}`);
+                $('#newTeamForm').hide(); // Hide new team form after saving
+                $('#teamSelector').val(teamName); // Select the saved team
+                await loadTeams(); // Refresh the dropdown
+                alert(`Saved team: ${teamName} with ${savedPlayers.length} players`);
+            } else {
+                const errorText = await response.text();
+                console.error('Save team failed:', response.status, errorText);
+                alert(`Failed to save team (${response.status}): ${errorText}`);
+            }
+        } catch (error) {
+            console.error('Error saving team:', error);
+            alert('Error saving team to database, saved to localStorage as backup');
+            
+            // Fallback to localStorage save
+            teams[teamName] = {
+                players,
+                coach,
+                ageGroup,
+                homeField
+            };
+            localStorage.setItem('teams', JSON.stringify(teams));
+            $('#activeTeamName').text(`– ${teamName}`);
+            loadTeams();
+        }
     }
 
-    function loadTeams() {
-        $('#teamSelector').html('<option value="">-- Select Team --</option>');
-        Object.keys(teams).forEach(team => {
-            $('#teamSelector').append(`<option value="${team}">${team}</option>`);
-        });
+    async function loadTeams() {
+        try {
+            const response = await fetch('/api/lineup/teams');
+            if (response.ok) {
+                const apiTeams = await response.json();
+                teams = {}; // Reset the teams object
+                $('#teamSelector').html('<option value="">-- Select Team --</option>');
+                
+                apiTeams.forEach(team => {
+                    // Convert API players to HTML format
+                    const htmlPlayers = (team.players || []).map(p => {
+                        const nameParts = p.name.split(' ');
+                        return {
+                            first: nameParts[0] || '',
+                            last: nameParts.slice(1).join(' ') || '',
+                            home: p.jerseyNumber?.toString() || '',
+                            away: '',
+                            bats: 'R',
+                            fields: 'R',
+                            primary: p.preferredPosition || '',
+                            secondary: '',
+                            id: p.id
+                        };
+                    });
+
+                    teams[team.name] = {
+                        id: team.id,
+                        players: htmlPlayers,
+                        coach: team.coach,
+                        ageGroup: team.league || '', // Map league to ageGroup
+                        homeField: team.homeField || ''
+                    };
+                    $('#teamSelector').append(`<option value="${team.name}">${team.name}</option>`);
+                });
+            } else {
+                console.error('Failed to load teams from API, falling back to localStorage');
+                // Fallback to localStorage if API fails
+                $('#teamSelector').html('<option value="">-- Select Team --</option>');
+                Object.keys(teams).forEach(team => {
+                    $('#teamSelector').append(`<option value="${team}">${team}</option>`);
+                });
+            }
+        } catch (error) {
+            console.error('Error loading teams:', error);
+            // Fallback to localStorage if API fails
+            $('#teamSelector').html('<option value="">-- Select Team --</option>');
+            Object.keys(teams).forEach(team => {
+                $('#teamSelector').append(`<option value="${team}">${team}</option>`);
+            });
+        }
     }
-    function loadSelectedTeam() {
+    async function loadSelectedTeam() {
         const team = $('#teamSelector').val();
-        if (!team) return;
+        if (!team) {
+            // Clear everything when no team selected
+            $('#playerTable tbody').empty();
+            $('#teamMetadata input').val('');
+            $('#newTeamForm').hide();
+            $('#activeTeamName').text('');
+            return;
+        }
 
-        const teamData = teams[team];
+        // Don't load if we're in the middle of creating a new team
+        if ($('#newTeamForm').is(':visible') && $('#teamName').val().trim()) {
+            console.log('Not loading team - currently creating new team');
+            return;
+        }
+
+        try {
+            // First try to get from our loaded teams object
+            let teamData = teams[team];
+            
+            // If not found or missing details, fetch from API
+            if (!teamData || !teamData.id) {
+                const response = await fetch('/api/lineup/teams');
+                if (response.ok) {
+                    const apiTeams = await response.json();
+                    const apiTeam = apiTeams.find(t => t.name === team);
+                    if (apiTeam) {
+                        // Convert API players to HTML format
+                        const htmlPlayers = (apiTeam.players || []).map(p => {
+                            const nameParts = p.name.split(' ');
+                            return {
+                                first: nameParts[0] || '',
+                                last: nameParts.slice(1).join(' ') || '',
+                                home: p.jerseyNumber?.toString() || '',
+                                away: '',
+                                bats: 'R',
+                                fields: 'R',
+                                primary: p.preferredPosition || '',
+                                secondary: '',
+                                id: p.id
+                            };
+                        });
+
+                        teamData = {
+                            id: apiTeam.id,
+                            players: htmlPlayers,
+                            coach: apiTeam.coach,
+                            ageGroup: apiTeam.league || '', // Map league to ageGroup
+                            homeField: apiTeam.homeField || ''
+                        };
+                        teams[team] = teamData; // Update local cache
+                    }
+                }
+            }
         const players = teamData?.players || [];
 
         $('#playerTable tbody').empty();
@@ -181,7 +375,6 @@ let selectedPlayers = {};
 
         $('#activeTeamName').text(`– ${team}`);
         $('#newTeamForm').hide();
-        $('#saveTeamLink').show();
 
         // ✅ Ensure there are exactly 9 lineup boxes
         const currentCount = $('#d li').length;
@@ -199,7 +392,11 @@ let selectedPlayers = {};
             // console.log(`Setting input ${i} to: ${names[i] || ''}`);
         });
 
-        updateDropdowns();
+            updateDropdowns();
+        } catch (error) {
+            console.error('Error loading team:', error);
+            alert('Error loading team details');
+        }
     }
     function addPlayerRow(player = {}) {
         const row = createPlayerRow(player);
@@ -334,10 +531,17 @@ let selectedPlayers = {};
 
 
 function showNewTeamForm() {
-    document.getElementById('newTeamForm').style.display = 'block';
-    document.getElementById('teamMetadata').style.display = 'none';
-    document.getElementById('teamSelector').value = '';
-    $('#saveTeamLink').hide(); // <-- hide save link for new team
+    $('#newTeamForm').show();
+    $('#teamSelector').val(''); // Clear team selection
+    $('#teamName').val(''); // Clear team name
+    $('#playerTable tbody').empty(); // Clear player roster
+    $('#teamMetadata input').val(''); // Clear metadata
+    $('#activeTeamName').text('');
+    
+    // Add a few empty player rows to get started
+    for (let i = 0; i < 3; i++) {
+        addPlayerRow();
+    }
 }
 
 
@@ -362,7 +566,7 @@ function updateSitting() {
     });
 }
 
-function saveLineupToLocalStorage() {
+async function saveLineupToLocalStorage() {
     const players = [];
     $('#d li input').each(function () {
         players.push($(this).val());
@@ -378,8 +582,142 @@ function saveLineupToLocalStorage() {
         });
     });
 
+    // Always save to localStorage as backup
     localStorage.setItem('lineup_players', JSON.stringify(players));
     localStorage.setItem('lineup_positions', JSON.stringify(layout));
+    
+    // Also save to database if we have a selected team
+    await saveLineupToDatabase(layout);
+}
+
+async function saveLineupToDatabase(layout) {
+    const selectedTeam = $('#teamSelector').val();
+    console.log('Saving lineup for team:', selectedTeam);
+    console.log('Teams object:', teams);
+    console.log('Layout:', layout);
+    
+    if (!selectedTeam || !teams[selectedTeam] || !teams[selectedTeam].id) {
+        alert('Please select and save a team first before saving lineup');
+        console.log('No team selected or team not saved to database yet');
+        return;
+    }
+    
+    const teamData = teams[selectedTeam];
+    
+    // Check if team has players with IDs
+    const playersWithIds = teamData.players.filter(p => p.id);
+    console.log('Team players:', teamData.players);
+    console.log('Players with IDs:', playersWithIds);
+    
+    if (playersWithIds.length === 0) {
+        alert(`Team has no players saved to database. Please add players to the roster and save the team first. Found ${teamData.players.length} players but none have database IDs.`);
+        return;
+    }
+    
+    try {
+        
+        // Get game details from the form
+        const opponent = $('#gameOpponent').val().trim() || 'Practice';
+        const gameLocation = $('#gameLocation').val().trim();
+        const gameDate = $('#gameDate').val();
+        const gameTime = $('#gameTime').val();
+        
+        // Create full datetime if both date and time are provided
+        let gameDatetime = new Date();
+        if (gameDate) {
+            if (gameTime) {
+                gameDatetime = new Date(`${gameDate}T${gameTime}`);
+            } else {
+                gameDatetime = new Date(gameDate);
+            }
+        }
+        
+        const isHome = gameLocation ? gameLocation.toLowerCase().includes('home') : true;
+        
+        const gameData = {
+            opponent: opponent,
+            gameDate: gameDatetime.toISOString(),
+            location: gameLocation || (isHome ? (teamData.homeField || 'Home Field') : 'Away'),
+            isHome: isHome
+        };
+        
+        console.log('Creating game with data:', gameData);
+        
+        // Create the game
+        const gameResponse = await fetch(`/api/lineup/teams/${teamData.id}/games`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(gameData)
+        });
+        
+        if (!gameResponse.ok) {
+            const gameError = await gameResponse.text();
+            console.error('Game creation failed:', gameResponse.status, gameError);
+            throw new Error(`Failed to create game (${gameResponse.status}): ${gameError}`);
+        }
+        
+        const game = await gameResponse.json();
+        console.log('Game created successfully:', game);
+        
+        // Convert the layout to GameLineupPosition format
+        const lineupPositions = [];
+        
+        for (const [inningId, positions] of Object.entries(layout)) {
+            const inningNumber = parseInt(inningId.replace('inning', ''));
+            
+            let battingOrder = 1;
+            for (const [positionName, playerName] of Object.entries(positions)) {
+                if (playerName && playerName.trim()) {
+                    // Find the player by name
+                    const player = teamData.players.find(p => 
+                        `${p.first || ''} ${p.last || ''}`.trim() === playerName.trim()
+                    );
+                    
+                    if (player && player.id) {
+                        lineupPositions.push({
+                            playerId: player.id,
+                            inning: inningNumber,
+                            position: positionName.toUpperCase(),
+                            battingOrder: battingOrder++
+                        });
+                    } else {
+                        console.warn(`Player "${playerName}" not found in team roster or missing ID`);
+                        // For now, create lineup position without player ID (this might fail on API)
+                        lineupPositions.push({
+                            playerId: 0, // This will likely cause API error
+                            inning: inningNumber,
+                            position: positionName.toUpperCase(),
+                            battingOrder: battingOrder++
+                        });
+                    }
+                }
+            }
+        }
+        
+        console.log('Lineup positions to save:', lineupPositions);
+        
+        if (lineupPositions.length > 0) {
+            const lineupResponse = await fetch(`/api/lineup/games/${game.id}/lineup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(lineupPositions)
+            });
+            
+            if (lineupResponse.ok) {
+                alert(`Lineup saved to database for game vs ${opponent}!`);
+            } else {
+                const lineupError = await lineupResponse.text();
+                console.error('Failed to save lineup positions:', lineupResponse.status, lineupError);
+                alert(`Game created but lineup positions failed to save (${lineupResponse.status}): ${lineupError}`);
+            }
+        } else {
+            alert('No valid lineup positions found to save');
+        }
+        
+    } catch (error) {
+        console.error('Error saving lineup to database:', error);
+        alert('Failed to save lineup to database, but saved locally as backup');
+    }
 }
 
 function loadLineupFromLocalStorage() {
@@ -405,11 +743,7 @@ function loadLineupFromLocalStorage() {
     }, 100);
 }
 
-    function showNewTeamForm() {
-    document.getElementById('newTeamForm').style.display = 'block';
-    document.getElementById('teamMetadata').style.display = 'none';
-    document.getElementById('teamSelector').value = '';
-    }
+
 
 // INIT
 $(document).ready(function () {
