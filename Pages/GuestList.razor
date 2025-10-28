@@ -5,6 +5,10 @@
 <h3>Guest List</h3>
 
 <div>
+    <p>Test Counter: @testCounter</p>
+    <button class="btn btn-warning" @onclick="IncrementTest">Test Button (Click Me)</button>
+    <br /><br />
+    
     @if (!string.IsNullOrEmpty(errorMessage))
     {
         <div class="alert alert-danger">
@@ -40,6 +44,13 @@
     private string? guestInput;
     private List<Guest> guests = new();
     private string? errorMessage = null;
+    private int testCounter = 0;
+
+    private void IncrementTest()
+    {
+        testCounter++;
+        errorMessage = $"Test button clicked! Counter: {testCounter}";
+    }
 
     private void ProcessGuestList()
     {
@@ -69,9 +80,9 @@
 
     private void LoadSampleGuests()
     {
-
         // DEBUG: immediately show a message
-        //errorMessage = "LoadSampleGuests() was invoked!";
+        errorMessage = "LoadSampleGuests() was invoked!";
+        
         // 172 sample names (you can add or remove as needed)
         var sampleGuests = new List<string>
         {
@@ -108,5 +119,8 @@
             .ToList();
 
         DummyGuestService.Guests = guests;
+        
+        // 3) Force UI to refresh
+        StateHasChanged();
     }
 }
