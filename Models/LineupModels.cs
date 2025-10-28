@@ -11,7 +11,7 @@ namespace SeatingChartApp.Models
         
         public string? Coach { get; set; }
         public string? League { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime CreatedDate { get; set; }
         
         public List<Player> Players { get; set; } = new();
         public List<Game> Games { get; set; } = new();

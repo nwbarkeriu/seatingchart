@@ -15,7 +15,7 @@ namespace SeatingChartApp.Models
         public string? Snacks { get; set; }
         
         public string? Notes { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         
         public List<MealPlanRecipe> Recipes { get; set; } = new();
@@ -40,7 +40,7 @@ namespace SeatingChartApp.Models
         public int? Rating { get; set; } // 1-5 stars
         
         public bool IsFavorite { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime CreatedDate { get; set; }
         public DateTime? LastMadeDate { get; set; }
         
         public List<MealPlanRecipe> MealPlans { get; set; } = new();
@@ -66,7 +66,7 @@ namespace SeatingChartApp.Models
         [Required]
         public string Name { get; set; } = string.Empty;
         
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime CreatedDate { get; set; }
         public bool IsCompleted { get; set; }
         
         public List<ShoppingListItem> Items { get; set; } = new();
