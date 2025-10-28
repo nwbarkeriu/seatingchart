@@ -114,8 +114,17 @@ fi
 if [ "$SKIP_SERVICES" = false ]; then
     echo "🚀 Restarting services..."
     sudo systemctl restart seatingchart.service
-    sudo systemctl restart voice_webhook.service
-    sudo systemctl restart forward_sms.service
+    
+    # Restart related services if they exist
+    if sudo systemctl list-unit-files | grep -q voice_webhook.service; then
+        echo -e "${YELLOW}Restarting voice_webhook.service...${NC}"
+        sudo systemctl restart voice_webhook.service
+    fi
+    
+    if sudo systemctl list-unit-files | grep -q forward_sms.service; then
+        echo -e "${YELLOW}Restarting forward_sms.service...${NC}"
+        sudo systemctl restart forward_sms.service
+    fi
     echo ""
 
     echo "🔄 Reloading Nginx..."
