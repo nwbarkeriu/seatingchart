@@ -20,7 +20,7 @@
 </ul>
 
 @code {
-    private DateTime Today = DateTime.Now;
+    private DateTime Today = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/New_York"));
     private List<string> TodayMenu = new();
     private string? EventMessage;
 
@@ -70,8 +70,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var easternTime = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
+        var now = TimeZoneInfo.ConvertTime(DateTime.UtcNow, easternTime);
+        
         // TIME-based function: After 2 PM ET, show tomorrow's menu
-        if (DateTime.Now.Hour >= 14)
+        if (now.Hour >= 14)
             Today = Today.AddDays(1);
 
         // Handle weekends - show "It's the weekend" message
