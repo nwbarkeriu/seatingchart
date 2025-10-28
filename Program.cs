@@ -26,15 +26,25 @@ public class Program
         builder.Services.AddDbContext<LineupDbContext>(options =>
             options.UseSqlite(builder.Configuration.GetConnectionString("LineupConnection") ?? 
                             "Data Source=lineup.db"));
-        // Uncomment the following line if you have a WeatherForecastService
-        // builder.Services.AddSingleton<WeatherForecastService>();
+        
+        builder.Services.AddDbContext<MealPlannerDbContext>(options =>
+            options.UseSqlite(builder.Configuration.GetConnectionString("MealPlannerConnection") ?? 
+                            "Data Source=mealplanner.db"));
+        
         var app = builder.Build();
         
-        // Ensure lineup database is created
+        // Automatically apply migrations on startup (safe for production)
         using (var scope = app.Services.CreateScope())
         {
-            var context = scope.ServiceProvider.GetRequiredService<LineupDbContext>();
-            context.Database.EnsureCreated();
+            var services = scope.ServiceProvider;
+            
+            // Migrate LineupDb
+            var lineupContext = services.GetRequiredService<LineupDbContext>();
+            lineupContext.Database.Migrate();
+            
+            // Migrate MealPlannerDb
+            var mealPlannerContext = services.GetRequiredService<MealPlannerDbContext>();
+            mealPlannerContext.Database.Migrate();
         }
         
         app.MapControllers();
