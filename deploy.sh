@@ -90,12 +90,20 @@ echo "🔁 Pulling latest code from Git..."
 git pull origin main || { echo -e "${RED}❌ Git pull failed${NC}"; exit 1; }
 echo ""
 
-# Step 4: Publish application
+# Step 4: Stop service before publishing (to release file locks)
+if [ "$SKIP_SERVICES" = false ]; then
+    echo "⏸️  Stopping seatingchart.service..."
+    sudo systemctl stop seatingchart.service
+    echo -e "${GREEN}✓${NC} Service stopped"
+    echo ""
+fi
+
+# Step 5: Publish application
 echo "🛠 Publishing app to /var/www/seatingchart/publish..."
 dotnet publish -c Release -o /var/www/seatingchart/publish || { echo -e "${RED}❌ Publish failed${NC}"; exit 1; }
 echo ""
 
-# Step 5: Fix database permissions
+# Step 6: Fix database permissions
 if [ -f "lineup.db" ] || [ -f "mealplanner.db" ]; then
     echo -e "${YELLOW}🔐 Setting database permissions...${NC}"
     if [ -f "lineup.db" ]; then
@@ -110,10 +118,10 @@ if [ -f "lineup.db" ] || [ -f "mealplanner.db" ]; then
     echo ""
 fi
 
-# Step 6: Restart services
+# Step 7: Start services
 if [ "$SKIP_SERVICES" = false ]; then
-    echo "🚀 Restarting services..."
-    sudo systemctl restart seatingchart.service
+    echo "🚀 Starting services..."
+    sudo systemctl start seatingchart.service
     
     # Restart related services if they exist
     if sudo systemctl list-unit-files | grep -q voice_webhook.service; then
