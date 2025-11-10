@@ -134,13 +134,21 @@ public class LunchController : ControllerBase
             // Week 1: Aug 4-8, Week 2: Aug 11-15, Week 3: Aug 18-22, then repeats
             var schoolStart = new DateTime(2025, 8, 4); // Monday, Aug 4 = Week 1, Monday
             
-            // Count weekdays (Mon-Fri) from school start to today (excluding today)
-            int weekdaysPassed = Enumerable.Range(0, (today.Date - schoolStart.Date).Days)
+            // Count SCHOOL days (Mon-Fri excluding holidays/breaks) from school start to today
+            int schoolDaysPassed = Enumerable.Range(0, (today.Date - schoolStart.Date).Days)
                 .Select(i => schoolStart.AddDays(i))
-                .Count(d => d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday);
+                .Count(d => {
+                    // Must be a weekday
+                    if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                        return false;
+                    
+                    // Must not be a no-school day (check Events dictionary)
+                    var dateStr = d.ToString("yyyy-MM-dd");
+                    return !Events.ContainsKey(dateStr) || dateStr == "2025-08-04"; // Include first day
+                });
             
-            // Aug 4 is index 0 (Week 1, Monday), so add weekdays passed
-            int index = weekdaysPassed % 15;
+            // Aug 4 is index 0 (Week 1, Monday), so add school days passed
+            int index = schoolDaysPassed % 15;
             
             menu = SchoolLunches[index];
         }

@@ -24,6 +24,20 @@
     private List<string> TodayMenu = new();
     private string? EventMessage;
 
+    // No-school days that should not advance the lunch menu rotation
+    private static readonly HashSet<string> NoSchoolDays = new()
+    {
+        "2025-08-05", "2025-09-01", // Teacher work day, Labor Day
+        "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10", // Fall Break
+        "2025-11-07", // No school for elem students
+        "2025-11-26", "2025-11-27", "2025-11-28", // Thanksgiving
+        "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-25", "2025-12-26", // Winter Break part 1
+        "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-01", "2026-01-02", "2026-01-05", // Winter Break part 2
+        "2026-01-19", "2026-02-16", // MLK, Presidents Day
+        "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", // Spring Break
+        "2026-05-25", "2026-05-26" // Memorial Day, Teacher work day
+    };
+
     private List<List<string>> SummerLunches = new()
     {
         new() { "Quesadilla, apples, yogurt chips" },
@@ -132,13 +146,21 @@
             // Week 1: Aug 4-8, Week 2: Aug 11-15, Week 3: Aug 18-22, then repeats
             var schoolStart = new DateTime(2025, 8, 4); // Monday, Aug 4 = Week 1, Monday
             
-            // Count weekdays (Mon-Fri) from school start to today (excluding today)
-            int weekdaysPassed = Enumerable.Range(0, (Today.Date - schoolStart.Date).Days)
+            // Count SCHOOL days (Mon-Fri excluding holidays/breaks) from school start to today
+            int schoolDaysPassed = Enumerable.Range(0, (Today.Date - schoolStart.Date).Days)
                 .Select(i => schoolStart.AddDays(i))
-                .Count(d => d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday);
+                .Count(d => {
+                    // Must be a weekday
+                    if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                        return false;
+                    
+                    // Must not be a no-school day (except include Aug 4 as first day)
+                    var dateStr = d.ToString("yyyy-MM-dd");
+                    return !NoSchoolDays.Contains(dateStr) || dateStr == "2025-08-04";
+                });
             
-            // Aug 4 is index 0 (Week 1, Monday), so add weekdays passed
-            int index = weekdaysPassed % 15;
+            // Aug 4 is index 0 (Week 1, Monday), so add school days passed
+            int index = schoolDaysPassed % 15;
             
             TodayMenu = SchoolLunches[index];
         }
