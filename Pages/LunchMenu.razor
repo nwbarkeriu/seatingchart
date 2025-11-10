@@ -128,18 +128,17 @@
 
         if (isSchoolYear)
         {
-            // School year: Calculate which week we're in based on actual school calendar
-            // September 22, 2025 should be Mini Corn Dogs (Week 2, Monday = index 5)
-            var sept22 = new DateTime(2025, 9, 22); // Reference date for Week 2, Monday
+            // School year: 3-week rotation starting Aug 4, 2025 (first day of school)
+            // Week 1: Aug 4-8, Week 2: Aug 11-15, Week 3: Aug 18-22, then repeats
+            var schoolStart = new DateTime(2025, 8, 4); // Monday, Aug 4 = Week 1, Monday
             
-            // Count weekdays (Mon-Fri) from Sept 22 to today
-            int weekdaysPassed = Enumerable.Range(0, (Today.Date - sept22.Date).Days)
-                .Select(i => sept22.AddDays(i))
+            // Count weekdays (Mon-Fri) from school start to today (excluding today)
+            int weekdaysPassed = Enumerable.Range(0, (Today.Date - schoolStart.Date).Days)
+                .Select(i => schoolStart.AddDays(i))
                 .Count(d => d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday);
             
-            // Sept 22 is index 5 (Week 2, Monday), so add weekdays passed
-            int index = (5 + weekdaysPassed) % 15;
-            if (index < 0) index += 15; // Ensure positive
+            // Aug 4 is index 0 (Week 1, Monday), so add weekdays passed
+            int index = weekdaysPassed % 15;
             
             TodayMenu = SchoolLunches[index];
         }
