@@ -129,30 +129,18 @@
         if (isSchoolYear)
         {
             // School year: Calculate which week we're in based on actual school calendar
-            // September 22, 2025 should be Mini Corn Dogs (Week 2, Monday)
+            // September 22, 2025 should be Mini Corn Dogs (Week 2, Monday = index 5)
             var sept22 = new DateTime(2025, 9, 22); // Reference date for Week 2, Monday
-            var daysDiff = (Today.Date - sept22.Date).Days;
             
-            // Calculate the lunch cycle position
-            int weekdayOffset = 0;
-            switch (Today.DayOfWeek)
-            {
-                case DayOfWeek.Monday: weekdayOffset = 0; break;
-                case DayOfWeek.Tuesday: weekdayOffset = 1; break;
-                case DayOfWeek.Wednesday: weekdayOffset = 2; break;
-                case DayOfWeek.Thursday: weekdayOffset = 3; break;
-                case DayOfWeek.Friday: weekdayOffset = 4; break;
-            }
+            // Count weekdays (Mon-Fri) from Sept 22 to today
+            int weekdaysPassed = Enumerable.Range(0, (Today.Date - sept22.Date).Days)
+                .Select(i => sept22.AddDays(i))
+                .Count(d => d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday);
             
-            // Week 2 starts at index 5 (Monday Week 2 = index 5)
-            int baseIndex = 5 + weekdayOffset; // Sept 22 is Week 2 Monday
+            // Sept 22 is index 5 (Week 2, Monday), so add weekdays passed
+            int index = (5 + weekdaysPassed) % 15;
+            if (index < 0) index += 15; // Ensure positive
             
-            // Calculate weeks difference
-            int weeksDiff = daysDiff / 7;
-            int totalIndex = baseIndex + (weeksDiff * 5); // 5 days per week
-            
-            // Handle the 3-week rotation (15 items total)
-            int index = ((totalIndex % 15) + 15) % 15; // Ensure positive modulo
             TodayMenu = SchoolLunches[index];
         }
         else

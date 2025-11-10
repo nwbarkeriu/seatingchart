@@ -130,24 +130,17 @@ public class LunchController : ControllerBase
 
         if (isSchoolYear)
         {
-            // School year logic - matches LunchMenu.razor exactly
-            var sept22 = new DateTime(2025, 9, 22); // Reference date for Week 2, Monday
-            var daysDiff = (today.Date - sept22.Date).Days;
+            // School year logic - count weekdays from Sept 22, 2025
+            var sept22 = new DateTime(2025, 9, 22); // Reference date for Week 2, Monday (index 5)
             
-            int weekdayOffset = today.DayOfWeek switch
-            {
-                DayOfWeek.Monday => 0,
-                DayOfWeek.Tuesday => 1,
-                DayOfWeek.Wednesday => 2,
-                DayOfWeek.Thursday => 3,
-                DayOfWeek.Friday => 4,
-                _ => 0
-            };
+            // Count weekdays (Mon-Fri) from Sept 22 to today
+            int weekdaysPassed = Enumerable.Range(0, (today.Date - sept22.Date).Days)
+                .Select(i => sept22.AddDays(i))
+                .Count(d => d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday);
             
-            int baseIndex = 5 + weekdayOffset; // Sept 22 is Week 2 Monday (index 5)
-            int weeksDiff = daysDiff / 7;
-            int totalIndex = baseIndex + (weeksDiff * 5);
-            int index = ((totalIndex % 15) + 15) % 15;
+            // Sept 22 is index 5 (Week 2, Monday), so add weekdays passed
+            int index = (5 + weekdaysPassed) % 15;
+            if (index < 0) index += 15; // Ensure positive
             
             menu = SchoolLunches[index];
         }
