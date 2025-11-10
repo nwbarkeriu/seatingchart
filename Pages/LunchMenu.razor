@@ -146,21 +146,24 @@
             // Week 1: Aug 4-8, Week 2: Aug 11-15, Week 3: Aug 18-22, then repeats
             var schoolStart = new DateTime(2025, 8, 4); // Monday, Aug 4 = Week 1, Monday
             
-            // Count SCHOOL days (Mon-Fri excluding holidays/breaks) from school start to today
-            int schoolDaysPassed = Enumerable.Range(0, (Today.Date - schoolStart.Date).Days)
-                .Select(i => schoolStart.AddDays(i))
-                .Count(d => {
-                    // Must be a weekday
-                    if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
-                        return false;
+            // Count SCHOOL days from Aug 4 to today (inclusive)
+            int schoolDaysPassed = 0;
+            for (var date = schoolStart; date <= Today.Date; date = date.AddDays(1))
+            {
+                // Must be a weekday
+                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                    continue;
+                
+                // Must not be a no-school day
+                var dateStr = date.ToString("yyyy-MM-dd");
+                if (NoSchoolDays.Contains(dateStr))
+                    continue;
                     
-                    // Must not be a no-school day (except include Aug 4 as first day)
-                    var dateStr = d.ToString("yyyy-MM-dd");
-                    return !NoSchoolDays.Contains(dateStr) || dateStr == "2025-08-04";
-                });
+                schoolDaysPassed++;
+            }
             
-            // Aug 4 is index 0 (Week 1, Monday), so add school days passed
-            int index = schoolDaysPassed % 15;
+            // Aug 4 is day 1 (index 0), so subtract 1
+            int index = (schoolDaysPassed - 1) % 15;
             
             TodayMenu = SchoolLunches[index];
         }
