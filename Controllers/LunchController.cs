@@ -98,28 +98,78 @@ public class LunchController : ControllerBase
     [HttpGet]
     public IActionResult GetLunch()
     {
-            var easternTime = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
-            var today = TimeZoneInfo.ConvertTime(DateTime.UtcNow, easternTime);
+        var easternTime = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
+        var today = TimeZoneInfo.ConvertTime(DateTime.UtcNow, easternTime);
 
+        // After 2 PM ET, show tomorrow's menu
         if (today.Hour >= 14)
             today = today.AddDays(1);
 
-        var isSchool = today >= new DateTime(2025, 8, 4) && today <= new DateTime(2026, 5, 22);
-        var start = isSchool ? new DateTime(2025, 8, 4) : new DateTime(2025, 5, 23);
-
-        int weekdaysPassed = Enumerable.Range(0, (today - start).Days + 1)
-            .Select(i => start.AddDays(i))
-            .Count(d => d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday) - 1;
-
-        int index = weekdaysPassed % 15;
-        var menu = isSchool ? SchoolLunches[index] : SummerLunches[index];
-
         var todayStr = today.ToString("yyyy-MM-dd");
+        
+        // Check for weekends
+        if (today.DayOfWeek == DayOfWeek.Saturday || today.DayOfWeek == DayOfWeek.Sunday)
+        {
+            return Ok(new
+            {
+                date = todayStr,
+                menu = new[] { "It's the weekend! No school lunch today." },
+                eventMessage = (string?)null
+            });
+        }
+
+        // Check for special events/no school days
+        string? eventMessage = Events.ContainsKey(todayStr) ? Events[todayStr] : null;
+        
+        // Determine if we're in school year (Aug 4, 2025 - May 22, 2026)
+        var schoolYearStart = new DateTime(2025, 8, 4);
+        var schoolYearEnd = new DateTime(2026, 5, 22);
+        var isSchoolYear = today >= schoolYearStart && today <= schoolYearEnd;
+
+        List<string> menu;
+
+        if (isSchoolYear)
+        {
+            // School year logic - matches LunchMenu.razor exactly
+            var sept22 = new DateTime(2025, 9, 22); // Reference date for Week 2, Monday
+            var daysDiff = (today.Date - sept22.Date).Days;
+            
+            int weekdayOffset = today.DayOfWeek switch
+            {
+                DayOfWeek.Monday => 0,
+                DayOfWeek.Tuesday => 1,
+                DayOfWeek.Wednesday => 2,
+                DayOfWeek.Thursday => 3,
+                DayOfWeek.Friday => 4,
+                _ => 0
+            };
+            
+            int baseIndex = 5 + weekdayOffset; // Sept 22 is Week 2 Monday (index 5)
+            int weeksDiff = daysDiff / 7;
+            int totalIndex = baseIndex + (weeksDiff * 5);
+            int index = ((totalIndex % 15) + 15) % 15;
+            
+            menu = SchoolLunches[index];
+        }
+        else
+        {
+            // Summer logic
+            var summerStart = new DateTime(2025, 5, 23);
+            int weekdaysPassed = Enumerable.Range(0, (today - summerStart).Days + 1)
+                .Select(i => summerStart.AddDays(i))
+                .Count(d => d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday) - 1;
+
+            int index = weekdaysPassed % 15;
+            if (index < 0) index = 0;
+            
+            menu = SummerLunches[index];
+        }
+
         var response = new
         {
             date = todayStr,
             menu,
-            eventMessage = Events.ContainsKey(todayStr) ? Events[todayStr] : null
+            eventMessage
         };
 
         return Ok(response);
