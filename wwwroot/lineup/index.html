@@ -701,6 +701,28 @@ let currentGameId = null; // Track the current game being edited
         }
     }
 
+function newGame() {
+    currentGameId = null;
+    $('#gameDate').val('');
+    $('#gameTime').val('');
+    $('#gameLocation').val('');
+    $('#gameOpponent').val('');
+    $('#gameSelector').val('');
+    
+    // Clear lineup selections but keep the slots
+    $('#d li select').val('');
+    updateLineupDropdowns();
+    
+    // Clear field positions
+    $('.inning .positions select').each(function() {
+        $(this).html('<option> </option>');
+    });
+    $('.sitting').html('');
+    selectedPlayers = {};
+    
+    updateDropdowns();
+}
+
 function showNewTeamForm() {
     $('#newTeamForm').show();
     $('#teamSelector').val(''); // Clear team selection
@@ -798,20 +820,31 @@ async function saveLineupToDatabase(layout) {
             isHome: isHome
         };
         
-        let gameId = currentGameId;
+        let gameId = null;
         
-        if (gameId) {
-            // Update existing game
-            console.log('Updating existing game:', gameId);
-            const updateResponse = await fetch(`/api/lineup/games/${gameId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(gameData)
-            });
-            if (!updateResponse.ok) {
-                console.warn('Failed to update game, creating new one');
-                gameId = null;
+        // Check if a game with same opponent + date already exists for this team
+        try {
+            const gamesResponse = await fetch(`/api/lineup/teams/${teamData.id}/games`);
+            if (gamesResponse.ok) {
+                const existingGames = await gamesResponse.json();
+                const matchingGame = existingGames.find(g => {
+                    const existingDate = g.gameDate ? new Date(g.gameDate).toISOString().split('T')[0] : '';
+                    const newDate = gameDatetime.toISOString().split('T')[0];
+                    return g.opponent === opponent && existingDate === newDate;
+                });
+                if (matchingGame) {
+                    gameId = matchingGame.id;
+                    console.log('Found existing game to update:', gameId);
+                    // Update the game metadata
+                    await fetch(`/api/lineup/games/${gameId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(gameData)
+                    });
+                }
             }
+        } catch (e) {
+            console.warn('Could not check existing games:', e);
         }
         
         if (!gameId) {
@@ -821,17 +854,18 @@ async function saveLineupToDatabase(layout) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(gameData)
             });
-            
+        
             if (!gameResponse.ok) {
                 const gameError = await gameResponse.text();
                 throw new Error(`Failed to create game (${gameResponse.status}): ${gameError}`);
             }
-            
+        
             const game = await gameResponse.json();
             gameId = game.id;
-            currentGameId = gameId;
             console.log('Game created:', game);
         }
+        
+        currentGameId = gameId;
         
         // Build batting order from the Game Lineup list
         const battingOrderList = [];
