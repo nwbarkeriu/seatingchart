@@ -100,8 +100,12 @@
   <div id="buttonContainer" style="text-align: center; margin-top: 1rem; padding: 1rem; border-top: 2px solid #ddd;">
     <h4>Game Actions</h4>
     <button onclick="saveLineupToLocalStorage()" style="background: #28a745; color: white; padding: 10px 20px; margin: 5px;">💾 Save Lineup & Game</button>
-    <button onclick="loadLineupFromLocalStorage()" style="background: #007bff; color: white; padding: 10px 20px; margin: 5px;">📂 Load Saved Lineup</button>
+    <button onclick="loadLineupFromLocalStorage()" style="background: #007bff; color: white; padding: 10px 20px; margin: 5px;">📂 Load From Local</button>
     <button onclick="localStorage.clear(); location.reload();" style="background: #dc3545; color: white; padding: 10px 20px; margin: 5px;">🗑️ Clear All Data</button>
+    <br>
+    <select id="gameSelector" onchange="loadSelectedGame()" style="margin-top: 10px; padding: 5px;">
+      <option value="">-- Load Saved Game --</option>
+    </select>
   </div>
   
 
@@ -109,9 +113,9 @@
 <script>
 let teams = JSON.parse(localStorage.getItem('teams') || '{}');
 let selectedPlayers = {};
+let currentGameId = null; // Track the current game being edited
 
     async function saveTeam() {
-        // Try to get from input first (new team), otherwise use selected team
         const inputTeamName = $('#teamName').val().trim();
         const selectedTeamName = $('#teamSelector').val();
         const teamName = inputTeamName || selectedTeamName;
@@ -123,40 +127,30 @@ let selectedPlayers = {};
         
         console.log('Saving team:', teamName);
 
-        const players = [];
+        const rosterPlayers = [];
         $('#playerTable tbody tr').each(function () {
             const player = {};
             $(this).find('input, select').each(function () {
-            const key = $(this).attr('name');
-            player[key] = $(this).val();
+                const key = $(this).attr('name');
+                player[key] = $(this).val();
             });
-            players.push(player);
+            const rowId = $(this).data('player-id');
+            if (rowId) player.dbId = rowId;
+            rosterPlayers.push(player);
         });
 
-        // Collect metadata fields
         const coach = $('#coachName').val();
         const ageGroup = $('#ageGroup').val();
         const homeField = $('#homeField').val();
 
-        // Convert players to match API model
-        const apiPlayers = players.map(p => ({
-            name: `${p.first || ''} ${p.last || ''}`.trim() || 'Unknown Player',
-            jerseyNumber: parseInt(p.home || p.away || '0') || 0,
-            preferredPosition: p.primary || '',
-            isActive: true
-        }));
-
         const teamData = {
             name: teamName,
-            coach,
-            league: ageGroup // Map ageGroup to league field
-            // Don't include players in team creation, add them separately
+            coach: coach,
+            league: ageGroup,
+            homeField: homeField
         };
 
         try {
-            console.log('Attempting to save team:', teamData);
-            
-            // Check if this is an update (team exists) or create new
             const isUpdate = teams[teamName] && teams[teamName].id;
             const url = isUpdate ? `/api/lineup/teams/${teams[teamName].id}` : '/api/lineup/teams';
             const method = isUpdate ? 'PUT' : 'POST';
@@ -165,9 +159,7 @@ let selectedPlayers = {};
 
             const response = await fetch(url, {
                 method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(teamData)
             });
 
@@ -177,43 +169,57 @@ let selectedPlayers = {};
                 const savedTeam = await response.json();
                 console.log('Team saved successfully:', savedTeam);
                 
-                // Now save players individually
-                const savedPlayers = [];
-                for (const apiPlayer of apiPlayers) {
-                    try {
-                        const playerResponse = await fetch(`/api/lineup/teams/${savedTeam.id}/players`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(apiPlayer)
-                        });
-                        
-                        if (playerResponse.ok) {
-                            const savedPlayer = await playerResponse.json();
-                            console.log('Player saved:', savedPlayer);
-                            
-                            // Convert to HTML format
-                            const nameParts = savedPlayer.name.split(' ');
-                            savedPlayers.push({
-                                first: nameParts[0] || '',
-                                last: nameParts.slice(1).join(' ') || '',
-                                home: savedPlayer.jerseyNumber?.toString() || '',
-                                away: '',
-                                bats: 'R',
-                                fields: 'R',
-                                primary: savedPlayer.preferredPosition || '',
-                                secondary: '',
-                                id: savedPlayer.id
-                            });
-                        } else {
-                            const playerErrorText = await playerResponse.text();
-                            console.error('Failed to save player:', apiPlayer, 'Error:', playerResponse.status, playerErrorText);
+                // Build player objects for sync endpoint
+                const apiPlayers = rosterPlayers.map(p => ({
+                    id: parseInt(p.dbId) || 0,
+                    name: `${p.first || ''} ${p.last || ''}`.trim() || 'Unknown Player',
+                    jerseyNumber: parseInt(p.home || p.away || '0') || 0,
+                    preferredPosition: p.primary || '',
+                    isActive: true
+                }));
+
+                // Use the sync endpoint to properly update/add/remove players
+                const syncResponse = await fetch(`/api/lineup/teams/${savedTeam.id}/players/sync`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(apiPlayers)
+                });
+                
+                let savedPlayers = [];
+                if (syncResponse.ok) {
+                    const syncedPlayers = await syncResponse.json();
+                    console.log('Players synced:', syncedPlayers);
+                    
+                    savedPlayers = syncedPlayers.map(sp => {
+                        const nameParts = sp.name.split(' ');
+                        const rosterMatch = rosterPlayers.find(rp => 
+                            `${rp.first || ''} ${rp.last || ''}`.trim() === sp.name
+                        );
+                        return {
+                            first: nameParts[0] || '',
+                            last: nameParts.slice(1).join(' ') || '',
+                            home: sp.jerseyNumber?.toString() || '',
+                            away: rosterMatch?.away || '',
+                            bats: rosterMatch?.bats || 'R',
+                            fields: rosterMatch?.fields || 'R',
+                            primary: sp.preferredPosition || '',
+                            secondary: rosterMatch?.secondary || '',
+                            id: sp.id
+                        };
+                    });
+                    
+                    // Update table rows with database IDs
+                    $('#playerTable tbody tr').each(function(i) {
+                        if (savedPlayers[i]) {
+                            $(this).data('player-id', savedPlayers[i].id);
+                            $(this).attr('data-player-id', savedPlayers[i].id);
                         }
-                    } catch (playerError) {
-                        console.error('Error saving player:', apiPlayer, playerError);
-                    }
+                    });
+                } else {
+                    const syncError = await syncResponse.text();
+                    console.error('Player sync failed:', syncResponse.status, syncError);
                 }
                 
-                // Update local teams object
                 teams[teamName] = {
                     id: savedTeam.id,
                     players: savedPlayers,
@@ -222,13 +228,13 @@ let selectedPlayers = {};
                     homeField: savedTeam.homeField || ''
                 };
 
-                // Also save to localStorage as backup
                 localStorage.setItem('teams', JSON.stringify(teams));
                 
                 $('#activeTeamName').text(`– ${teamName}`);
-                $('#newTeamForm').hide(); // Hide new team form after saving
-                $('#teamSelector').val(teamName); // Select the saved team
-                await loadTeams(); // Refresh the dropdown
+                $('#newTeamForm').hide();
+                await loadTeams();
+                $('#teamSelector').val(teamName);
+                await loadGamesForTeam(savedTeam.id);
                 alert(`Saved team: ${teamName} with ${savedPlayers.length} players`);
             } else {
                 const errorText = await response.text();
@@ -239,9 +245,8 @@ let selectedPlayers = {};
             console.error('Error saving team:', error);
             alert('Error saving team to database, saved to localStorage as backup');
             
-            // Fallback to localStorage save
             teams[teamName] = {
-                players,
+                players: rosterPlayers,
                 coach,
                 ageGroup,
                 homeField
@@ -281,11 +286,14 @@ let selectedPlayers = {};
                         id: team.id,
                         players: htmlPlayers,
                         coach: team.coach,
-                        ageGroup: team.league || '', // Map league to ageGroup
-                        homeField: team.homeField || ''
+                        ageGroup: team.league || '',
+                        homeField: team.homeField || '',
+                        games: team.games || []
                     };
                     $('#teamSelector').append(`<option value="${team.name}">${team.name}</option>`);
                 });
+                
+                localStorage.setItem('teams', JSON.stringify(teams));
             } else {
                 console.error('Failed to load teams from API, falling back to localStorage');
                 // Fallback to localStorage if API fails
@@ -311,6 +319,8 @@ let selectedPlayers = {};
             $('#teamMetadata input').val('');
             $('#newTeamForm').hide();
             $('#activeTeamName').text('');
+            $('#gameSelector').html('<option value="">-- Load Saved Game --</option>');
+            currentGameId = null;
             return;
         }
 
@@ -351,10 +361,11 @@ let selectedPlayers = {};
                             id: apiTeam.id,
                             players: htmlPlayers,
                             coach: apiTeam.coach,
-                            ageGroup: apiTeam.league || '', // Map league to ageGroup
-                            homeField: apiTeam.homeField || ''
+                            ageGroup: apiTeam.league || '',
+                            homeField: apiTeam.homeField || '',
+                            games: apiTeam.games || []
                         };
-                        teams[team] = teamData; // Update local cache
+                        teams[team] = teamData;
                     }
                 }
             }
@@ -364,7 +375,9 @@ let selectedPlayers = {};
 
         players.forEach(p => {
             const row = createPlayerRow(p);
-            $('#playerTable tbody').append(row);
+            const $row = $(row);
+            if (p.id) $row.data('player-id', p.id);
+            $('#playerTable tbody').append($row);
         });
 
         // ✅ Populate editable inputs
@@ -376,23 +389,21 @@ let selectedPlayers = {};
         $('#activeTeamName').text(`– ${team}`);
         $('#newTeamForm').hide();
 
-        // ✅ Ensure there are exactly 9 lineup boxes
+        // Ensure enough lineup slots exist
         const currentCount = $('#d li').length;
-        // console.log(currentCount);
         const requiredCount = 10;
-            for (let i = currentCount; i < requiredCount; i++) {
-                addPlayer();
-                
+        for (let i = currentCount; i < requiredCount; i++) {
+            addPlayer();
+        }
+
+        // Rebuild lineup dropdowns with roster names (don't auto-select)
+        updateLineupDropdowns();
+        updateDropdowns();
+            
+            // Load games for this team
+            if (teamData.id) {
+                await loadGamesForTeam(teamData.id);
             }
-
-        // ✅ Reuse existing lineup inputs, don’t change how many boxes there are
-        const names = players.map(p => `${p.first || ''} ${p.last || ''}`.trim()).filter(n => n);
-        $('#d li input').each(function (i) {
-            $(this).val(names[i] || '');
-            // console.log(`Setting input ${i} to: ${names[i] || ''}`);
-        });
-
-            updateDropdowns();
         } catch (error) {
             console.error('Error loading team:', error);
             alert('Error loading team details');
@@ -400,12 +411,14 @@ let selectedPlayers = {};
     }
     function addPlayerRow(player = {}) {
         const row = createPlayerRow(player);
-        $('#playerTable tbody').append(row);
+        const $row = $(row);
+        if (player.id) $row.data('player-id', player.id);
+        $('#playerTable tbody').append($row);
     }
 
     function createPlayerRow(player = {}) {
         return `
-        <tr>
+        <tr data-player-id="${player.id || ''}">
             <td><input name="first" value="${player.first || ''}"/></td>
             <td><input name="last" value="${player.last || ''}"/></td>
             <td><input name="home" value="${player.home || ''}"/></td>
@@ -431,9 +444,51 @@ let selectedPlayers = {};
     function addPlayer(name = '') {
         var playersDiv = document.getElementById('d');
         var newPlayerDiv = document.createElement('li');
-        newPlayerDiv.innerHTML = `<input type="text" name="players[]" placeholder="Player Name" maxlength="100" value="${name}">`;
-        newPlayerDiv.querySelector('input').addEventListener('blur', updateDropdowns);
+        newPlayerDiv.innerHTML = `<select name="players[]"><option value="">-- Select Player --</option></select>`;
+        newPlayerDiv.querySelector('select').addEventListener('change', function() {
+            updateLineupDropdowns();
+            updateDropdowns();
+        });
         playersDiv.appendChild(newPlayerDiv);
+        // Set value after appending so options are built first
+        if (name) {
+            updateLineupDropdowns();
+            $(newPlayerDiv).find('select').val(name);
+        }
+    }
+
+    function updateLineupDropdowns() {
+        // Get all player names from the roster
+        const rosterNames = [];
+        $('#playerTable tbody tr').each(function() {
+            const first = $(this).find('input[name="first"]').val() || '';
+            const last = $(this).find('input[name="last"]').val() || '';
+            const fullName = `${first} ${last}`.trim();
+            if (fullName) rosterNames.push(fullName);
+        });
+
+        // Update each lineup dropdown
+        $('#d li select').each(function() {
+            const currentSelect = $(this);
+            const currentVal = currentSelect.val();
+
+            // Gather selections from other lineup dropdowns
+            const taken = [];
+            $('#d li select').each(function() {
+                const val = $(this).val();
+                if (val && val !== currentVal && this !== currentSelect[0]) {
+                    taken.push(val);
+                }
+            });
+
+            const options = ['<option value="">-- Select Player --</option>'];
+            for (const name of rosterNames) {
+                if (!taken.includes(name) || name === currentVal) {
+                    options.push(`<option value="${name}"${name === currentVal ? ' selected' : ''}>${name}</option>`);
+                }
+            }
+            currentSelect.html(options.join('\n'));
+        });
     }
 
     function initializeLineup(count = 9) {
@@ -441,10 +496,11 @@ let selectedPlayers = {};
         for (let i = 0; i < count; i++) {
             addPlayer();
         }
+        updateLineupDropdowns();
     }
     function updateFieldSetup(setup) {
         var players = [];
-        $('#d li input').each(function() {
+        $('#d li select').each(function() {
             players.push($(this).val());
         });
 
@@ -454,6 +510,8 @@ let selectedPlayers = {};
             currentSelections[position] = $(this).val();
         });
 
+        // Save field setup preference
+        localStorage.setItem('fieldSetup', setup);
 
         for (let inning = 1; inning <= 6; inning++) {
             var positionsHTML = `
@@ -495,8 +553,8 @@ let selectedPlayers = {};
 
     function updateDropdowns() {
         const playerNames = [];
-        $('#d li input').each(function () {
-            const name = $(this).val().trim();
+        $('#d li select').each(function () {
+            const name = $(this).val()?.trim();
             if (name) playerNames.push(name);
         });
 
@@ -530,6 +588,119 @@ let selectedPlayers = {};
     }
 
 
+    async function loadGamesForTeam(teamId) {
+        try {
+            const response = await fetch(`/api/lineup/teams/${teamId}/games`);
+            if (response.ok) {
+                const games = await response.json();
+                $('#gameSelector').html('<option value="">-- Load Saved Game --</option>');
+                games.forEach(g => {
+                    const date = g.gameDate ? new Date(g.gameDate).toLocaleDateString() : '';
+                    $('#gameSelector').append(
+                        `<option value="${g.id}">vs ${g.opponent} - ${date} (${g.location || ''})</option>`
+                    );
+                });
+            }
+        } catch (error) {
+            console.error('Error loading games:', error);
+        }
+    }
+
+    async function loadSelectedGame() {
+        const gameId = $('#gameSelector').val();
+        if (!gameId) return;
+
+        try {
+            const response = await fetch(`/api/lineup/games/${gameId}/lineup`);
+            if (!response.ok) {
+                alert('Failed to load game lineup');
+                return;
+            }
+            
+            const lineupPositions = await response.json();
+            console.log('Loaded lineup positions:', lineupPositions);
+            
+            if (lineupPositions.length === 0) {
+                alert('No lineup data saved for this game');
+                return;
+            }
+            
+            currentGameId = parseInt(gameId);
+            
+            // Determine positions per inning to set field setup
+            const positionsPerInning = lineupPositions.filter(lp => lp.inning === 1).length;
+            
+            if (positionsPerInning >= 9 && positionsPerInning <= 12) {
+                $(`input[name="fieldSetup"][value="${positionsPerInning}"]`).prop('checked', true);
+                updateFieldSetup(positionsPerInning);
+            }
+            
+            // Restore the Game Lineup (batting order) list from inning 1 positions
+            const inning1Positions = lineupPositions
+                .filter(lp => lp.inning === 1 && lp.player?.name)
+                .sort((a, b) => a.battingOrder - b.battingOrder);
+            
+            // Also collect any players in the game not in inning 1
+            const allPlayerNames = [...new Set(
+                lineupPositions
+                    .filter(lp => lp.player?.name)
+                    .sort((a, b) => a.battingOrder - b.battingOrder)
+                    .map(lp => lp.player.name)
+            )];
+            
+            // Ensure enough lineup slots
+            const neededSlots = Math.max(allPlayerNames.length, 10);
+            const currentSlots = $('#d li').length;
+            for (let i = currentSlots; i < neededSlots; i++) {
+                addPlayer();
+            }
+            
+            // Populate the Game Lineup dropdowns
+            updateLineupDropdowns();
+            $('#d li select').each(function(i) {
+                $(this).val(allPlayerNames[i] || '');
+            });
+            updateLineupDropdowns();
+            
+            // Map positions back to field layout
+            for (const lp of lineupPositions) {
+                const inningId = `inning${lp.inning}`;
+                const posClass = lp.position.toLowerCase();
+                const playerName = lp.player?.name || '';
+                
+                if (playerName) {
+                    $(`#${inningId} .positions select.${posClass}`).val(playerName);
+                    
+                    if (!selectedPlayers[inningId]) selectedPlayers[inningId] = {};
+                    selectedPlayers[inningId][posClass] = playerName;
+                }
+            }
+            
+            updateDropdowns();
+            
+            // Load game info fields
+            const selectedTeam = $('#teamSelector').val();
+            const teamData = teams[selectedTeam];
+            if (teamData?.games) {
+                const game = teamData.games.find(g => g.id === currentGameId);
+                if (game) {
+                    if (game.gameDate) {
+                        const d = new Date(game.gameDate);
+                        $('#gameDate').val(d.toISOString().split('T')[0]);
+                        $('#gameTime').val(d.toTimeString().slice(0, 5));
+                    }
+                    $('#gameLocation').val(game.location || '');
+                    $('#gameOpponent').val(game.opponent || '');
+                }
+            }
+            
+            alert('Game lineup loaded!');
+        } catch (error) {
+            console.error('Error loading game lineup:', error);
+            alert('Error loading game lineup');
+        }
+    }
+
 function showNewTeamForm() {
     $('#newTeamForm').show();
     $('#teamSelector').val(''); // Clear team selection
@@ -552,8 +723,8 @@ function updateSitting() {
 
         $(this).find('.positions').each(function () {
             var sitting = [];
-            $('#d li input').each(function () {
-                if ($(this).val() != '') sitting.push($(this).val());
+            $('#d li select').each(function () {
+                if ($(this).val()) sitting.push($(this).val());
             });
 
             $(this).find('select').each(function () {
@@ -568,8 +739,8 @@ function updateSitting() {
 
 async function saveLineupToLocalStorage() {
     const players = [];
-    $('#d li input').each(function () {
-        players.push($(this).val());
+    $('#d li select').each(function () {
+        players.push($(this).val() || '');
     });
 
     const layout = {};
@@ -593,43 +764,29 @@ async function saveLineupToLocalStorage() {
 async function saveLineupToDatabase(layout) {
     const selectedTeam = $('#teamSelector').val();
     console.log('Saving lineup for team:', selectedTeam);
-    console.log('Teams object:', teams);
-    console.log('Layout:', layout);
     
     if (!selectedTeam || !teams[selectedTeam] || !teams[selectedTeam].id) {
         alert('Please select and save a team first before saving lineup');
-        console.log('No team selected or team not saved to database yet');
         return;
     }
     
     const teamData = teams[selectedTeam];
     
-    // Check if team has players with IDs
     const playersWithIds = teamData.players.filter(p => p.id);
-    console.log('Team players:', teamData.players);
-    console.log('Players with IDs:', playersWithIds);
-    
     if (playersWithIds.length === 0) {
-        alert(`Team has no players saved to database. Please add players to the roster and save the team first. Found ${teamData.players.length} players but none have database IDs.`);
+        alert('Team has no players saved to database. Please save the team first.');
         return;
     }
     
     try {
-        
-        // Get game details from the form
         const opponent = $('#gameOpponent').val().trim() || 'Practice';
         const gameLocation = $('#gameLocation').val().trim();
         const gameDate = $('#gameDate').val();
         const gameTime = $('#gameTime').val();
         
-        // Create full datetime if both date and time are provided
         let gameDatetime = new Date();
         if (gameDate) {
-            if (gameTime) {
-                gameDatetime = new Date(`${gameDate}T${gameTime}`);
-            } else {
-                gameDatetime = new Date(gameDate);
-            }
+            gameDatetime = gameTime ? new Date(`${gameDate}T${gameTime}`) : new Date(gameDate);
         }
         
         const isHome = gameLocation ? gameLocation.toLowerCase().includes('home') : true;
@@ -641,54 +798,72 @@ async function saveLineupToDatabase(layout) {
             isHome: isHome
         };
         
-        console.log('Creating game with data:', gameData);
+        let gameId = currentGameId;
         
-        // Create the game
-        const gameResponse = await fetch(`/api/lineup/teams/${teamData.id}/games`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(gameData)
-        });
-        
-        if (!gameResponse.ok) {
-            const gameError = await gameResponse.text();
-            console.error('Game creation failed:', gameResponse.status, gameError);
-            throw new Error(`Failed to create game (${gameResponse.status}): ${gameError}`);
+        if (gameId) {
+            // Update existing game
+            console.log('Updating existing game:', gameId);
+            const updateResponse = await fetch(`/api/lineup/games/${gameId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(gameData)
+            });
+            if (!updateResponse.ok) {
+                console.warn('Failed to update game, creating new one');
+                gameId = null;
+            }
         }
         
-        const game = await gameResponse.json();
-        console.log('Game created successfully:', game);
+        if (!gameId) {
+            // Create new game
+            const gameResponse = await fetch(`/api/lineup/teams/${teamData.id}/games`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(gameData)
+            });
+            
+            if (!gameResponse.ok) {
+                const gameError = await gameResponse.text();
+                throw new Error(`Failed to create game (${gameResponse.status}): ${gameError}`);
+            }
+            
+            const game = await gameResponse.json();
+            gameId = game.id;
+            currentGameId = gameId;
+            console.log('Game created:', game);
+        }
         
-        // Convert the layout to GameLineupPosition format
+        // Build batting order from the Game Lineup list
+        const battingOrderList = [];
+        $('#d li select').each(function () {
+            const name = $(this).val()?.trim();
+            if (name) battingOrderList.push(name);
+        });
+        
+        // Convert layout to GameLineupPosition format
         const lineupPositions = [];
         
         for (const [inningId, positions] of Object.entries(layout)) {
             const inningNumber = parseInt(inningId.replace('inning', ''));
             
-            let battingOrder = 1;
             for (const [positionName, playerName] of Object.entries(positions)) {
                 if (playerName && playerName.trim()) {
-                    // Find the player by name
                     const player = teamData.players.find(p => 
                         `${p.first || ''} ${p.last || ''}`.trim() === playerName.trim()
                     );
+                    
+                    // Batting order from Game Lineup list position (1-based)
+                    const battingOrder = battingOrderList.indexOf(playerName.trim()) + 1;
                     
                     if (player && player.id) {
                         lineupPositions.push({
                             playerId: player.id,
                             inning: inningNumber,
                             position: positionName.toUpperCase(),
-                            battingOrder: battingOrder++
+                            battingOrder: battingOrder || 0
                         });
                     } else {
-                        console.warn(`Player "${playerName}" not found in team roster or missing ID`);
-                        // For now, create lineup position without player ID (this might fail on API)
-                        lineupPositions.push({
-                            playerId: 0, // This will likely cause API error
-                            inning: inningNumber,
-                            position: positionName.toUpperCase(),
-                            battingOrder: battingOrder++
-                        });
+                        console.warn(`Player "${playerName}" not found in roster or missing ID`);
                     }
                 }
             }
@@ -697,21 +872,22 @@ async function saveLineupToDatabase(layout) {
         console.log('Lineup positions to save:', lineupPositions);
         
         if (lineupPositions.length > 0) {
-            const lineupResponse = await fetch(`/api/lineup/games/${game.id}/lineup`, {
+            const lineupResponse = await fetch(`/api/lineup/games/${gameId}/lineup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(lineupPositions)
             });
             
             if (lineupResponse.ok) {
-                alert(`Lineup saved to database for game vs ${opponent}!`);
+                await loadGamesForTeam(teamData.id);
+                alert(`Lineup saved for game vs ${opponent}!`);
             } else {
                 const lineupError = await lineupResponse.text();
-                console.error('Failed to save lineup positions:', lineupResponse.status, lineupError);
-                alert(`Game created but lineup positions failed to save (${lineupResponse.status}): ${lineupError}`);
+                console.error('Failed to save lineup:', lineupResponse.status, lineupError);
+                alert(`Game saved but lineup positions failed (${lineupResponse.status}): ${lineupError}`);
             }
         } else {
-            alert('No valid lineup positions found to save');
+            alert('No valid lineup positions to save. Assign players to positions first.');
         }
         
     } catch (error) {
@@ -726,9 +902,11 @@ function loadLineupFromLocalStorage() {
 
     if (savedPlayers.length > 0) {
         updateFieldSetup(savedPlayers.length);
-        $('#d li input').each(function (index) {
+        updateLineupDropdowns();
+        $('#d li select').each(function (index) {
             $(this).val(savedPlayers[index] || '');
         });
+        updateLineupDropdowns();
     }
 
     setTimeout(() => {
@@ -748,9 +926,10 @@ function loadLineupFromLocalStorage() {
 // INIT
 $(document).ready(function () {
     $('#clear').click(function () {
-        $('#d li input').val('');
-        $('.positions select').html('<option> </option>');
-        $('.positions select').addClass('empty');
+        $('#d li select').val('');
+        updateLineupDropdowns();
+        $('.inning .positions select').html('<option> </option>');
+        $('.inning .positions select').addClass('empty');
         $('.sitting').html('');
         selectedPlayers = {};
     });
@@ -773,9 +952,17 @@ $(document).ready(function () {
     });
 
     loadTeams();
+    
+    // Restore saved field setup preference
+    const savedSetup = localStorage.getItem('fieldSetup');
+    if (savedSetup) {
+        $(`input[name="fieldSetup"][value="${savedSetup}"]`).prop('checked', true);
+    }
+    
+    // Initialize lineup FIRST, then load saved data on top
+    initializeLineup();
     updateFieldSetup($('input[name="fieldSetup"]:checked').val());
     loadLineupFromLocalStorage();
-    initializeLineup();
 });
 </script>
 </body>

@@ -6,6 +6,7 @@
 @inject SchoolEventsService SchoolEvents
 
 <h3>Lunch Menu for @Today.ToString("MMMM dd, yyyy")</h3>
+<p style="color: red; font-size: 12px;">DEBUG: schoolDaysPassed=@debugSchoolDays, index=@debugIndex</p>
 
 @if (!string.IsNullOrEmpty(EventMessage))
 {
@@ -23,13 +24,17 @@
     private DateTime Today = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/New_York"));
     private List<string> TodayMenu = new();
     private string? EventMessage;
+    private int debugSchoolDays = 0;
+    private int debugIndex = 0;
+    private List<string> debugCountedDates = new();
+    private List<string> debugSkippedDates = new();
 
     // No-school days that should not advance the lunch menu rotation
     private static readonly HashSet<string> NoSchoolDays = new()
     {
-        "2025-08-05", "2025-09-01", // Teacher work day, Labor Day
+        "2025-09-01", // Labor Day
         "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10", // Fall Break
-        "2025-11-07", // No school for elem students
+        "2025-11-06", "2025-11-07", // Parent/Teacher Conf (both days)
         "2025-11-26", "2025-11-27", "2025-11-28", // Thanksgiving
         "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-25", "2025-12-26", // Winter Break part 1
         "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-01", "2026-01-02", "2026-01-05", // Winter Break part 2
@@ -86,7 +91,10 @@
     {
         var easternTime = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
         var now = TimeZoneInfo.ConvertTime(DateTime.UtcNow, easternTime);
-        
+
+        // Use the server's current Eastern DATE as the base 'Today'
+        Today = now.Date;
+
         // TIME-based function: After 2 PM ET, show tomorrow's menu
         if (now.Hour >= 14)
             Today = Today.AddDays(1);
@@ -142,29 +150,46 @@
 
         if (isSchoolYear)
         {
-            // School year: 3-week rotation starting Aug 4, 2025 (first day of school)
-            // Week 1: Aug 4-8, Week 2: Aug 11-15, Week 3: Aug 18-22, then repeats
-            var schoolStart = new DateTime(2025, 8, 4); // Monday, Aug 4 = Week 1, Monday
+            // School year: 3-week rotation starting Aug 6, 2025 (first day of school - Bosco Sticks)
+            // Aug 6 (Wed) = Day 1 = Index 2 (Week 1 Wednesday - Bosco Sticks)
+            var schoolStart = new DateTime(2025, 8, 6); // Wednesday, Aug 6 = Week 1, Wednesday (Bosco Sticks)
             
-            // Count SCHOOL days from Aug 4 to today (inclusive)
+            // Count SCHOOL days from Aug 6 to today (inclusive)
             int schoolDaysPassed = 0;
+            debugCountedDates.Clear();
+            debugSkippedDates.Clear();
             for (var date = schoolStart; date <= Today.Date; date = date.AddDays(1))
             {
                 // Must be a weekday
                 if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    debugSkippedDates.Add(date.ToString("yyyy-MM-dd") + " (WEEKEND)");
                     continue;
+                }
                 
                 // Must not be a no-school day
                 var dateStr = date.ToString("yyyy-MM-dd");
                 if (NoSchoolDays.Contains(dateStr))
+                {
+                    debugSkippedDates.Add(dateStr + " (NO SCHOOL)");
                     continue;
-                    
+                }
+                
                 schoolDaysPassed++;
+                debugCountedDates.Add(dateStr);
             }
             
-            // Aug 4 is day 1 (index 0), so subtract 1
-            int index = (schoolDaysPassed - 1) % 15;
+            // Aug 6 is day 1, which should be index 2 (Bosco Sticks)
+            // So: index = (schoolDaysPassed - 1 + 2) % 15
+            int index = (schoolDaysPassed + 1) % 15;
             
+            debugSchoolDays = schoolDaysPassed;
+            debugIndex = index;
+
+            // Keep larger debug info visible on the page for diagnosis
+            // (remove these once we've confirmed rotation matches official calendar)
+            // debugCountedDates and debugSkippedDates are populated above
+
             TodayMenu = SchoolLunches[index];
         }
         else

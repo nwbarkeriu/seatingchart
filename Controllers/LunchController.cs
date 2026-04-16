@@ -58,16 +58,15 @@ public class LunchController : ControllerBase
     {
         ["2025-06-03"] = "Test Event NB",
         ["2025-06-04"] = "Test Event NB",
-        ["2025-08-04"] = "First Student Day",
-        ["2025-08-05"] = "Teacher Work Day (No Students)",
+        ["2025-08-06"] = "First Student Day",
         ["2025-09-01"] = "Labor Day Holiday",
         ["2025-10-06"] = "Fall Break",
         ["2025-10-07"] = "Fall Break",
         ["2025-10-08"] = "Fall Break",
         ["2025-10-09"] = "Fall Break",
         ["2025-10-10"] = "Fall Break",
-        ["2025-11-06"] = "Elem. Parent/Teacher Conf. (Elem. Students Dismissed Half-Day)",
-        ["2025-11-07"] = "Elem. Parent/Teacher Conf. (No School for Elem. Students)",
+        ["2025-11-06"] = "Elem. Parent/Teacher Conf. (No Lunch)",
+        ["2025-11-07"] = "Elem. Parent/Teacher Conf. (No School)",
         ["2025-11-26"] = "Thanksgiving Break",
         ["2025-11-27"] = "Thanksgiving Break",
         ["2025-11-28"] = "Thanksgiving Break",
@@ -99,10 +98,13 @@ public class LunchController : ControllerBase
     public IActionResult GetLunch()
     {
         var easternTime = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
-        var today = TimeZoneInfo.ConvertTime(DateTime.UtcNow, easternTime);
+        var now = TimeZoneInfo.ConvertTime(DateTime.UtcNow, easternTime);
+
+        // Use the server's Eastern DATE as the base
+        var today = now.Date;
 
         // After 2 PM ET, show tomorrow's menu
-        if (today.Hour >= 14)
+        if (now.Hour >= 14)
             today = today.AddDays(1);
 
         var todayStr = today.ToString("yyyy-MM-dd");
@@ -121,8 +123,8 @@ public class LunchController : ControllerBase
         // Check for special events/no school days
         string? eventMessage = Events.ContainsKey(todayStr) ? Events[todayStr] : null;
         
-        // Determine if we're in school year (Aug 4, 2025 - May 22, 2026)
-        var schoolYearStart = new DateTime(2025, 8, 4);
+        // Determine if we're in school year (Aug 6, 2025 - May 22, 2026)
+        var schoolYearStart = new DateTime(2025, 8, 6);
         var schoolYearEnd = new DateTime(2026, 5, 22);
         var isSchoolYear = today >= schoolYearStart && today <= schoolYearEnd;
 
@@ -130,11 +132,11 @@ public class LunchController : ControllerBase
 
         if (isSchoolYear)
         {
-            // School year: 3-week rotation starting Aug 4, 2025 (first day of school)
-            // Week 1: Aug 4-8, Week 2: Aug 11-15, Week 3: Aug 18-22, then repeats
-            var schoolStart = new DateTime(2025, 8, 4); // Monday, Aug 4 = Week 1, Monday
+            // School year: 3-week rotation starting Aug 6, 2025 (first day of school - Bosco Sticks)
+            // Aug 6 (Wed) = Day 1 = Index 2 (Week 1 Wednesday - Bosco Sticks)
+            var schoolStart = new DateTime(2025, 8, 6); // Wednesday, Aug 6 = Week 1, Wednesday (Bosco Sticks)
             
-            // Count SCHOOL days from Aug 4 to today (inclusive)
+            // Count SCHOOL days from Aug 6 to today (inclusive)
             int schoolDaysPassed = 0;
             for (var date = schoolStart; date <= today.Date; date = date.AddDays(1))
             {
@@ -150,8 +152,9 @@ public class LunchController : ControllerBase
                 schoolDaysPassed++;
             }
             
-            // Aug 4 is day 1 (index 0), so subtract 1
-            int index = (schoolDaysPassed - 1) % 15;
+            // Aug 6 is day 1, which should be index 2 (Bosco Sticks)
+            // So: index = (schoolDaysPassed - 1 + 2) % 15
+            int index = (schoolDaysPassed + 1) % 15;
             
             menu = SchoolLunches[index];
         }

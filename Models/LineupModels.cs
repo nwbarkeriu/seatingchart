@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace SeatingChartApp.Models
 {
@@ -11,9 +12,12 @@ namespace SeatingChartApp.Models
         
         public string? Coach { get; set; }
         public string? League { get; set; }
+        public string? HomeField { get; set; }
         public DateTime CreatedDate { get; set; }
         
+        [ValidateNever]
         public List<Player> Players { get; set; } = new();
+        [ValidateNever]
         public List<Game> Games { get; set; } = new();
     }
     
@@ -29,8 +33,10 @@ namespace SeatingChartApp.Models
         public bool IsActive { get; set; } = true;
         
         public int TeamId { get; set; }
+        [ValidateNever]
         public Team Team { get; set; } = null!;
         
+        [ValidateNever]
         public List<GameLineupPosition> LineupPositions { get; set; } = new();
     }
     
@@ -46,8 +52,10 @@ namespace SeatingChartApp.Models
         public bool IsHome { get; set; } = true;
         
         public int TeamId { get; set; }
+        [ValidateNever]
         public Team Team { get; set; } = null!;
         
+        [ValidateNever]
         public List<GameLineupPosition> LineupPositions { get; set; } = new();
     }
     
@@ -56,13 +64,15 @@ namespace SeatingChartApp.Models
         public int Id { get; set; }
         
         public int GameId { get; set; }
+        [ValidateNever]
         public Game Game { get; set; } = null!;
         
         public int PlayerId { get; set; }
+        [ValidateNever]
         public Player Player { get; set; } = null!;
         
         public int Inning { get; set; }
-        public string Position { get; set; } = string.Empty; // P, C, 1B, 2B, 3B, SS, LF, CF, RF, DH, etc.
-        public int BattingOrder { get; set; } // 1-9 for starting lineup
+        public string Position { get; set; } = string.Empty;
+        public int BattingOrder { get; set; }
     }
 }

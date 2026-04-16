@@ -6,6 +6,7 @@ using SeatingChartApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json.Serialization;
 
 public class Program
 {
@@ -20,7 +21,11 @@ public class Program
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<TickerService>();
         builder.Services.AddScoped<SchoolEventsService>();
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
         
         // Add database contexts
         builder.Services.AddDbContext<LineupDbContext>(options =>
@@ -47,8 +52,6 @@ public class Program
             mealPlannerContext.Database.Migrate();
         }
         
-        app.MapControllers();
-
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {

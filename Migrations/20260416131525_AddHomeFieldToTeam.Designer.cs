@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeatingChartApp.Data;
 
@@ -10,9 +11,11 @@ using SeatingChartApp.Data;
 namespace SeatingChartApp.Migrations
 {
     [DbContext(typeof(LineupDbContext))]
-    partial class LineupDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260416131525_AddHomeFieldToTeam")]
+    partial class AddHomeFieldToTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -43,7 +46,7 @@ namespace SeatingChartApp.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Games", (string)null);
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("SeatingChartApp.Models.GameLineupPosition", b =>
@@ -75,7 +78,7 @@ namespace SeatingChartApp.Migrations
                     b.HasIndex("GameId", "Inning", "Position")
                         .IsUnique();
 
-                    b.ToTable("GameLineupPositions", (string)null);
+                    b.ToTable("GameLineupPositions");
                 });
 
             modelBuilder.Entity("SeatingChartApp.Models.MealPlan", b =>
@@ -110,7 +113,7 @@ namespace SeatingChartApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MealPlans", (string)null);
+                    b.ToTable("MealPlans");
                 });
 
             modelBuilder.Entity("SeatingChartApp.Models.MealPlanRecipe", b =>
@@ -140,7 +143,7 @@ namespace SeatingChartApp.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("MealPlanRecipes", (string)null);
+                    b.ToTable("MealPlanRecipes");
                 });
 
             modelBuilder.Entity("SeatingChartApp.Models.Player", b =>
@@ -169,7 +172,7 @@ namespace SeatingChartApp.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Players", (string)null);
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("SeatingChartApp.Models.Recipe", b =>
@@ -220,7 +223,7 @@ namespace SeatingChartApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Recipes", (string)null);
+                    b.ToTable("Recipes");
 
                     b.HasData(
                         new
@@ -276,7 +279,7 @@ namespace SeatingChartApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShoppingLists", (string)null);
+                    b.ToTable("ShoppingLists");
                 });
 
             modelBuilder.Entity("SeatingChartApp.Models.ShoppingListItem", b =>
@@ -308,7 +311,7 @@ namespace SeatingChartApp.Migrations
 
                     b.HasIndex("ShoppingListId");
 
-                    b.ToTable("ShoppingListItems", (string)null);
+                    b.ToTable("ShoppingListItems");
                 });
 
             modelBuilder.Entity("SeatingChartApp.Models.Team", b =>
@@ -335,7 +338,7 @@ namespace SeatingChartApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
 
                     b.HasData(
                         new

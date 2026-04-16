@@ -21,7 +21,7 @@ namespace SeatingChartApp.Controllers
         public async Task<ActionResult<IEnumerable<Team>>> GetTeams()
         {
             return await _context.Teams
-                .Include(t => t.Players)
+                .Include(t => t.Players.Where(p => p.IsActive))
                 .Include(t => t.Games)
                 .ToListAsync();
         }
@@ -29,9 +29,26 @@ namespace SeatingChartApp.Controllers
         [HttpPost("teams")]
         public async Task<ActionResult<Team>> CreateTeam(Team team)
         {
+            team.CreatedDate = DateTime.UtcNow;
             _context.Teams.Add(team);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetTeams), new { id = team.Id }, team);
+        }
+        
+        [HttpPut("teams/{id}")]
+        public async Task<ActionResult<Team>> UpdateTeam(int id, Team team)
+        {
+            var existing = await _context.Teams.FindAsync(id);
+            if (existing == null)
+                return NotFound();
+            
+            existing.Name = team.Name;
+            existing.Coach = team.Coach;
+            existing.League = team.League;
+            existing.HomeField = team.HomeField;
+            
+            await _context.SaveChangesAsync();
+            return Ok(existing);
         }
         
         // Players
@@ -56,23 +73,17 @@ namespace SeatingChartApp.Controllers
         [HttpPut("players/{id}")]
         public async Task<IActionResult> UpdatePlayer(int id, Player player)
         {
-            if (id != player.Id)
-                return BadRequest();
-                
-            _context.Entry(player).State = EntityState.Modified;
+            var existing = await _context.Players.FindAsync(id);
+            if (existing == null)
+                return NotFound();
             
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlayerExists(id))
-                    return NotFound();
-                throw;
-            }
+            existing.Name = player.Name;
+            existing.JerseyNumber = player.JerseyNumber;
+            existing.PreferredPosition = player.PreferredPosition;
+            existing.IsActive = player.IsActive;
             
-            return NoContent();
+            await _context.SaveChangesAsync();
+            return Ok(existing);
         }
         
         [HttpDelete("players/{id}")]
@@ -86,6 +97,56 @@ namespace SeatingChartApp.Controllers
             await _context.SaveChangesAsync();
             
             return NoContent();
+        }
+        
+        // Sync all players for a team in one call (update existing, add new, deactivate removed)
+        [HttpPost("teams/{teamId}/players/sync")]
+        public async Task<ActionResult<IEnumerable<Player>>> SyncPlayers(int teamId, List<Player> players)
+        {
+            var existingPlayers = await _context.Players
+                .Where(p => p.TeamId == teamId && p.IsActive)
+                .ToListAsync();
+            
+            var incomingIds = players.Where(p => p.Id > 0).Select(p => p.Id).ToHashSet();
+            
+            // Deactivate players not in the incoming list
+            foreach (var existing in existingPlayers)
+            {
+                if (!incomingIds.Contains(existing.Id))
+                {
+                    existing.IsActive = false;
+                }
+            }
+            
+            var result = new List<Player>();
+            
+            foreach (var player in players)
+            {
+                if (player.Id > 0)
+                {
+                    // Update existing player
+                    var existing = existingPlayers.FirstOrDefault(p => p.Id == player.Id);
+                    if (existing != null)
+                    {
+                        existing.Name = player.Name;
+                        existing.JerseyNumber = player.JerseyNumber;
+                        existing.PreferredPosition = player.PreferredPosition;
+                        existing.IsActive = true;
+                        result.Add(existing);
+                    }
+                }
+                else
+                {
+                    // New player
+                    player.TeamId = teamId;
+                    player.IsActive = true;
+                    _context.Players.Add(player);
+                    result.Add(player);
+                }
+            }
+            
+            await _context.SaveChangesAsync();
+            return Ok(result);
         }
         
         // Games
@@ -105,6 +166,22 @@ namespace SeatingChartApp.Controllers
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
             return Ok(game);
+        }
+        
+        [HttpPut("games/{id}")]
+        public async Task<ActionResult<Game>> UpdateGame(int id, Game game)
+        {
+            var existing = await _context.Games.FindAsync(id);
+            if (existing == null)
+                return NotFound();
+            
+            existing.Opponent = game.Opponent;
+            existing.GameDate = game.GameDate;
+            existing.Location = game.Location;
+            existing.IsHome = game.IsHome;
+            
+            await _context.SaveChangesAsync();
+            return Ok(existing);
         }
         
         // Game Lineups
@@ -131,6 +208,7 @@ namespace SeatingChartApp.Controllers
             // Add new lineup
             foreach (var position in lineup)
             {
+                position.Id = 0; // Reset ID so EF treats as new
                 position.GameId = gameId;
                 _context.GameLineupPositions.Add(position);
             }
@@ -151,6 +229,7 @@ namespace SeatingChartApp.Controllers
             // Add new positions
             foreach (var position in positions)
             {
+                position.Id = 0;
                 position.GameId = gameId;
                 position.Inning = inning;
                 _context.GameLineupPositions.Add(position);
