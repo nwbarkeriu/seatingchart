@@ -32,25 +32,25 @@ public class LunchController : ControllerBase
 
     private static readonly List<List<string>> SchoolLunches = new()
     {
-        // WEEK 1
-        new() { "Chicken Nuggets w/ Blueberry Muffin", "Popcorn Chicken Salad", "Buttered Corn" }, // Monday
-        new() { "Soft Beef Tacos", "Taco Salad", "Refried Beans" }, // Tuesday
-        new() { "Bosco Sticks", "Yogurt Parfait w/ Homemade Granola", "Steamed Broccoli" }, // Wednesday
+        // WEEK 1 (Yellow Triangle)
+        new() { "Chicken Nuggets w/ Blueberry Muffin", "Popcorn Chicken Salad", "Baked Apples" }, // Monday
+        new() { "Nacho Supreme", "Taco Salad", "Refried Beans" }, // Tuesday
+        new() { "Stuffed Mozzarella Sticks", "Yogurt Parfait w/ Homemade Granola", "Steamed Broccoli" }, // Wednesday
         new() { "Pasta w/ Assorted Sauces & Garlic Toast", "Taco Salad", "Green Beans" }, // Thursday
         new() { "Chicken Patty Sandwich", "Popcorn Chicken Salad", "Honey Glazed Carrots" }, // Friday
 
-        // WEEK 2
-        new() { "Mini Corn Dogs", "Popcorn Chicken Salad", "Smiley Potatoes" }, // Monday
-        new() { "Chicken Teriyaki Dumplings", "Taco Salad", "Steamed Broccoli" }, // Tuesday
-        new() { "Personal Pan Pizza", "Yogurt Parfait w/ Homemade Granola", "Green Beans" }, // Wednesday
-        new() { "Chicken Smackers w/ Dinner Roll", "Taco Salad", "Mashed Potatoes w/ Gravy" }, // Thursday
-        new() { "Soft Pretzel w/ Cheese", "Popcorn Chicken Salad", "Baked Beans" }, // Friday
+        // WEEK 2 (Green Circle)
+        new() { "Hot Dog", "Popcorn Chicken Salad", "Smiley Potatoes" }, // Monday
+        new() { "Chicken Rice Bowl", "Taco Salad", "Steamed Broccoli" }, // Tuesday
+        new() { "Personal Pan Pizza", "Yogurt Parfait w/ Homemade Granola", "Roasted Cauliflower" }, // Wednesday
+        new() { "Chicken Tenders w/ Hush Puppies", "Taco Salad", "Baked Beans" }, // Thursday
+        new() { "Grilled Cheese Sandwich w/ Tomato Soup", "Popcorn Chicken Salad", "Buttered Corn" }, // Friday
 
-        // WEEK 3
-        new() { "Belgium Waffle w/ Sausage Patties", "Popcorn Chicken Salad", "Baked Apples" }, // Monday
-        new() { "French Bread Pizza", "Taco Salad", "Buttered Corn" }, // Tuesday
+        // WEEK 3 (Blue Square)
+        new() { "French Toast Sticks w/ Sausage Links", "Popcorn Chicken Salad", "Blueberry Cobbler" }, // Monday
+        new() { "French Bread Pizza", "Taco Salad", "Steamed Broccoli" }, // Tuesday
         new() { "Cheeseburger", "Yogurt Parfait w/ Homemade Granola", "Baked Beans" }, // Wednesday
-        new() { "Chicken Tenders w/ Corn Muffin", "Taco Salad", "Steamed Broccoli" }, // Thursday
+        new() { "Chicken Smackers w/ Dinner Roll", "Taco Salad", "Mashed Potatoes w/ Gravy" }, // Thursday
         new() { "Pizza Crunchers w/ Dip", "Popcorn Chicken Salad", "Green Beans" } // Friday
     };
 
@@ -132,29 +132,37 @@ public class LunchController : ControllerBase
 
         if (isSchoolYear)
         {
-            // School year: 3-week rotation starting Aug 6, 2025 (first day of school - Bosco Sticks)
-            // Aug 6 (Wed) = Day 1 = Index 2 (Week 1 Wednesday - Bosco Sticks)
-            var schoolStart = new DateTime(2025, 8, 6); // Wednesday, Aug 6 = Week 1, Wednesday (Bosco Sticks)
+            // School year: Week-based 3-week rotation
+            // Each calendar week (Mon-Fri) maps to Week 1, 2, or 3
+            // Full-week breaks (all 5 weekdays off) are skipped in the rotation
+            var schoolStart = new DateTime(2025, 8, 6); // Wednesday, Aug 6
             
-            // Count SCHOOL days from Aug 6 to today (inclusive)
-            int schoolDaysPassed = 0;
-            for (var date = schoolStart; date <= today.Date; date = date.AddDays(1))
+            // Get Monday of school start week and current week
+            var schoolStartMonday = schoolStart.AddDays(-(int)(schoolStart.DayOfWeek - DayOfWeek.Monday));
+            var currentMonday = today.AddDays(-(int)(today.DayOfWeek - DayOfWeek.Monday));
+            
+            // Count school weeks (skipping full-break weeks where no school days exist)
+            int schoolWeekCount = 0;
+            for (var weekMonday = schoolStartMonday; weekMonday < currentMonday; weekMonday = weekMonday.AddDays(7))
             {
-                // Must be a weekday
-                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
-                    continue;
-                
-                // Must not be a no-school day (check Events dictionary)
-                var dateStr = date.ToString("yyyy-MM-dd");
-                if (Events.ContainsKey(dateStr))
-                    continue;
-                    
-                schoolDaysPassed++;
+                bool hasSchoolDays = false;
+                for (int d = 0; d < 5; d++)
+                {
+                    var day = weekMonday.AddDays(d);
+                    var dayStr = day.ToString("yyyy-MM-dd");
+                    if (day >= schoolStart && !Events.ContainsKey(dayStr))
+                    {
+                        hasSchoolDays = true;
+                        break;
+                    }
+                }
+                if (hasSchoolDays)
+                    schoolWeekCount++;
             }
             
-            // Aug 6 is day 1, which should be index 2 (Bosco Sticks)
-            // So: index = (schoolDaysPassed - 1 + 2) % 15
-            int index = (schoolDaysPassed + 1) % 15;
+            int weekInRotation = schoolWeekCount % 3; // 0=Week1, 1=Week2, 2=Week3
+            int dayInWeek = (int)(today.DayOfWeek - DayOfWeek.Monday); // 0=Mon..4=Fri
+            int index = weekInRotation * 5 + dayInWeek;
             
             menu = SchoolLunches[index];
         }
