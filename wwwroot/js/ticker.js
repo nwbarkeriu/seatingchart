@@ -1,62 +1,51 @@
-document.addEventListener("DOMContentLoaded", () => {
+function initTicker() {
   const ticker = document.querySelector(".ticker");
-  const items = ticker.querySelectorAll(".ticker-item");
+  const items = ticker ? ticker.querySelectorAll(".ticker-item") : [];
 
-  if (!ticker || items.length === 0) {
-    console.error("Ticker or items not found.");
+  if (!ticker || items.length < 2) {
+    // Items not rendered yet (Blazor Server), retry shortly
+    setTimeout(initTicker, 500);
     return;
   }
 
-  // Use the fixed height from CSS
-  const itemHeight = items[0].offsetHeight;
-  const frameCount = items.length;
-  const animationDuration = frameCount * 4; // 2 seconds per frame
+  // Avoid double-init
+  if (ticker.dataset.tickerInit === "true") return;
+  ticker.dataset.tickerInit = "true";
 
-  // Set the height of the ticker-wrap dynamically
-  const tickerWrap = document.querySelector(".ticker-wrap");
-  tickerWrap.style.height = `${itemHeight}px`;
-  items.forEach(item => item.style.height = `${itemHeight}px`);
-  // Calculate the cumulative height for each frame
-  const frameHeights = Array.from(items).map(item => item.offsetHeight);
-  const cumulativeHeights = frameHeights.map((_, i) =>
-    frameHeights.slice(0, i).reduce((sum, height) => sum + height, 0)
-  );
+  const itemHeight = 120; // matches CSS .ticker-item height
+  const pauseDuration = 4000; // ms to pause on each item
+  const scrollDuration = 600; // ms for the scroll transition
+  const halfCount = Math.floor(items.length / 2);
+  let currentIndex = 0;
 
-  console.log("Frame Heights:", frameHeights);
-  console.log("Cumulative Heights:", cumulativeHeights);
+  // Set initial position
+  ticker.style.transition = "none";
+  ticker.style.transform = "translateY(0px)";
 
-  // Create keyframes for scrolling and pausing
-  const style = document.createElement("style");
-  style.type = "text/css";
+  function scrollToNext() {
+    currentIndex++;
 
-  const percentPerFrame = 100 / frameCount;
-  let keyframes = `@keyframes scroll-vert-roll-up {`;
+    // Smooth scroll to next item
+    ticker.style.transition = "transform " + scrollDuration + "ms ease-in-out";
+    ticker.style.transform = "translateY(-" + (currentIndex * itemHeight) + "px)";
 
-  for (let i = 0; i < frameCount; i++) {
-    const pauseStart = i * percentPerFrame;
-    const pauseEnd = pauseStart + percentPerFrame * 0.7; // 70% pause, 30% scroll
-    const scrollEnd = (i + 1) * percentPerFrame;
-    const manualOffset = 40; // Adjust this number as needed (positive or negative)
-    const yStart = -i * itemHeight - manualOffset;
-    const yEnd = -(i + 1) * itemHeight - manualOffset;
-
-    keyframes += `
-      ${pauseStart}% { transform: translateY(${yStart}px); }
-      ${pauseEnd}% { transform: translateY(${yStart}px); }
-      ${scrollEnd}% { transform: translateY(${yEnd}px); }
-    `;
+    // When we've scrolled through all original items, reset seamlessly
+    if (currentIndex >= halfCount) {
+      setTimeout(function() {
+        currentIndex = 0;
+        ticker.style.transition = "none";
+        ticker.style.transform = "translateY(0px)";
+      }, scrollDuration);
+    }
   }
-  keyframes += `100% { transform: translateY(0); } }`;
 
-  style.innerHTML = `
-    .ticker {
-      animation: scroll-vert-roll-up ${animationDuration}s linear infinite;
-      animation-fill-mode: forwards;
-    }
-    .ticker:hover {
-      animation-play-state: paused;
-    }
-    ${keyframes}
-  `;
-  document.head.appendChild(style);
-});
+  // Start the ticker loop
+  setInterval(scrollToNext, pauseDuration + scrollDuration);
+}
+
+// Try on DOMContentLoaded and also immediately (for Blazor Server late rendering)
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initTicker);
+} else {
+  initTicker();
+}

@@ -184,6 +184,27 @@ public class TickerService
                     eventType = "Unknown";
                     continue;
                 }
+                // Sport icon and label for display
+                string sportIcon = eventType switch {
+                    "MLB" => "⚾",
+                    "College_Baseball" => "⚾",
+                    "NBA" => "🏀",
+                    "College_Basketball" => "🏀",
+                    "NFL" => "🏈",
+                    "College_Football" => "🏈",
+                    _ => "🏟️"
+                };
+                string sportLabel = eventType switch {
+                    "MLB" => "MLB",
+                    "College_Baseball" => "NCAA",
+                    "NBA" => "NBA",
+                    "College_Basketball" => "NCAA",
+                    "NFL" => "NFL",
+                    "College_Football" => "NCAA",
+                    _ => ""
+                };
+                var resultCountBefore = results.Count;
+
                 string statusState = comp.GetProperty("status").GetProperty("type").GetProperty("state").GetString() ?? "";
                 //string statusState = "post";
             if (statusState == "pre"){
@@ -237,7 +258,12 @@ public class TickerService
                             leagueCode = "mens-college-basketball";
                         }
                         // Get pre-game information for basketball
-                        string headline = eventObj.GetProperty("competitions")[0].GetProperty("notes")[0].GetProperty("headline").GetString() ?? "No headline available";
+                        string headline = "";
+                        try {
+                            headline = eventObj.GetProperty("competitions")[0].GetProperty("notes")[0].GetProperty("headline").GetString() ?? "";
+                        } catch {
+                            headline = "";
+                        }
                         // Fetch series summary from the scoreboard API
                         string seriesSummary = await GetScoreboardPropertyAsync("basketball", leagueCode, "series.summary", gameId);
                         string oddsDetails = await GetScoreboardPropertyAsync("basketball", leagueCode, "competitions.odds", gameId);
@@ -547,6 +573,11 @@ public class TickerService
                     // Default case for unknown status
                     results.Add($"{team.DisplayName}: Status unknown.");
                 }
+                // Wrap any new sport results with sport badge
+                for (int idx = resultCountBefore; idx < results.Count; idx++)
+                {
+                    results[idx] = $"<div style='display:flex;align-items:center;gap:8px;'><div style='background:#1a1a2e;color:#02feff;font-weight:bold;font-size:11px;padding:6px 8px;border-radius:6px;text-align:center;min-width:45px;line-height:1.4;border:1px solid #333;'><div style='font-size:20px;'>{sportIcon}</div>{sportLabel}</div>" + results[idx] + "</div>";
+                }
         }
         catch (Exception ex)
         {
@@ -630,7 +661,7 @@ public class TickerService
     }
     public async Task<List<string>> GetStockPricesAsync()
     {
-        var symbols = new[] { "NVDA", "AAPL", "CAVA", "ORCL", "ANET", "WTKWY", "GOOGL", "AMZN", "META", "TSLA" };
+        var symbols = new[] { "NVDA", "AAPL", "CAVA", "ORCL", "ANET", "WTKWY", "GOOGL", "AMZN", "META", "TSLA", "TOST", "INTC", "MSFT" };
         var apiKey = "d166ef9r01qvtdbgkbn0d166ef9r01qvtdbgkbng"; // Replace with your Finnhub API key
         var results = new List<string>();
         foreach (var symbol in symbols)
@@ -882,17 +913,15 @@ public class TickerService
                     }
                     else if (propertyPath == "competitions.headlines")
                     {
-                        // Get the headlines for the game
-                        var headlines = competitionsSB[0].GetProperty("headlines");
-                        if (headlines.GetArrayLength() > 0)
+                        // Get the headlines for the game (safely)
+                        if (competitionsSB[0].TryGetProperty("headlines", out var headlines) && 
+                            headlines.ValueKind == JsonValueKind.Array && 
+                            headlines.GetArrayLength() > 0)
                         {
                             var headlineText = headlines[0].GetProperty("shortLinkText").GetString() ?? "No headline available";
                             return headlineText;
                         }
-                        else
-                        {
-                            return "No headlines available for this game.";
-                        }
+                        return "";
                     }
                     else if (propertyPath == "competitions.description")
                     {
