@@ -59,9 +59,9 @@ public class TickerController : ControllerBase
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{background:#000;color:#fff;font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;height:100%;}
-.ticker-wrap{overflow:hidden;height:100vh;position:relative;}
-.ticker{position:absolute;width:100%;left:0;top:0;will-change:transform;}
-.ticker-item{height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;}
+.ticker-wrap{overflow:hidden;width:100%;height:100vh;position:relative;}
+.ticker{position:absolute;display:flex;flex-direction:row;left:0;top:0;height:100%;will-change:transform;}
+.ticker-item{height:100%;min-width:420px;max-width:500px;padding:0 16px;display:flex;align-items:center;border-right:1px solid #333;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -83,23 +83,22 @@ html,body{background:#000;color:#fff;font-family:'Segoe UI',Arial,sans-serif;ove
   var ticker=document.querySelector('.ticker');
   var items=ticker.querySelectorAll('.ticker-item');
   if(!items.length)return;
-  var itemH=window.innerHeight;
   var halfCount=Math.floor(items.length/2);
-  var idx=0;
+  var totalW=0;
+  for(var i=0;i<halfCount;i++){totalW+=items[i].offsetWidth;}
+  var speed=60;
+  var offset=0;
+  var last=performance.now();
+  function anim(now){
+    var dt=(now-last)/1000;
+    last=now;
+    offset+=speed*dt;
+    if(offset>=totalW){offset-=totalW;}
+    ticker.style.transform='translateX(-'+offset+'px)';
+    requestAnimationFrame(anim);
+  }
   ticker.style.transition='none';
-  ticker.style.transform='translateY(0px)';
-  setInterval(function(){
-    idx++;
-    ticker.style.transition='transform 600ms ease-in-out';
-    ticker.style.transform='translateY(-'+(idx*itemH)+'px)';
-    if(idx>=halfCount){
-      setTimeout(function(){
-        idx=0;
-        ticker.style.transition='none';
-        ticker.style.transform='translateY(0px)';
-      },600);
-    }
-  },4600);
+  requestAnimationFrame(anim);
 })();
 </script>
 </body>

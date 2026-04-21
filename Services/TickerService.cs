@@ -39,6 +39,7 @@ public class TickerService
             new("Indianapolis Colts", "football", "nfl", "11")
         };
         var results = new List<string>();
+        var shownSportBadges = new HashSet<string>();
         foreach (var team in teams)
         {
         try
@@ -525,10 +526,18 @@ public class TickerService
                     // Default case for unknown status
                     results.Add($"{team.DisplayName}: Status unknown.");
                 }
-                // Wrap any new sport results with sport badge
+                // Wrap any new sport results with sport badge (badge only on first item per sport)
                 for (int idx = resultCountBefore; idx < results.Count; idx++)
                 {
-                    results[idx] = $"<div style='display:flex;align-items:center;gap:6px;width:100%;'><div style='background:#1a1a2e;color:#02feff;font-weight:bold;font-size:10px;padding:4px 6px;border-radius:4px;text-align:center;min-width:36px;max-width:36px;line-height:1.3;border:1px solid #333;flex-shrink:0;'><div style='font-size:16px;'>{sportIcon}</div>{sportLabel}</div><div style='flex:1;min-width:0;overflow:hidden;'>" + results[idx] + "</div></div>";
+                    if (!shownSportBadges.Contains(eventType))
+                    {
+                        shownSportBadges.Add(eventType);
+                        results[idx] = $"<div style='display:flex;align-items:center;gap:6px;width:100%;'><div style='background:#1a1a2e;color:#02feff;font-weight:bold;font-size:10px;padding:4px 6px;border-radius:4px;text-align:center;min-width:36px;max-width:36px;line-height:1.3;border:1px solid #333;flex-shrink:0;'><div style='font-size:16px;'>{sportIcon}</div>{sportLabel}</div><div style='flex:1;min-width:0;overflow:hidden;'>" + results[idx] + "</div></div>";
+                    }
+                    else
+                    {
+                        results[idx] = $"<div style='display:flex;align-items:center;gap:6px;width:100%;'><div style='min-width:36px;max-width:36px;flex-shrink:0;'></div><div style='flex:1;min-width:0;overflow:hidden;'>" + results[idx] + "</div></div>";
+                    }
                 }
         }
         catch (Exception ex)
