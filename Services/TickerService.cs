@@ -234,16 +234,17 @@ public class TickerService
                         }
                             // Show pre-game information
                             results.Add($@"
-                            <div style='display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;'>
-                                <img src='{logoAway}' alt='{nameAway}' height='32' />
-                                <span style='font-size:18px;font-weight:bold;'>{abbrevAway} <span style='font-size:11px;opacity:0.6;'>{recordAway}</span><br/>{awayProbablePitcher}</span>
-                                <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                                <img src='{logoHome}' alt='{nameHome}' height='32' />
-                                <span style='font-size:18px;font-weight:bold;'>{abbrevHome} <span style='font-size:11px;opacity:0.6;'>{recordHome}</span><br/>{homeProbablePitcher}</span>
-                                <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                                <span style='opacity:0.6;font-size:14px;'>{dateStr}</span>
+                            <div style='display:flex;align-items:center;gap:6px;flex-wrap:wrap;'>
+                                <img src='{logoAway}' alt='{nameAway}' height='28' />
+                                <span style='font-size:16px;font-weight:bold;'>{abbrevAway} <span style='font-size:10px;opacity:0.6;'>{recordAway}</span></span>
+                                <span style='border-left:1px solid #555;height:24px;'></span>
+                                <img src='{logoHome}' alt='{nameHome}' height='28' />
+                                <span style='font-size:16px;font-weight:bold;'>{abbrevHome} <span style='font-size:10px;opacity:0.6;'>{recordHome}</span></span>
+                                <span style='border-left:1px solid #555;height:24px;'></span>
+                                <span style='opacity:0.6;font-size:13px;'>{dateStr}</span>
                             </div>
-                            <div style='font-size:12px;opacity:0.7;margin-top:2px;'>{headlineData}</div>
+                            <div style='display:flex;gap:10px;font-size:11px;opacity:0.7;margin-top:1px;'>{awayProbablePitcher} {homeProbablePitcher}</div>
+                            <div style='font-size:11px;opacity:0.6;margin-top:1px;'>{headlineData}</div>
                             ");
                     } else if (eventType == "NBA" || eventType == "College_Basketball")
                     {
@@ -264,16 +265,16 @@ public class TickerService
                         string oddsDetails = await GetScoreboardPropertyAsync("basketball", leagueCode, "competitions.odds", gameId);
                         // Show pre-game information for basketball
                         results.Add($@"
-                        <div style='display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;'>
-                            <img src='{logoAway}' alt='{nameAway}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevAway} <span style='font-size:11px;opacity:0.6;'>{recordAway}</span></span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <img src='{logoHome}' alt='{nameHome}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevHome} <span style='font-size:11px;opacity:0.6;'>{recordHome}</span></span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <span style='opacity:0.6;font-size:14px;'>{dateStr}</span>
+                        <div style='display:flex;align-items:center;gap:6px;flex-wrap:wrap;'>
+                            <img src='{logoAway}' alt='{nameAway}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevAway} <span style='font-size:10px;opacity:0.6;'>{recordAway}</span></span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <img src='{logoHome}' alt='{nameHome}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevHome} <span style='font-size:10px;opacity:0.6;'>{recordHome}</span></span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <span style='opacity:0.6;font-size:13px;'>{dateStr}</span>
                         </div>
-                        <div style='font-size:12px;opacity:0.7;margin-top:2px;'>{headline} {seriesSummary} {oddsDetails}</div>
+                        <div style='font-size:11px;opacity:0.6;margin-top:1px;'>{headline} {seriesSummary} {oddsDetails}</div>
                         ");
                     } else if (eventType == "NFL" || eventType == "College_Football")
                     {
@@ -299,16 +300,16 @@ public class TickerService
                         
                         // Show pre-game information for football
                         results.Add($@"
-                        <div style='display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;'>
-                            <img src='{logoAway}' alt='{nameAway}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevAway} <span style='font-size:11px;opacity:0.6;'>{recordAway}</span></span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <img src='{logoHome}' alt='{nameHome}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevHome} <span style='font-size:11px;opacity:0.6;'>{recordHome}</span></span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <span style='opacity:0.6;font-size:14px;'>{dateStr} <span style='font-size:11px;'>{overUnder}</span></span>
+                        <div style='display:flex;align-items:center;gap:6px;flex-wrap:wrap;'>
+                            <img src='{logoAway}' alt='{nameAway}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevAway} <span style='font-size:10px;opacity:0.6;'>{recordAway}</span></span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <img src='{logoHome}' alt='{nameHome}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevHome} <span style='font-size:10px;opacity:0.6;'>{recordHome}</span></span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <span style='opacity:0.6;font-size:13px;'>{dateStr} {overUnder}</span>
                         </div>
-                        <div style='font-size:12px;opacity:0.7;margin-top:2px;'>{headline} {oddsDetails}</div>
+                        <div style='font-size:11px;opacity:0.6;margin-top:1px;'>{headline} {oddsDetails}</div>
                         ");
                     }
                 }
@@ -343,22 +344,19 @@ public class TickerService
                             if (batterTeamId == awayTeamID) awayBatter = inGameBatter;
                             else if (batterTeamId == homeTeamID) homeBatter = inGameBatter;
                         results.Add($@"
-                        <div style='display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;'>
-                            <img src='{logoAway}' alt='{nameAway}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevAway} <span style='font-size:11px;opacity:0.6;'>{recordAway}</span><br/>{awayPitcher}{awayBatter}</span>
-                            <span style='font-size:20px;font-weight:bold;'>{inGameAwayScore}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <img src='{logoHome}' alt='{nameHome}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevHome} <span style='font-size:11px;opacity:0.6;'>{recordHome}</span><br/>{homePitcher}{homeBatter}</span>
-                            <span style='font-size:20px;font-weight:bold;'>{inGameHomeScore}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <span style='opacity:0.6;font-size:13px;display:flex;flex-direction:column;align-items:center;'>
-                                <span>{inGameShortDetailStatus}</span>
-                                <span>{inGameBases}</span>
-                                <span>{inGameOuts}</span>
-                            </span>
+                        <div style='display:flex;align-items:center;gap:6px;flex-wrap:wrap;'>
+                            <img src='{logoAway}' alt='{nameAway}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevAway} <span style='font-size:10px;opacity:0.6;'>{recordAway}</span></span>
+                            <span style='font-size:18px;font-weight:bold;'>{inGameAwayScore}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <img src='{logoHome}' alt='{nameHome}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevHome} <span style='font-size:10px;opacity:0.6;'>{recordHome}</span></span>
+                            <span style='font-size:18px;font-weight:bold;'>{inGameHomeScore}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <span style='opacity:0.6;font-size:12px;'>{inGameShortDetailStatus} {inGameBases} {inGameOuts}</span>
                         </div>
-                        <div style='font-size:12px;opacity:0.7;margin-top:2px;'>{inGameLastPlay}</div>
+                        <div style='display:flex;gap:10px;font-size:11px;opacity:0.7;margin-top:1px;'>{awayPitcher}{awayBatter} {homePitcher}{homeBatter}</div>
+                        <div style='font-size:11px;opacity:0.6;margin-top:1px;'>{inGameLastPlay}</div>
                         ");
 
                     } else if (eventType == "NBA" || eventType == "College_Basketball")
@@ -376,18 +374,18 @@ public class TickerService
 
                         // Show in-game information for basketball
                         results.Add($@"
-                        <div style='display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;'>
-                            <img src='{logoAway}' alt='{nameAway}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevAway} <span style='font-size:11px;opacity:0.6;'>{recordAway}</span></span>
-                            <span style='font-size:20px;font-weight:bold;'>{inGameAwayScoreBB}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <img src='{logoHome}' alt='{nameHome}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevHome} <span style='font-size:11px;opacity:0.6;'>{recordHome}</span></span>
-                            <span style='font-size:20px;font-weight:bold;'>{inGameHomeScoreBB}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <span style='opacity:0.6;font-size:13px;'>{inGameShortDetailStatusBB}</span>
+                        <div style='display:flex;align-items:center;gap:6px;flex-wrap:wrap;'>
+                            <img src='{logoAway}' alt='{nameAway}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevAway} <span style='font-size:10px;opacity:0.6;'>{recordAway}</span></span>
+                            <span style='font-size:18px;font-weight:bold;'>{inGameAwayScoreBB}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <img src='{logoHome}' alt='{nameHome}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevHome} <span style='font-size:10px;opacity:0.6;'>{recordHome}</span></span>
+                            <span style='font-size:18px;font-weight:bold;'>{inGameHomeScoreBB}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <span style='opacity:0.6;font-size:12px;'>{inGameShortDetailStatusBB}</span>
                         </div>
-                        <div style='font-size:12px;opacity:0.7;margin-top:2px;'>{inGameLastPlayBB}</div>
+                        <div style='font-size:11px;opacity:0.6;margin-top:1px;'>{inGameLastPlayBB}</div>
                         ");
                     } else if (eventType == "NFL" || eventType == "College_Football")
                     {
@@ -403,18 +401,18 @@ public class TickerService
 
                         // Show in-game information for football
                         results.Add($@"
-                        <div style='display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;'>
-                            <img src='{logoAway}' alt='{nameAway}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevAway} <span style='font-size:11px;opacity:0.6;'>{recordAway}</span></span>
-                            <span style='font-size:20px;font-weight:bold;'>{inGameAwayScoreNFL}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <img src='{logoHome}' alt='{nameHome}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;'>{abbrevHome} <span style='font-size:11px;opacity:0.6;'>{recordHome}</span></span>
-                            <span style='font-size:20px;font-weight:bold;'>{inGameHomeScoreNFL}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <span style='opacity:0.6;font-size:13px;'>{inGameShortDetailStatusNFL}</span>
+                        <div style='display:flex;align-items:center;gap:6px;flex-wrap:wrap;'>
+                            <img src='{logoAway}' alt='{nameAway}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevAway} <span style='font-size:10px;opacity:0.6;'>{recordAway}</span></span>
+                            <span style='font-size:18px;font-weight:bold;'>{inGameAwayScoreNFL}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <img src='{logoHome}' alt='{nameHome}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;'>{abbrevHome} <span style='font-size:10px;opacity:0.6;'>{recordHome}</span></span>
+                            <span style='font-size:18px;font-weight:bold;'>{inGameHomeScoreNFL}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <span style='opacity:0.6;font-size:12px;'>{inGameShortDetailStatusNFL}</span>
                         </div>
-                        <div style='font-size:12px;opacity:0.7;margin-top:2px;'>{inGameLastPlayNFL}</div>
+                        <div style='font-size:11px;opacity:0.6;margin-top:1px;'>{inGameLastPlayNFL}</div>
                         ");
                     }
                 }
@@ -449,17 +447,18 @@ public class TickerService
                             else if (teamId == homeTeamID) homePostGamePitcher = span;
                         }
                         results.Add($@"
-                        <div style='display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;'>
-                            <img src='{logoAway}' alt='{nameAway}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{abbrevAway} <span style='color:white;font-size:11px;opacity:0.6;'>{recordAway}</span><br/>{awayPostGamePitcher}</span>
-                            <span style='font-size:20px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{scoreAway}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <img src='{logoHome}' alt='{nameHome}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{abbrevHome} <span style='color:white;font-size:11px;opacity:0.6;'>{recordHome}</span><br/>{homePostGamePitcher}</span>
-                            <span style='font-size:20px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{scoreHome}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <span style='opacity:0.6;font-size:13px;'>{postGameFinal}</span>
+                        <div style='display:flex;align-items:center;gap:6px;flex-wrap:wrap;'>
+                            <img src='{logoAway}' alt='{nameAway}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{abbrevAway} <span style='color:white;font-size:10px;opacity:0.6;'>{recordAway}</span></span>
+                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{scoreAway}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <img src='{logoHome}' alt='{nameHome}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{abbrevHome} <span style='color:white;font-size:10px;opacity:0.6;'>{recordHome}</span></span>
+                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{scoreHome}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <span style='opacity:0.6;font-size:12px;'>{postGameFinal}</span>
                         </div>
+                        <div style='display:flex;gap:10px;font-size:11px;opacity:0.7;margin-top:1px;'>{awayPostGamePitcher} {homePostGamePitcher}</div>
                         ");
                     } else if (eventType == "NBA" || eventType == "College_Basketball") //Post-game for basketball is COMPLETE
                     {
@@ -486,17 +485,18 @@ public class TickerService
                             }
                         // Show final score for basketball -- Done
                         results.Add($@"
-                        <div style='display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;'>
-                            <img src='{logoAway}' alt='{nameAway}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{abbrevAway} <span style='font-size:11px;opacity:0.6;'>{recordAway}</span><br/>{awayLeaderSpan}</span>
-                            <span style='font-size:20px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{scoreAway}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <img src='{logoHome}' alt='{nameHome}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{abbrevHome} <span style='font-size:11px;opacity:0.6;'>{recordHome}</span><br/><span style='color:white;'>{homeLeaderSpan}</span></span>
-                            <span style='font-size:20px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{scoreHome}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <span style='opacity:0.6;font-size:13px;'>{postGameFinalBB}</span>
-                        </div>");
+                        <div style='display:flex;align-items:center;gap:6px;flex-wrap:wrap;'>
+                            <img src='{logoAway}' alt='{nameAway}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{abbrevAway} <span style='font-size:10px;opacity:0.6;'>{recordAway}</span></span>
+                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{scoreAway}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <img src='{logoHome}' alt='{nameHome}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{abbrevHome} <span style='font-size:10px;opacity:0.6;'>{recordHome}</span></span>
+                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{scoreHome}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <span style='opacity:0.6;font-size:12px;'>{postGameFinalBB}</span>
+                        </div>
+                        <div style='display:flex;gap:10px;font-size:11px;opacity:0.7;margin-top:1px;'>{awayLeaderSpan} {homeLeaderSpan}</div>");
                     } else if (eventType == "NFL" || eventType == "College_Football")
                     {
                         if (eventType == "NFL") {
@@ -506,16 +506,16 @@ public class TickerService
                         }
                         // Show final score for football
                         results.Add($@"
-                        <div style='display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;'>
-                            <img src='{logoAway}' alt='{nameAway}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{abbrevAway} <span style='font-size:11px;opacity:0.6;'>{recordAway}</span></span>
-                            <span style='font-size:20px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{scoreAway}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <img src='{logoHome}' alt='{nameHome}' height='32' />
-                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{abbrevHome} <span style='font-size:11px;opacity:0.6;'>{recordHome}</span></span>
-                            <span style='font-size:20px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{scoreHome}</span>
-                            <span style='border-left:1px solid #555;height:30px;margin:0 4px;'></span>
-                            <span style='opacity:0.6;font-size:13px;'>FINAL</span>
+                        <div style='display:flex;align-items:center;gap:6px;flex-wrap:wrap;'>
+                            <img src='{logoAway}' alt='{nameAway}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{abbrevAway} <span style='font-size:10px;opacity:0.6;'>{recordAway}</span></span>
+                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevAway ? "color:yellow;" : "opacity:0.8;")}'>{scoreAway}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <img src='{logoHome}' alt='{nameHome}' height='28' />
+                            <span style='font-size:16px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{abbrevHome} <span style='font-size:10px;opacity:0.6;'>{recordHome}</span></span>
+                            <span style='font-size:18px;font-weight:bold;{(winner == abbrevHome ? "color:yellow;" : "opacity:0.8;")}'>{scoreHome}</span>
+                            <span style='border-left:1px solid #555;height:24px;'></span>
+                            <span style='opacity:0.6;font-size:12px;'>FINAL</span>
                         </div>
                         ");
                     }
