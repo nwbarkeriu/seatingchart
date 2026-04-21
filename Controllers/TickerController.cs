@@ -106,4 +106,29 @@ html,body{background:#000;color:#fff;font-family:'Segoe UI',Arial,sans-serif;ove
 
         return Content(sb.ToString(), "text/html");
     }
+
+    /// <summary>
+    /// Flat array of all ticker items (doubled for seamless CSS-only horizontal loop).
+    /// Point DakBoard Fetch block to: https://thebarkers.info/api/ticker/flat
+    /// </summary>
+    [HttpGet("flat")]
+    public async Task<IActionResult> GetFlatTickerData()
+    {
+        var sports = await _tickerService.GetTeamEventsAsync();
+        var stocks = await _tickerService.GetStockPricesAsync();
+        var localEvents = await _tickerService.GetLocalEventsAsync();
+        var schoolEvents = await _tickerService.GetSchoolEventsAsync();
+
+        var allItems = new List<string>();
+        allItems.AddRange(sports);
+        allItems.AddRange(stocks);
+        allItems.AddRange(localEvents);
+        allItems.AddRange(schoolEvents);
+
+        // Duplicate for seamless CSS animation loop
+        var doubled = new List<string>(allItems);
+        doubled.AddRange(allItems);
+
+        return Ok(doubled);
+    }
 }
